@@ -1,5 +1,5 @@
 # Team20
-Deliverable I
+Deliverable I (official proposal)
 - Team Information
 - Team Agreement  
 - Team Picture
