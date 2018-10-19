@@ -7,4 +7,5 @@ app.get("/", function(req, res) {
     res.render("index");
 })
 
+console.log("listening on port ...")
 app.listen(port);
