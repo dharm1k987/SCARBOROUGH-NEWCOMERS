@@ -1,3 +1,13 @@
+html,
+body {
+    font-family: 'Overpass', sans-serif;
+    min-height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 h1 {
     color: purple;
 }

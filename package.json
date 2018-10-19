@@ -9,6 +9,7 @@
   "author": "Team20",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "express": "^4.16.4"
   }
 }
