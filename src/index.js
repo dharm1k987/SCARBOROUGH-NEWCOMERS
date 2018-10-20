@@ -7,6 +7,7 @@ app.use(express.static(__dirname + "/public"));
 // ejs templates go to view folder
 app.set('views', path.join(__dirname, 'public/views'));
 app.set('img', path.join(__dirname, 'public/img'));
+app.set('js', path.join(__dirname, 'public/js'));
 
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
