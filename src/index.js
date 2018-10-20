@@ -17,6 +17,7 @@ app.get("/", function(req, res) {
 })
 
 app.get("/account", function(req, res) {
+    console.log("this page should only be avialble the teq staff is logged in... watch for that");
     res.render("create-org-account");
 })
 
