@@ -8,6 +8,11 @@ body {
     box-sizing: border-box;
 }
 
+.box {
+    width: 100%;
+    padding: 50px;
+}
+
 h1 {
     color: purple;
 }
@@ -27,4 +32,49 @@ h1 {
     background-image: linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url(/img/bg1.jpg);
     background-size: cover;
     height: 100vh;
+}
+
+/* style of the uploading page*/
+.uploading-page {
+    position: relative;
+    background-image: linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url(/img/bg1.jpg);
+    background-size: cover;
+    height: 100vh;
+}
+
+/* style for team logo */
+img {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    z-index: 1;
+}
+
+/* Adding the nevigation bar*/
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 50px;
+    text-decoration: none;
+}
+
+a:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+background-color:#4CAF50;
 }
