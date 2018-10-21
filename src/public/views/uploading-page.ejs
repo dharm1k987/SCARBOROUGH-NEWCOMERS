@@ -4,7 +4,9 @@
         <link rel="stylesheet" href="css/main.css">
         <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <script src="js/upload-files.js"></script>
+
 
     </head>
     <body>
@@ -24,20 +26,52 @@
         <div class="container inner" style="background-color: #f1f1f1;">
             <div>
             <h2 class="text-center">Upload Files</h1>
-            <p>
-                    <h4 class="text-center">Uploading files for generating reports of informations of new comers in Scarborough
+            <p class="text-center">
+                    Uploading files for generating reports of informations of new comers in Scarborough.<br>
+                    Please enter a small description and select the type of template you are uploading.
+
             </p>
                 <form>
-                        <button type="button" id="org-create-btn" class="btn btn-success" style="width:100%;">Select Files</button>
+                        <button type="button" id="org-select-btn" class="btn btn-success" style="width:100%;">Select Files</button>
                         <P></P>
+
                         <div class="form-group">
-                          <label for="orgPwd">Description of the files</label>
-                          <P></P>
-                          <input type="Description" class="box" id="orgPwd" placeholder="Description">
+                            <div class="row">
+                            <div class="col-md-6">
+                                
+                                <label for="description">Description of the files</label>
+                                 <P></P>
+                                 <input type="text" class="form-control box" id="description" placeholder="Description">
+                            
+
+                            </div>
+                        
+                            <div class="col-md-6 text-center">
+                                    <label for="icare-temp">iCARE Template</label>
+                                    <P></P>
+                                    <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-upload" data-toggle="dropdown">
+                                              Template 1 <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                              <li aria-selected="selected"><a href="#">Template 1</a></li>
+                                              <li><a href="#">Template 2</a></li>
+                                              <li><a href="#">Template 3</a></li>
+                                              <li><a href="#">Template 4</a></li>
+                                              <li><a href="#">Template 5</a></li>
+                                              <li><a href="#">Template 6</a></li>
+                                              <li><a href="#">Template 7</a></li>
+                                              <li><a href="#">Template 8</a></li>
+
+                                            </ul>
+                                          </div>
+                            </div>
+
+                            </div>
                         </div>
 
 
-                        <button type="button" id="org-create-btn" class="btn btn-success" style="width:100%;">Upload</button>
+                        <button type="button" id="org-upload-btn" class="btn btn-success" style="width:100%;">Upload</button>
                 </form>      
 
             </div>
