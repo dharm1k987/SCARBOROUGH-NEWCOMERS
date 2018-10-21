@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="js/create-account.js"></script>
+
+    </head>
+    <body>
+        <div class="outer create-org-account">
+        <div class="container inner" style="background-color: #f1f1f1;">
+            <div>
+            <h2 class="text-center">Create Account</h1>
+            <p>
+                Create an account for the individual TEQ organiation using the form below. The organization id can be something like john_services and the password must be more than 5 characters.
+            </p>
+                <form>
+                        <div class="form-group">
+                          <label for="orgID">Organization</label>
+                          <input type="text" class="form-control" id="orgID" placeholder="ID">
+                        </div>
+                        <div class="form-group">
+                          <label for="orgPwd">Password</label>
+                          <input type="password" class="form-control" id="orgPwd" placeholder="Password">
+                        </div>
+
+
+                        <button type="button" id="org-create-btn" class="btn btn-success" style="width:100%;">Create</button>
+                </form>      
+
+            </div>
+        </div>
+    </div>
+   
+
+    </body>
+</html>
