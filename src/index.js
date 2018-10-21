@@ -26,5 +26,10 @@ app.get("/upload", function(req, res) {
     res.render("uploading-page");
 })
 
+app.get("/login", function(req, res) {
+		console.log("login page");
+    res.render("login");
+})
+
 console.log("listening on port ...")
 app.listen(port);
