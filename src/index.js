@@ -21,5 +21,10 @@ app.get("/account", function(req, res) {
     res.render("create-org-account");
 })
 
+app.get("/upload", function(req, res) {
+    console.log("this page should only be avialble to the members of supporting agencies is logged in... watch for that");
+    res.render("uploading-page");
+})
+
 console.log("listening on port ...")
 app.listen(port);
