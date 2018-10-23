@@ -17,9 +17,19 @@ $(document).ready(function() {
             success: function(response) {
                 // get the type of account they are (teq or org)
                 // setup local storage
-                // assume they are org
-                localStorage.setItem("loginOrg", "true");
-                window.location.replace("/upload");
+                $.ajax({
+                    type: 'GET', url: '/account/type', data: data,
+                    success: function(response2) {
+                        if (response2.type == "org") {
+                            localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
+                            window.location.replace("/upload");
+                        } else {
+                            localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
+                            console.log("assuming teq");
+                        }
+                    }
+                });
+
                 console.log("success");
                 // reroute them based on the location data provides
             },

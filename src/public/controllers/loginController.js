@@ -1,14 +1,15 @@
-module.exports  = function(app) {
-    var  bodyParser = require("body-parser");
-    app.use(bodyParser.urlencoded({extended: false}));
-    app.use(bodyParser.json());
+var bodyParser = require("body-parser");
+var urlencodedParser = bodyParser.urlencoded({extended: false});
 
+module.exports  = function(app) {
+
+    // app.use(bodyParser.json());
     app.get("/login", function(req, res) {
 		console.log("login page");
         res.render("login");
     });
 
-    app.post("/login", function(req, res) {
+    app.post("/login", urlencodedParser, function(req, res) {
         // temp for testing
         var username = "username";
         var password = "password";
@@ -18,8 +19,9 @@ module.exports  = function(app) {
             res.status(200);
             res.send();
         } else {
+            console.log("sending 400");
             res.status(400);
-            res.send("NOTFOUND");
+            res.send();
         }
     });
 };
