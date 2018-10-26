@@ -67,34 +67,42 @@ img {
     z-index: 1;
 }
 
-/* Adding the nevigation bar*/
-ul {
-    list-style-type: none;
+/* Adding the sticky nevigation bar*/
+.icon-bar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: #333;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    z-index: 3;
 }
 
-li {
+.icon-bar a {
     float: left;
-}
-
-li a {
-    display: block;
-    color: white;
+    width: 16.6%;
     text-align: center;
-    padding: 14px 50px;
-    text-decoration: none;
+    padding: 10px 10px;
+    color: white;
+    font-size: 20px;
 }
 
-a:hover:not(.active) {
-    background-color: #111;
+.icon-bar a:hover {
+    background-color: #000;
 }
 
 .active {
-background-color:#4CAF50;
+    background-color: #4CAF50;
 }
 
+
+/* style of the home page*/
+.home-page {
+    position: relative;
+    background-image: linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url(/img/bg1.jpg);
+    background-size: cover;
+    height: 100vh;
+}
 
 
