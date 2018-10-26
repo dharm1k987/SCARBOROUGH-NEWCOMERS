@@ -3,7 +3,7 @@ $(document).ready(function() {
     // if we are already logged in, we cannot be on the login page
     if (localStorage.loginOrg == "true") {
         console.log("already logged in, redirect to org");
-        window.location.replace("/upload");
+        window.location.replace("/home");
     } else if (localStorage.loginTEQ == "true") {
         console.log("already logged in, redirect to teq")
     }
@@ -22,7 +22,7 @@ $(document).ready(function() {
                     success: function(response2) {
                         if (response2.type == "org") {
                             localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
-                            window.location.replace("/upload");
+                            window.location.replace("/home");
                         } else {
                             localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
                             console.log("assuming teq");
