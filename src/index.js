@@ -15,6 +15,11 @@ app.set('controllers', path.join(__dirname, '/public/controllers'));
 
 var loginController = require(__dirname + "/public/controllers/loginController");
 var accountController = require(__dirname + "/public/controllers/accountController");
+var uploadFileController = require(__dirname + "/public/controllers/uploadFileController");
+var accountInfoController = require(__dirname + "/public/controllers/accountInfoController");
+var homeController = require(__dirname + "/public/controllers/homeController");
+var helpController = require(__dirname + "/public/controllers/helpController");
+var eventLogController = require(__dirname + "/public/controllers/eventLogController");
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
 
@@ -22,28 +27,14 @@ app.get("/", function(req, res) {
     res.render("index");
 })
 
-
-
-app.get("/upload", function(req, res) {
-    console.log("this page should only be avialble to the members of supporting agencies is logged in... watch for that");
-    res.render("uploading-page");
-})
-
-app.get("/home", function(req, res) {
-    console.log("this page should only be avialble to the members of TEQ is logged in... watch for that");
-    // for now link it to the login page
-    res.render("login");
-    // res.render("home");
-})
-
-app.get("/upload-history", function(req, res) {
-    console.log("this page should only be avialble to the members of TEQ is logged in... watch for that");
-    res.render("upload-history");
-})
-
 // fire controllers
 loginController(app); 
 accountController(app);
+uploadFileController(app);
+accountInfoController(app);
+homeController(app);
+helpController(app);
+eventLogController(app);
 
 console.log("listening on port ...")
 app.listen(port);
