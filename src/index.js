@@ -31,7 +31,9 @@ app.get("/upload", function(req, res) {
 
 app.get("/home", function(req, res) {
     console.log("this page should only be avialble to the members of TEQ is logged in... watch for that");
-    res.render("home");
+    // for now link it to the login page
+    res.render("login");
+    // res.render("home");
 })
 
 app.get("/upload-history", function(req, res) {
