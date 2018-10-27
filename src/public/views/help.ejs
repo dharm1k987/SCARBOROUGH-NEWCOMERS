@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/upload-files.js"></script>
+        
+        <style>
+                .dropbtn {
+                    background-color: rgb(0, 0, 0);
+                    color: white;
+                    padding: 16px;
+                    font-size: 16px;
+                    border: none;
+                    cursor: pointer;
+                }
+                
+                .dropdown {
+                    position: relative;
+                    left: 475px;
+                    display: inline-block;
+                }
+                
+                .dropdown-content {
+                    display: none;
+                    position: absolute;
+                    background-color: #f9f9f9;
+                    min-width: 160px;
+                    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                }
+                
+                .dropdown-content a {
+                    color: black;
+                    padding: 12px 16px;
+                    text-decoration: none;
+                    display: block;
+                }
+                
+                .dropdown-content a:hover {background-color: #8a8a8a}
+                
+                .dropdown:hover .dropdown-content {
+                    display: block;
+                }
+                
+                .dropdown:hover .dropbtn {
+                    background-color: #474747;
+                }
+            </style>
+
+    </head>
+    <body>
+            <% include partials/nav.ejs %>
+            <img src="/img/Team20Logo.png">
+            <div class="outer home-page">
+            <div class="container inner" style="color:black" >
+                <div>
+                <h2 class="text-center" style="font-size: 36px">Help Center</h1>
+
+                <div class="dropdown">
+                            <button class="dropbtn">About Us</button>
+                            <div class="dropdown-content">
+                              <a href="https://github.com/CSCC01/Team20/blob/master/Deliverable%201/Official%20Proposal.pdf">Visit Us</a>
+                            </div>
+                </div>
+
+                <div class="dropdown">
+                        <button class="dropbtn">Email Us</button>
+                        <div class="dropdown-content">
+                          <a href="mailto:dharmik.shah@mail.utoronto.ca">Dharmik Shan</a>
+                          <a href="mailto:caleb.chen@mail.utoronto.ca">Caleb Chen</a>
+                          <a href="mailto:aliza.lau@mail.utoronto.ca">Aliza Lau</a>
+                          <a href="mailto:byron.leung@mail.utoronto.ca">Byron Leung</a>
+                          <a href="mailto:ralph.maamari@mail.utoronto.ca">Ralph Maamari</a>
+                        </div>
+                </div>
+
+        </body>
+    </html>
