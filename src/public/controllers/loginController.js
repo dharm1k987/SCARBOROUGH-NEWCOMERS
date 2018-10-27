@@ -37,7 +37,8 @@ module.exports  = function(app) {
         // temp for testing
 
         db.find({"username": req.body.username, "password": req.body.password}, function(err, docs){
-            if (err) {
+
+            if (docs.length == 0 || err) {
                 res.status(400);
                 res.send();
             } else {
