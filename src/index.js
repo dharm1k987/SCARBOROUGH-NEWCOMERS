@@ -16,7 +16,7 @@ app.set('controllers', path.join(__dirname, '/public/controllers'));
 var loginController = require(__dirname + "/public/controllers/loginController");
 var accountController = require(__dirname + "/public/controllers/accountController");
 var uploadFileController = require(__dirname + "/public/controllers/uploadFileController");
-var accountInfoController = require(__dirname + "/public/controllers/accountInfoController");
+
 var homeController = require(__dirname + "/public/controllers/homeController");
 var helpController = require(__dirname + "/public/controllers/helpController");
 var eventLogController = require(__dirname + "/public/controllers/eventLogController");
@@ -31,7 +31,7 @@ app.get("/", function(req, res) {
 loginController(app); 
 accountController(app);
 uploadFileController(app);
-accountInfoController(app);
+
 homeController(app);
 helpController(app);
 eventLogController(app);
