@@ -3,7 +3,7 @@ $(document).ready(function() {
     // if we are already logged in, we cannot be on the login page
     radio = "";
     $('#create-btn').click(function() {
-        if ($('input[name="orgRadio"]:checked').val() == "on") { radio = "org"; }
+        if ($('input[id="orgRadio"]:checked').val() == "on") { radio = "org"; }
         else { radio = "teq"; }
         var data = {username: $("#CreateUsername").val(), password: $("#CreatePwd").val(), type: radio};
         console.log("data is " + JSON.stringify(data));

@@ -22,10 +22,11 @@ $(document).ready(function() {
                     success: function(response2) {
                         if (response2.type == "org") {
                             localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
-                            window.location.replace("/home");
+                            window.location.replace("/");
                         } else {
-                            localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
+                            localStorage.setItem("loginOrg", "false"); localStorage.setItem("loginTEQ", "true");
                             console.log("assuming teq");
+                            window.location.replace("/home");
                         }
                     }
                 });

@@ -19,6 +19,6 @@ module.exports  = function(app) {
         var password = "password";
 
         res.status(200);
-        res.send({type:"org"});
+        res.send({type:"teq"});
     });
 };
