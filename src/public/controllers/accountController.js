@@ -1,5 +1,7 @@
 var bodyParser = require("body-parser");
-// var urlencodedParser = bodyParser.urlencoded({extended: false});
+var Datastore = require('nedb');
+var db = new Datastore({filename: 'src/public/db/account.db', autoload: true});
+var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 module.exports  = function(app) {
 
@@ -8,17 +10,19 @@ module.exports  = function(app) {
         res.render("create-org-account");
     })
 
-    app.get("/account/type", function(req, res) {
-        // this function should call the database and return the type of account
-        // TEQ or org
-        console.log(req);
-        console.log("username account is from accountController" + req.query.username);
-
-        // temp for testing
-        var username = "username";
-        var password = "password";
-
-        res.status(200);
-        res.send({type:"teq"});
+    app.get("/account/type", urlencodedParser, function(req, res) {
+        db.find({"username": req.query.username, "password": req.query.password}, function(err, docs){
+            if (err) {
+                res.status(400);
+                res.send();
+            } else {
+                res.status(200);
+                 console.log(docs);
+                var result = docs[0].type;
+                res.send({type: result});
+            }
+        });
     });
+
+   
 };

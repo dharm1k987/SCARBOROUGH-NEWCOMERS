@@ -31,19 +31,7 @@ module.exports  = function(app) {
         });
     })
 
-    app.post("/create/type", function(req, res) {
-        // this function should call the database and return the type of account
-        // TEQ or org
-        console.log(req);
-        console.log("username account is from accountController" + req.query.username);
 
-        // temp for testing
-        var username = "username";
-        var password = "password";
-
-        res.status(200);
-        res.send({type:"org"});
-    });
 };
 
 
