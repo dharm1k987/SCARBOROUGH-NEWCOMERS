@@ -45,5 +45,7 @@ module.exports  = function(app) {
 
             jsons[sheetName] = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
         }
+
+        // json objects are in jsons
     });
 };
