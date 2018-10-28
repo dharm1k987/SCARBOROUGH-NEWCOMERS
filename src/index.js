@@ -1,11 +1,14 @@
 var express = require('express');
 var path = require('path');
-
 var app = express();
 var port = process.env.PORT || 8080;
 
-app.use(express.static(__dirname + "/public"));
+// singleton database module
+var Datastore = require('nedb');
+var db = new Datastore({filename: path.join(__dirname, 'public/db/account.db'), autoload: true});
+module.exports.db = db;
 
+app.use(express.static(__dirname + "/public"));
 
 // ejs templates go to view folder
 app.set('views', path.join(__dirname, 'public/views'));

@@ -1,7 +1,6 @@
 var bodyParser = require("body-parser");
-var bodyParser = require("body-parser");
-var Datastore = require('nedb');
-var db = new Datastore({filename: 'src/public/db/account.db', autoload: true});
+var index = require(__dirname + '/../../index');
+var db = index.db;
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 module.exports  = function(app) {
