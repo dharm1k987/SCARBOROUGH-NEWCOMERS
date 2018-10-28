@@ -23,12 +23,9 @@ var createAccController = require(__dirname + "/public/controllers/createAccCont
 var homeController = require(__dirname + "/public/controllers/homeController");
 var helpController = require(__dirname + "/public/controllers/helpController");
 var eventLogController = require(__dirname + "/public/controllers/eventLogController");
+var indexController = require(__dirname + "/public/controllers/indexController");
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
-
-app.get("/", function(req, res) {
-    res.render("index");
-})
 
 
 
@@ -40,6 +37,7 @@ createAccController(app);
 homeController(app);
 helpController(app);
 eventLogController(app);
+indexController(app);
 
 console.log("listening on port ...")
 app.listen(port);

@@ -22,7 +22,7 @@ $(document).ready(function() {
                     success: function(response2) {
                         if (response2.type == "org") {
                             localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
-                            window.location.replace("/");
+                            window.location.replace("/index");
                         } else {
                             localStorage.setItem("loginOrg", "false"); localStorage.setItem("loginTEQ", "true");
                             console.log("assuming teq");
