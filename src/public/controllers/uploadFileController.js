@@ -51,11 +51,11 @@ module.exports  = function(app) {
             }
             console.log("headers are " + headers)
 
-
+            jsons = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
         }
 
 
-        jsons = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
+
         console.log("-----start----")
         console.log(jsons);
         console.log("-----end----")
