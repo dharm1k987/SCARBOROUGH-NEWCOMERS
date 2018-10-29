@@ -1,5 +1,9 @@
 var XLSX = require('xlsx');
 var multer = require('multer');
+var bodyParser = require("body-parser");
+var urlencodedParser = bodyParser.urlencoded({extended: false});
+var index = require(__dirname + '/../../index');
+var db2 = index.db2;
 
 // multer setup
 var storage = multer.memoryStorage();
@@ -18,7 +22,7 @@ module.exports  = function(app) {
         res.render("uploading-page");
     });
 
-    app.post('/upload', upload.single('csv'), function(req, res) {
+    app.post('/upload', urlencodedParser, upload.single('csv'), function(req, res) {
         console.log(req);
         
         // file is cached in req.file.buffer
@@ -46,9 +50,24 @@ module.exports  = function(app) {
                     headers.push(nextCell.w);
             }
 
-            jsons[sheetName] = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
-            console.log(jsons);
+
         }
+
+
+        jsons = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
+        console.log("-----start----")
+        console.log(jsons);
+        console.log("-----end----")
+        var template = req.body.template;
+        var body = {};
+        body[template] = jsons;
+        console.log("the body is " + JSON.stringify(req.body));
+        console.log("template is " + template);
+
+        db2.insert(body , function(err, docs){
+            console.log("inserted");
+        });
+        
         console.log("i am sending 200");
         res.status(200);
         res.send({});

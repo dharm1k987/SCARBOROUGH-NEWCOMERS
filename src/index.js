@@ -6,7 +6,9 @@ var port = process.env.PORT || 8080;
 // singleton database module
 var Datastore = require('nedb');
 var db = new Datastore({filename: path.join(__dirname, 'public/db/account.db'), autoload: true});
+var db2 = new Datastore({filename: path.join(__dirname, 'public/db/templates.db'), autoload: true});
 module.exports.db = db;
+module.exports.db2 = db2;
 
 app.use(express.static(__dirname + "/public"));
 
