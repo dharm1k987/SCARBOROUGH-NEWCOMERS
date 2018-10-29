@@ -49,6 +49,7 @@ module.exports  = function(app) {
                 else
                     headers.push(nextCell.w);
             }
+            console.log("headers are " + headers)
 
 
         }
@@ -65,12 +66,20 @@ module.exports  = function(app) {
         console.log("template is " + template);
 
         db2.insert(body , function(err, docs){
-            console.log("inserted");
+            if (err) {
+                console.log(err);
+                console.log("bad, i am sending 400");
+                res.status(400);
+                res.send({});
+            } else {
+                console.log("inseted properly");
+                console.log("i am sending 200");
+                res.status(200);
+                res.send({});
+            }
         });
         
-        console.log("i am sending 200");
-        res.status(200);
-        res.send({});
+
         
         // json objects are in jsons
     });
