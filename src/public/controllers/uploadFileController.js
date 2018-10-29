@@ -18,8 +18,11 @@ module.exports  = function(app) {
         res.render("uploading-page");
     });
 
-    app.post('/upload-file', upload.single('csv'), function(req, res) {
+    app.post('/upload', upload.single('csv'), function(req, res) {
+        console.log(req);
+        
         // file is cached in req.file.buffer
+        
         var workbook = XLSX.read(req.file.buffer);
         var ignoreSheets = ["Data Fields", "Options Sheet"];
         var jsons = {};
@@ -44,8 +47,12 @@ module.exports  = function(app) {
             }
 
             jsons[sheetName] = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
+            console.log(jsons);
         }
-
+        console.log("i am sending 200");
+        res.status(200);
+        res.send({});
+        
         // json objects are in jsons
     });
 };

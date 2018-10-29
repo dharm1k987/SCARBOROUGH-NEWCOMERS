@@ -26,9 +26,11 @@
                     Please enter a small description and select the type of template you are uploading.
 
             </p>
-                <form action="upload-file" method="post" enctype="multipart/form-data">
+                <form action="upload" method="post" enctype="multipart/form-data" id="my-form">
                         <input name="csv" type="file" id="org-select-btn" class="btn btn-success" style="width:100%;">
-                        <P></P>
+                        
+
+
 
                         <div class="form-group">
                             <div class="row">
@@ -44,22 +46,19 @@
                             <div class="col-md-6 text-center">
                                     <label for="icare-temp">iCARE Template</label>
                                     <P></P>
-                                    <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-upload" data-toggle="dropdown">
-                                              Select Template  <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                              <li aria-selected="selected"><a href="#">Client Profile</a></li>
-                                              <li><a href="#">Needs Assessment&Referrals</a></li>
-                                              <li><a href="#">Community Connections</a></li>
-                                              <li><a href="#">Info&Orientation</a></li>
-                                              <li><a href="#">Employment</a></li>
-                                              <li><a href="#">LT Client Enrollment</a></li>
-                                              <li><a href="#">LT Course Setup</a></li>
-                                              <li><a href="#">LT Client Exit</a></li>
 
-                                            </ul>
-                                          </div>
+                                    <select name="template">
+                                        <option value="Client Profile" selected="selected">Client Profile</option>
+                                        <option value="Needs Assessment">Needs Assessment&Referrals</option>
+                                        <option value="Community Connections">Community Connections</option>
+                                        <option value="Info Orientation">Info&Orientation</option>
+                                        <option value="Employment">Employment</option>
+                                        <option value="LT Client Enrollment">LT Client Enrollment</option>
+                                        <option value="LT Course Setup">LT Course Setup</option>
+                                        <option value="LT Client Exit">LT Client Exit</option>
+                                    </select>
+                                    
+                                    
                             </div>
 
                             </div>
