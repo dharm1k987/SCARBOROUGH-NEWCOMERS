@@ -11,7 +11,7 @@ module.exports  = function(app) {
 
     app.post("/create", urlencodedParser, function(req, res) {
        console.log("in create controller");
-        db.find({"username": req.body.username, "password": req.body.password}, function(err, docs){
+        db.find({"username": req.body.username}, function(err, docs){
             console.log(docs);
             if (docs.length == 0) {
                 console.log("i di dnot find it");
