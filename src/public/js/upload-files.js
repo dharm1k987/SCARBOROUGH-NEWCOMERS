@@ -24,4 +24,36 @@ $(document).ready(function() {
     $("#org-select-btn").click(function() {
         console.log("byron file opener");
     })
+
+    $("#my-form").submit(function(e) {
+        e.preventDefault();
+        var actionurl = e.currentTarget.action;
+
+        console.log(actionurl);
+        var formData = new FormData($("#my-form")[0]);
+        $.ajax({
+            url: actionurl,
+            type: 'post',
+            dataType: 'application/json',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                if (data.status == "200") {
+                    alert("File was uploaded.");
+                    location.reload();
+                } else {
+                    alert("Something went wrong. Could not upload file.")
+                }
+            },
+            error: function(err) {
+                if (err.status == "200") {
+                    alert("File was uploaded.");
+                    location.reload();
+                } else {
+                    alert("Something went wrong. Could not upload file.")
+                }
+            }
+        });
+    })
 });

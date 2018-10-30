@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="js/create-acc.js"></script>
+        <script src="js/logout.js"></script>
+
+    </head>
+    <body>
+        <% include partials/nav.ejs %>
+        <img src="/img/Team20Logo.png">
+        <div class="outer login">
+        <div class="container inner" style="background-color: #f1f1f1;" id="loginbox">
+            <div>
+                <h2 class="text-center">Create Account</h1>
+                <p>
+                    Create an account for the individual TEQ organiation using the form below. The organization id can be something like john_services and the password must be more than 5 characters.
+                </p>
+                <form>
+                        <div class="form-group">
+                          <label for="CreateUsername">Organization/TEQ Username</label>
+                          <input type="text" class="form-control" id="CreateUsername" placeholder="ID">
+                        </div>
+						
+                        <div class="form-group">
+                          <label for="CreatePwd">Password</label>
+                          <input type="password" class="form-control" id="CreatePwd" placeholder="Password">
+                        </div>
+
+                        <label class="radio-inline"><input type="radio" id="orgRadio" name="radio" checked>Organization</label>
+                        <label class="radio-inline"><input type="radio" id="teqRadio" name="radio">TEQ</label>
+
+                        <button type="button" id="create-btn" class="btn btn-success" style="width:100%;">Create</button>
+
+                </form>      
+
+            </div>
+        </div>
+    </div>
+   
+
+    </body>
+</html>

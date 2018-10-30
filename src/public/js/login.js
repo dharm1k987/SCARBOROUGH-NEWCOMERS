@@ -3,9 +3,10 @@ $(document).ready(function() {
     // if we are already logged in, we cannot be on the login page
     if (localStorage.loginOrg == "true") {
         console.log("already logged in, redirect to org");
-        window.location.replace("/home");
+        window.location.replace("/index");
     } else if (localStorage.loginTEQ == "true") {
         console.log("already logged in, redirect to teq")
+        window.location.replace("/home");
     }
 
     $('#login-btn').click(function() {
@@ -22,10 +23,11 @@ $(document).ready(function() {
                     success: function(response2) {
                         if (response2.type == "org") {
                             localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
-                            window.location.replace("/home");
+                            window.location.replace("/index");
                         } else {
-                            localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
+                            localStorage.setItem("loginOrg", "false"); localStorage.setItem("loginTEQ", "true");
                             console.log("assuming teq");
+                            window.location.replace("/home");
                         }
                     }
                 });
