@@ -14,3 +14,9 @@ Deliverable I (official proposal)
 Deliverable II
 - Personas
 - User Stories
+
+Deliverable III
+
+- Updated User Stories
+- Completed 2 Full Sprints
+- Completed until Database logic of application
