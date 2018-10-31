@@ -1,6 +1,7 @@
 var XLSX = require('xlsx');
 var multer = require('multer');
 var bodyParser = require("body-parser");
+var fs = require('fs');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var index = require(__dirname + '/../../index');
 var db2 = index.db2;
@@ -15,6 +16,14 @@ var upload = multer({
         cb(null, true);
     }
 });
+
+function checkUnique(id) {
+    console.log("the id is " + id);
+    fs.readFile('src/public/db/template_ids.txt', function(err, contents) {
+        var result = contents.toString();
+        console.log(result.includes(id.toString()));
+    });
+}
 
 module.exports  = function(app) {
     app.get("/upload", function(req, res) {
@@ -57,14 +66,15 @@ module.exports  = function(app) {
 
 
         console.log("-----start----")
-        console.log(jsons);
+        //console.log(jsons);
         console.log("-----end----")
         var template = req.body.template;
         var body = {};
         body[template] = jsons;
-        console.log("the body is " + JSON.stringify(req.body));
-        console.log("template is " + template);
-
+        //console.log("the body is " + JSON.stringify(req.body));
+        //console.log("template is " + template);
+        
+        checkUnique(body[template][0]["client_validation_id"])
         db2.insert(body , function(err, docs){
             if (err) {
                 console.log(err);

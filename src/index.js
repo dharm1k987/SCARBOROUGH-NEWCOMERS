@@ -17,6 +17,7 @@ app.set('views', path.join(__dirname, 'public/views'));
 app.set('img', path.join(__dirname, 'public/img'));
 app.set('js', path.join(__dirname, 'public/js'));
 app.set('controllers', path.join(__dirname, '/public/controllers'));
+app.set('db', path.join(__dirname, '/public/db'));
 
 var loginController = require(__dirname + "/public/controllers/loginController");
 var accountController = require(__dirname + "/public/controllers/accountController");
@@ -28,7 +29,7 @@ var eventLogController = require(__dirname + "/public/controllers/eventLogContro
 var indexController = require(__dirname + "/public/controllers/indexController");
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
-
+console.log( path.join(__dirname, '/public/db'));
 
 
 // fire controllers
