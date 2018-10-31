@@ -21,12 +21,12 @@ function checkUnique(id) {
     console.log("the id is " + id);
 
     var result = fs.readFileSync("src/public/db/template_ids.txt").toString();
-    var alreadyThere = result.includes(id.toString());
-
-    if (alreadyThere) {
+    var re = new RegExp("\\b"+id+"\\b");
+    if (result.match(re)) {
         console.log("aready there");
         return false;
     }
+
 
     // if I reach here, that means the id is not there, so add it
     fs.appendFile("src/public/db/template_ids.txt", "\n" + id.toString(), function(err) {
