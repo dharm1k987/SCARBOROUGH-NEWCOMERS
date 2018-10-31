@@ -47,11 +47,12 @@ $(document).ready(function() {
                 }
             },
             error: function(err) {
+                console.log(err);
                 if (err.status == "200") {
                     alert("File was uploaded.");
                     location.reload();
                 } else {
-                    alert("Something went wrong. Could not upload file.")
+                    alert("Something went wrong. Could not upload file. " + err.responseText)
                 }
             }
         });
