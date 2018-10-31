@@ -19,10 +19,23 @@ var upload = multer({
 
 function checkUnique(id) {
     console.log("the id is " + id);
-    fs.readFile('src/public/db/template_ids.txt', function(err, contents) {
-        var result = contents.toString();
-        console.log(result.includes(id.toString()));
-    });
+
+    var result = fs.readFileSync("src/public/db/template_ids.txt").toString();
+    var alreadyThere = result.includes(id.toString());
+
+    if (alreadyThere) {
+        console.log("aready there");
+        return false;
+    }
+
+    // if I reach here, that means the id is not there, so add it
+    fs.appendFile("src/public/db/template_ids.txt", "\n" + id.toString(), function(err) {
+        if(err) {
+            return console.log(err);
+        }
+    }); 
+
+    return true;
 }
 
 module.exports  = function(app) {
@@ -73,8 +86,15 @@ module.exports  = function(app) {
         body[template] = jsons;
         //console.log("the body is " + JSON.stringify(req.body));
         //console.log("template is " + template);
-        
-        checkUnique(body[template][0]["client_validation_id"])
+        var check = checkUnique(body[template][0]["client_validation_id"]);
+        console.log("check is " + check);
+        if (check == false) {
+            // we do not want to insert since it is already there
+            console.log("got false as result");
+            res.status(400);
+            res.send('A file with this unique id already exists in our database. Please change the unique id.');
+            return;
+        }
         db2.insert(body , function(err, docs){
             if (err) {
                 console.log(err);
