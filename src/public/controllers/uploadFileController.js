@@ -38,6 +38,27 @@ function checkUnique(id) {
     return true;
 }
 
+function getExistingEntry(template) {
+    // template is something like "Client Profile"
+
+    // check to see if it exists in the database
+    // if so, get it
+    console.log(template.valueOf() == 'Client Profile');
+    
+    templateObj = {};
+    templateObj[template] = {$exists: true};
+    var result = [];
+    db2.find(templateObj, function(err, docs){
+        console.log("checking if exists");
+        console.log(docs);
+        result = docs;
+
+    });
+
+    return result;
+
+}
+
 module.exports  = function(app) {
     app.get("/upload", function(req, res) {
         console.log("this page should only be avialble to the members of supporting agencies is logged in... watch for that");
@@ -81,6 +102,7 @@ module.exports  = function(app) {
         console.log("-----start----")
         //console.log(jsons);
         console.log("-----end----")
+        console.log(req.body);
         var template = req.body.template;
         var body = {};
         body[template] = jsons;
@@ -95,19 +117,61 @@ module.exports  = function(app) {
             res.send('A file with this unique id already exists in our database. Please change the unique id.');
             return;
         }
-        db2.insert(body , function(err, docs){
+
+        // check to see if it exists
+        templateObj = {};
+        templateObj[template] = {$exists: true};
+        db2.find(templateObj, function(err, docs){
+            console.log("checking if exists");
             if (err) {
-                console.log(err);
-                console.log("bad, i am sending 400");
-                res.status(400);
+                res.status(500);
                 res.send({});
             } else {
-                console.log("inseted properly");
-                console.log("i am sending 200");
-                res.status(200);
-                res.send({});
+                console.log("docs is " + JSON.stringify(docs) + " and the legnth is " + docs.length);
+                if (docs.length != 0) {
+                    // this means it already exists
+                    // docs will be our variable
+                    body[template].push(docs[0][template][0]);
+                    
+                    db2.remove(docs[0], {}, function(err, numRemoved) {
+                        if (err) {
+                            console.log(err);
+                            console.log("there was a problem removing");
+                            res.status(500);
+                            res.send({}); 
+                        }
+                        console.log("num is " + numRemoved);
+                    });
+    
+                }
+                console.log("body is " + JSON.stringify(body));
+                
+                db2.insert(body , function(err, docs){
+                    if (err) {
+                        console.log(err);
+                        console.log("bad, i am sending 400");
+                        res.status(400);
+                        res.send({});
+                    } else {
+                        console.log("inseted properly");
+                        console.log("i am sending 200");
+                        res.status(200);
+                        res.send({});
+                    }
+
+                });
+
+
+                
+                // inserting will happen here
             }
+
+    
         });
+
+
+
+
         
 
         
