@@ -118,29 +118,60 @@ module.exports  = function(app) {
             return;
         }
 
-        var hasExistingEntry = getExistingEntry(template);
-        if (hasExistingEntry == []) {
-            // this means it does not, so we can insert it
-        } else {
-            // hasExistingEntry is the object we get back
-            console.log("has existing it " + JSON.stringify(hasExistingEntry));
-            // first object in the docs
-            body[template].push(hasExistingEntry);
-           
-        }
-        db2.insert(body , function(err, docs){
+        // check to see if it exists
+        templateObj = {};
+        templateObj[template] = {$exists: true};
+        db2.find(templateObj, function(err, docs){
+            console.log("checking if exists");
             if (err) {
-                console.log(err);
-                console.log("bad, i am sending 400");
-                res.status(400);
+                res.status(500);
                 res.send({});
             } else {
-                console.log("inseted properly");
-                console.log("i am sending 200");
-                res.status(200);
-                res.send({});
+                console.log("docs is " + JSON.stringify(docs) + " and the legnth is " + docs.length);
+                if (docs.length != 0) {
+                    // this means it already exists
+                    // docs will be our variable
+                    body[template].push(docs[0][template][0]);
+                    
+                    db2.remove(docs[0], {}, function(err, numRemoved) {
+                        if (err) {
+                            console.log(err);
+                            console.log("there was a problem removing");
+                            res.status(500);
+                            res.send({}); 
+                        }
+                        console.log("num is " + numRemoved);
+                    });
+    
+                }
+                console.log("body is " + JSON.stringify(body));
+                
+                db2.insert(body , function(err, docs){
+                    if (err) {
+                        console.log(err);
+                        console.log("bad, i am sending 400");
+                        res.status(400);
+                        res.send({});
+                    } else {
+                        console.log("inseted properly");
+                        console.log("i am sending 200");
+                        res.status(200);
+                        res.send({});
+                    }
+
+                });
+
+
+                
+                // inserting will happen here
             }
+
+    
         });
+
+
+
+
         
 
         
