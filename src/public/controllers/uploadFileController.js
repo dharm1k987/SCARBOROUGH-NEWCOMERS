@@ -38,6 +38,27 @@ function checkUnique(id) {
     return true;
 }
 
+function getExistingEntry(template) {
+    // template is something like "Client Profile"
+
+    // check to see if it exists in the database
+    // if so, get it
+    console.log(template.valueOf() == 'Client Profile');
+    
+    templateObj = {};
+    templateObj[template] = {$exists: true};
+    var result = [];
+    db2.find(templateObj, function(err, docs){
+        console.log("checking if exists");
+        console.log(docs);
+        result = docs;
+
+    });
+
+    return result;
+
+}
+
 module.exports  = function(app) {
     app.get("/upload", function(req, res) {
         console.log("this page should only be avialble to the members of supporting agencies is logged in... watch for that");
@@ -81,6 +102,7 @@ module.exports  = function(app) {
         console.log("-----start----")
         //console.log(jsons);
         console.log("-----end----")
+        console.log(req.body);
         var template = req.body.template;
         var body = {};
         body[template] = jsons;
@@ -94,6 +116,17 @@ module.exports  = function(app) {
             res.status(400);
             res.send('A file with this unique id already exists in our database. Please change the unique id.');
             return;
+        }
+
+        var hasExistingEntry = getExistingEntry(template);
+        if (hasExistingEntry == []) {
+            // this means it does not, so we can insert it
+        } else {
+            // hasExistingEntry is the object we get back
+            console.log("has existing it " + JSON.stringify(hasExistingEntry));
+            // first object in the docs
+            body[template].push(hasExistingEntry);
+           
         }
         db2.insert(body , function(err, docs){
             if (err) {
