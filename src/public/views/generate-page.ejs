@@ -9,39 +9,20 @@
         <script src="js/logout.js"></script>
     </head>
  
-
     <body>
-        <% include partials/nav-org.ejs %>
+        <% include partials/nav.ejs %>
         <img src="/img/Team20Logo.png">
         <div class="outer home-page">
         <div class="container inner" style="background-color: #f1f1f1;">
             <div>
-            <h2 class="text-center">Upload Files</h1>
+            <h2 class="text-center">Generate Reports</h1>
             <p class="text-center">
-                    Uploading files for generating reports of informations of new comers in Scarborough.<br>
-                    Please enter a small description and select the type of template you are uploading.
-
+                    Generating reports of informations of new comers in Scarborough.
             </p>
-                <form action="upload" method="post" enctype="multipart/form-data" id="my-form">
-                        <input name="csv" type="file" id="org-select-btn" class="btn btn-success" style="width:100%;">
-                        
-
-
-
                         <div class="form-group">
-                            <div class="row">
-                            <div class="col-md-6">
-                                
-                                <label for="description">Description of the files</label>
-                                 <P></P>
-                                 <input type="text" class="form-control box" id="description" placeholder="Description">
-                            
-
-                            </div>
-                        
+                            <div class="row">                        
                             <div class="col-md-6 text-center">
-                                    <label for="icare-temp">iCARE Template</label>
-                                    <P></P>
+                                    <label for="icare-temp">Report Templates </label>
 
                                     <select name="template">
                                         <option value="Client Profile" selected="selected">Client Profile</option>
@@ -61,8 +42,9 @@
                         </div>
 
 
-                        <input type="submit" id="org-upload-btn" class="btn btn-success" style="width:100%;" value="Upload">
-                </form>      
+                        <input type="submit" id="generate-btn" class="btn btn-success" style="width:100%;" value="Generate">
+                        <p></p>
+                    </form>      
 
             </div>
         </div>

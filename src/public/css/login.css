@@ -1,0 +1,17 @@
+html,
+.login {
+    position: relative;
+    background-image: linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url(/img/bg1.jpg);
+    background-size: cover;
+    height: 100vh;
+}
+
+.login .container {
+	max-width:30%;
+}
+
+.login .forgot {
+	margin-bottom: 25px;
+	margin-top:-10px;
+
+}
