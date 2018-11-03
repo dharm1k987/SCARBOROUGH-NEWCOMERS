@@ -26,7 +26,8 @@ var createAccController = require(__dirname + "/public/controllers/createAccCont
 var homeController = require(__dirname + "/public/controllers/homeController");
 var helpController = require(__dirname + "/public/controllers/helpController");
 var eventLogController = require(__dirname + "/public/controllers/eventLogController");
-var indexController = require(__dirname + "/public/controllers/indexController");
+var homeorgController = require(__dirname + "/public/controllers/homeorgController");
+var generateController = require(__dirname + "/public/controllers/generateController");
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
 console.log( path.join(__dirname, '/public/db'));
@@ -40,7 +41,8 @@ createAccController(app);
 homeController(app);
 helpController(app);
 eventLogController(app);
-indexController(app);
+homeorgController(app);
+generateController(app);
 
 console.log("listening on port ...")
 app.listen(port);

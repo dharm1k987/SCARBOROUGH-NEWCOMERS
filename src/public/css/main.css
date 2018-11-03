@@ -27,38 +27,6 @@ h1 {
    margin: auto;
 }
 
-.create-org-account {
-    position: relative;
-    background-image: linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url(/img/bg1.jpg);
-    background-size: cover;
-    height: 100vh;
-}
-
-/* style of the uploading page*/
-.uploading-page {
-    position: relative;
-    background-image: linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url(/img/bg1.jpg);
-    background-size: cover;
-    height: 100vh;
-}
-
-.login {
-    position: relative;
-    background-image: linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url(/img/bg1.jpg);
-    background-size: cover;
-    height: 100vh;
-}
-
-.login .container {
-	max-width:30%;
-}
-
-.login .forgot {
-	margin-bottom: 25px;
-	margin-top:-10px;
-
-}
-
 /* style for team logo */
 img {
     position: absolute;
@@ -67,36 +35,6 @@ img {
     z-index: 1;
 }
 
-/* Adding the sticky nevigation bar*/
-.icon-bar {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    background-color: #333;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    z-index: 3;
-}
-
-.icon-bar a {
-    float: left;
-    width: 20%;
-    text-align: center;
-    padding: 10px 10px;
-    color: white;
-    font-size: 20px;
-}
-
-.icon-bar a:hover {
-    background-color: #000;
-}
-
-.active {
-    background-color: #4CAF50;
-}
-
-
 /* style of the home page*/
 .home-page {
     position: relative;
@@ -104,5 +42,3 @@ img {
     background-size: cover;
     height: 100vh;
 }
-
-
