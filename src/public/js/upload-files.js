@@ -21,12 +21,18 @@ $(document).ready(function() {
      });
 
     // file select
-    $("#org-select-btn").click(function() {
+    $("#file-select-btn").click(function() {
         console.log("byron file opener");
     })
 
     $("#my-form").submit(function(e) {
         e.preventDefault();
+
+        // first check to see if they selected a file
+        if ($("#file-select-btn")[0].value == "") {
+            alert("Please select a file");
+            return;
+        }
         var actionurl = e.currentTarget.action;
 
         console.log(actionurl);
