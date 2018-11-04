@@ -38,20 +38,10 @@ module.exports  = function(app) {
                 } else {
                     res.status(200);
                     res.json({});
+
+                    
                 }
             }
         });
     });
-
-
-
-
-
-
-
-        
-
-        
-        // json objects are in jsons
-    
 };

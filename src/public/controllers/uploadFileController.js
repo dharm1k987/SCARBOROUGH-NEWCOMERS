@@ -5,6 +5,7 @@ var fs = require('fs');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var index = require(__dirname + '/../../index');
 var db2 = index.db2;
+var optionsDb = index.optionsDb;
 
 // multer setup
 var storage = multer.memoryStorage();
@@ -16,6 +17,34 @@ var upload = multer({
         cb(null, true);
     }
 });
+
+function loadOptions(sheet) {
+    var range = XLSX.utils.decode_range(sheet['!ref']);
+    var options = {};
+
+    // find headers
+    var colNum;
+    var rowNum;
+    for (colNum = range.s.c; colNum <= range.e.c; colNum++) {
+        var header;
+        var col = [];
+        var headerCell = sheet[XLSX.utils.encode_cell({r: 1, c: colNum})];
+        if (typeof headerCell === 'undefined')
+            continue;
+        else
+            header = headerCell.w;
+        for (rowNum = range.s.r + 2; rowNum <= range.e.r; rowNum++) {
+            var nextCell = sheet[XLSX.utils.encode_cell({r: rowNum, c: colNum})];
+            if (typeof nextCell === 'undefined')
+                continue;
+            else
+                col.push(nextCell.w);
+        }
+        options[header] = col;
+    }
+
+    optionsDb.insert(options);
+}
 
 function checkUnique(id) {
     console.log("the id is " + id);
@@ -71,15 +100,18 @@ module.exports  = function(app) {
         // file is cached in req.file.buffer
         
         var workbook = XLSX.read(req.file.buffer);
-        var ignoreSheets = ["Data Fields", "Options Sheet"];
+        var ignoreSheets = ["Data Fields"];
         var jsons = {};
 
         for (var i = 0; i < workbook.SheetNames.length; i++) {
             var sheetName = workbook.SheetNames[i];
             if (ignoreSheets.includes(sheetName))
                 continue;
-
             var sheet = workbook.Sheets[sheetName];
+            if (sheetName == "Options Sheet") {
+                loadOptions(sheet);
+                continue;
+            }
             var range = XLSX.utils.decode_range(sheet['!ref']);
             var headers = [];
 
