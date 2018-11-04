@@ -44,5 +44,17 @@ eventLogController(app);
 homeorgController(app);
 generateController(app);
 
+app.delete("/account", function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+    db.find({ username: username }, function (err, docs) {
+        if (docs.length != 0 && docs[0]["password"] == password) {
+            db.remove({ username: username }, function (err, numRemoved) {
+                res.send("Accounts removed: " + numRemoved);
+            });
+        }
+    });
+})
+
 console.log("listening on port ...")
 app.listen(port);

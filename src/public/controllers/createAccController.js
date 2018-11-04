@@ -29,13 +29,6 @@ module.exports  = function(app) {
             }
         });
     })
-
-    app.post("/delete", function(req, res) {
-        var username = req.body.username;
-        db.remove({ username: username }, function (err, numRemoved) {
-            res.send("numRemoved: " + numRemoved);
-        });
-    })
 };
 
 
