@@ -118,7 +118,7 @@ module.exports  = function(app) {
             // find headers
             var colNum;
             for (colNum = range.s.c; colNum <= range.e.c; colNum++) {
-                var nextCell = sheet[XLSX.utils.encode_cell({r: 1, c: colNum})];
+                var nextCell = sheet[XLSX.utils.encode_cell({r: 2, c: colNum})];
                 if (typeof nextCell === 'undefined')
                     headers.push(void 0);
                 else
@@ -140,7 +140,9 @@ module.exports  = function(app) {
         body[template] = jsons;
         //console.log("the body is " + JSON.stringify(req.body));
         //console.log("template is " + template);
-        var check = checkUnique(body[template][0]["client_validation_id"]);
+        var check = true;
+        if (body[template][0]["Unique Identifier Value"] !== 'undefined') 
+            check = checkUnique(body[template][0]["Unique Identifier Value"]);
         console.log("check is " + check);
         if (check == false) {
             // we do not want to insert since it is already there

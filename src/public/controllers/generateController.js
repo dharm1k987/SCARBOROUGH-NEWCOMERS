@@ -5,9 +5,38 @@ var fs = require('fs');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var index = require(__dirname + '/../../index');
 var db2 = index.db2;
+var optionsDb = index.optionsDb;
 
 
-
+function generateJson(docs, template) {
+    var data = docs[0][template];
+    var ret = {};
+    // STRUCTURE
+    /*
+        {
+            "header": {
+                "options": {
+                    "option": count
+                },
+                "total": total
+            }
+        }
+    */
+    
+    for (i in data) {
+        var entry = data[i];
+        for (header in entry) {
+            var input = entry[header];
+            if (typeof ret[header] === "undefined")
+                ret[header] = {"options": {}, "total": 0};
+            if (typeof ret[header]["options"][input] === 'undefined')
+                ret[header]["options"][input] = 1;
+            else
+                ret[header]["options"][input]++;
+            ret[header]["total"]++;
+        }
+    }
+}
 
 module.exports  = function(app) {
 
@@ -35,11 +64,10 @@ module.exports  = function(app) {
                     console.log("---------");
                     res.status(200);
                     res.json(docs[0]);
+                    generateJson(docs, template);
                 } else {
                     res.status(200);
                     res.json({});
-
-                    
                 }
             }
         });
