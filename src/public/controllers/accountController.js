@@ -13,15 +13,15 @@ module.exports  = function(app) {
     app.get("/account/type", urlencodedParser, function(req, res) {
         db.find({"username": req.query.username, "password": req.query.password}, function(err, docs){
             if (err) {
-                res.status(400);
+                res.status(500);
                 res.send();
             } else {
-                res.status(200);
-                console.log(docs);
                 if (docs.length === 0) {
-                  res.send(500);
+                  res.send(300);
                 } else {
                   var result = docs[0].type;
+                  res.status(200);
+                  console.log(docs);
                   res.send({type: result});
                 }
             }
