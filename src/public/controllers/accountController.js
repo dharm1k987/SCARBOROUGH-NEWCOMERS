@@ -17,12 +17,16 @@ module.exports  = function(app) {
                 res.send();
             } else {
                 res.status(200);
-                 console.log(docs);
-                var result = docs[0].type;
-                res.send({type: result});
+                console.log(docs);
+                if (docs.length === 0) {
+                  res.send(500);
+                } else {
+                  var result = docs[0].type;
+                  res.send({type: result});
+                }
             }
         });
     });
 
-   
+
 };
