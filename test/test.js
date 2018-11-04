@@ -18,6 +18,21 @@ describe('Test Create Account', function() {
       done(error)
     });
   });
+
+  it('#create POST endpoint When Account Already Exists', function(done) {
+    var data = {
+      "username": "Carl",
+      "password": "Bryon",
+      "type": "TEQ"
+    }
+    axios.post('http://localhost:8080/create', data)
+    .then(function (response) {
+      done()
+    })
+    .catch(function (error) {
+      done(error)
+    });
+  });
 });
 
 
@@ -35,6 +50,24 @@ describe('Test Account Type', function() {
     })
     .catch(function (error) {
       done(error)
+    });
+  });
+});
+
+describe('Test Account Type When Account Does not exist', function() {
+  it('#/account/type GET endpoint', function(done) {
+    data = {
+      params: {
+        username: "dharmikLads",
+        password: "BryonNee"
+      }
+    }
+    axios.get('http://localhost:8080/account/type', data)
+    .then(function (response) {
+      done(response)
+    })
+    .catch(function (error) {
+      done()
     });
   });
 });
