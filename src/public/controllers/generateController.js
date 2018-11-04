@@ -20,6 +20,27 @@ module.exports  = function(app) {
         
         console.log("in the api call");
         console.log(req.body.template);
+        var template = req.body.template;
+
+        templateObj = {};
+        templateObj[template] = {$exists: true};
+        db2.find(templateObj, function(err, docs){
+            if (err) {
+                console.log("err occured");
+                res.send(500);
+            } else {
+                if (docs.length != 0) {
+                    console.log("---------");
+                    // console.log(docs[0]);
+                    console.log("---------");
+                    res.status(200);
+                    res.json(docs[0]);
+                } else {
+                    res.status(200);
+                    res.json({});
+                }
+            }
+        });
     });
 
 

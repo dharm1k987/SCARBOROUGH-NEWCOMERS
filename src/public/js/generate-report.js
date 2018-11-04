@@ -25,6 +25,7 @@ $(document).ready(function() {
                 // get the type of account they are (teq or org)
                 // setup local storage
                 console.log("success");
+                console.log(response);
 
                 // reroute them based on the location data provides
             },
