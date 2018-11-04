@@ -20,7 +20,6 @@ var upload = multer({
 
 function loadOptions(sheet) {
     var range = XLSX.utils.decode_range(sheet['!ref']);
-    var options = {};
 
     // find headers
     var colNum;
@@ -40,10 +39,8 @@ function loadOptions(sheet) {
             else
                 col.push(nextCell.w);
         }
-        options[header] = col;
+        optionsDb.insert({"header": header, "options": col});
     }
-
-    optionsDb.insert(options);
 }
 
 function checkUnique(id) {
