@@ -38,12 +38,15 @@ function generateJson(docs, template, cb) {
                     validOptions = docs[0]["options"];
 
                 if (validOptions != null && validOptions.includes(input)) {
-                    if (typeof res[header] === "undefined")
+                    if (typeof res[header] === "undefined") {
                         res[header] = {"options": {}, "total": 0};
-                    if (typeof res[header]["options"][input] === 'undefined')
+                    }
+                    if (typeof res[header]["options"][input] === 'undefined') {
                         res[header]["options"][input] = 1;
-                    else
+                    }
+                    else {
                         res[header]["options"][input]++;
+                    }
                     res[header]["total"]++;
                 } else {
                     console.log("'" + input + "' is not an option for header '" + header + "'.");
