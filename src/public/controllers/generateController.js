@@ -86,10 +86,12 @@ module.exports  = function(app) {
                     // console.log(docs[0]);
                     console.log("---------");
                     res.status(200);
-                    res.json(docs[0]);
-                    generateJson(docs, template, function(res) {
+                    // res.json(docs[0]);
+                    generateJson(docs, template, function(res2) {
                         // object containing report data is in res
                         // console.log(res);
+                        res.json(res2);
+
                     });
                 } else {
                     res.status(200);
