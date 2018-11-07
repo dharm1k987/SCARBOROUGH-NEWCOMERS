@@ -31,13 +31,13 @@ function loadOptions(sheet) {
         if (typeof headerCell === 'undefined')
             continue;
         else
-            header = headerCell.w;
+            header = headerCell.w.toUpperCase();
         for (rowNum = range.s.r + 2; rowNum <= range.e.r; rowNum++) {
             var nextCell = sheet[XLSX.utils.encode_cell({r: rowNum, c: colNum})];
             if (typeof nextCell === 'undefined')
                 continue;
             else
-                col.push(nextCell.w);
+                col.push(nextCell.w.toUpperCase());
         }
         optionsDb.insert({"header": header, "options": col});
     }
