@@ -27,29 +27,27 @@ function generateJson(docs, template, cb) {
         let headerCount = Object.keys(entry).length;
         let headerProc = 0;
         for (j in entry) {
-            let header = j;
-            let input = entry[header];
+            let input = entry[j].toUpperCase();
+            let header = j.toUpperCase();
             let validOptions = null;
-            optionsDb.find( { header: header }, function (err, docs) {
+            optionsDb.find({ header: header }, function (err, docs) {
                 // get valid options for this header
-                if (docs.length == 0)
+                if (docs.length == 0) {
                     console.log("Header name '" + header + "' does not exist in the options database.");
-                else
-                    validOptions = docs[0]["options"];
-
-                if (validOptions != null && validOptions.includes(input)) {
-                    if (typeof res[header] === "undefined") {
-                        res[header] = {"options": {}, "total": 0};
-                    }
-                    if (typeof res[header]["options"][input] === 'undefined') {
-                        res[header]["options"][input] = 1;
-                    }
-                    else {
-                        res[header]["options"][input]++;
-                    }
-                    res[header]["total"]++;
                 } else {
-                    console.log("'" + input + "' is not an option for header '" + header + "'.");
+                    // update object if input is a valid option
+                    validOptions = docs[0]["options"];
+                    if (validOptions != null && validOptions.includes(input)) {
+                        if (typeof res[header] === "undefined")
+                            res[header] = {"options": {}, "total": 0};
+                        if (typeof res[header]["options"][input] === 'undefined')
+                            res[header]["options"][input] = 1;
+                        else
+                            res[header]["options"][input]++;
+                        res[header]["total"]++;
+                    } else {
+                        console.log("'" + input + "' is not an option for header '" + header + "'.");
+                    }
                 }
 
                 // callback if all entries processed
@@ -92,9 +90,8 @@ module.exports  = function(app) {
                     // res.json(docs[0]);
                     generateJson(docs, template, function(res2) {
                         // object containing report data is in res
-                        // console.log(res);
+                        console.log(res2);
                         res.json(res2);
-
                     });
                 } else {
                     res.status(200);
