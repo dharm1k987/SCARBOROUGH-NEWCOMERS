@@ -11,6 +11,15 @@ $(document).ready(function() {
         return;
     }
 
+    function title(str) {
+        return str.replace(
+            /\w\S*/g,
+            function(text) {
+                return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+            }
+        );
+    }
+
     var tableJSON = localStorage.getItem('tableJSON');
     var tableHeader = localStorage.tableHeader;
     tableJSON = JSON.parse(tableJSON);
@@ -62,7 +71,7 @@ $(document).ready(function() {
                 for (var option in tableJSON[header]["options"]) {
                     // console.log("Header is " + header);
                     console.log("Option " + option + " with total " + tableJSON[header]["options"][option]);
-                    var htmlOptions = "<tr><td style='background-color:#efefef;'>" + option + "</td>" + "<td style='background-color:#efefef;'>" + tableJSON[header]["options"][option] + "</td>" + "</tr>";
+                    var htmlOptions = "<tr><td style='background-color:#efefef;'>" + title(option) + "</td>" + "<td style='background-color:#efefef;'>" + tableJSON[header]["options"][option] + "</td>" + "</tr>";
                     //console.log(htmlOptions);
                     htmlHeaders += htmlOptions; 
                     //console.log(html);
