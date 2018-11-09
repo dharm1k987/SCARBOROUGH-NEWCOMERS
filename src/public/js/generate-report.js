@@ -3,6 +3,10 @@ $(document).ready(function() {
         window.location.replace("/login");
         // alert("Please login first");
         return;
+    } else if (localStorage.loginOrg == "true" && localStorage.loginTEQ == "false") {
+        window.location.replace("/home-org");
+        // alert("Please login first");
+        return;
     }
 
     console.log("in generate");
@@ -21,6 +25,7 @@ $(document).ready(function() {
                 // get the type of account they are (teq or org)
                 // setup local storage
                 console.log("success");
+                console.log(response);
 
                 // reroute them based on the location data provides
             },

@@ -7,8 +7,10 @@ var port = process.env.PORT || 8080;
 var Datastore = require('nedb');
 var db = new Datastore({filename: path.join(__dirname, 'public/db/account.db'), autoload: true});
 var db2 = new Datastore({filename: path.join(__dirname, 'public/db/templates.db'), autoload: true});
+var optionsDb = new Datastore({filename: path.join(__dirname, 'public/db/options.db'), autoload: true});
 module.exports.db = db;
 module.exports.db2 = db2;
+module.exports.optionsDb = optionsDb;
 
 app.use(express.static(__dirname + "/public"));
 
@@ -43,6 +45,8 @@ helpController(app);
 eventLogController(app);
 homeorgController(app);
 generateController(app);
+
+
 
 console.log("listening on port ...")
 app.listen(port);

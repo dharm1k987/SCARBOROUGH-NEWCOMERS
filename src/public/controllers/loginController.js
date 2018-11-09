@@ -20,7 +20,7 @@ module.exports  = function(app) {
     app.get("/fill", urlencodedParser, function(req, res) {
 
         db.find({"username": "test1", "password": "testpass"}, function(err, docs){
-            if (err) {
+            if (docs.length == 0) {
                 res.status(400);
                 res.send();
             } else {

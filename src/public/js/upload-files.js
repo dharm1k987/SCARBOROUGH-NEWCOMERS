@@ -3,6 +3,10 @@ $(document).ready(function() {
         window.location.replace("/login");
         // alert("Please login first");
         return;
+    } else if (localStorage.loginOrg == "false" && localStorage.loginTEQ == "true") {
+        window.location.replace("/home");
+        // alert("Please login first");
+        return;
     }
     console.log("in upload-files");
     console.log($('org-create-btn'));
