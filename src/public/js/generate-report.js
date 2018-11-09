@@ -26,6 +26,9 @@ $(document).ready(function() {
                 // setup local storage
                 console.log("success");
                 console.log(response);
+                localStorage.setItem("tableJSON", JSON.stringify(response));
+                localStorage.setItem("tableHeader", option);
+                window.location.replace("/table-html");
 
                 // reroute them based on the location data provides
             },
