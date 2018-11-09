@@ -81,8 +81,6 @@ function findAndParseSheet(workbook, validHeaders) {
         if (valid) {
             json = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
             break;
-        } else {
-            console.log("Headers not valid.");
         }
     }
 
