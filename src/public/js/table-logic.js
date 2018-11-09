@@ -32,8 +32,8 @@ $(document).ready(function() {
    // $(".main-body").append('<pre>' + tableJSON + '</pre>');
 
     var html = `
-    <div class="pre-scrollable" style="max-height:700px">
-    <table class="table" style="background-color:white;">
+    <div style="max-height:700px;overflow-y: auto;background-color: white;">
+    <table class="table table-bordered" style="background-color:white;">
     <thead>
     <tr>
     <th style="border-bottom:1px solid black;">Headers</th>
