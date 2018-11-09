@@ -17,6 +17,7 @@
     "expect.js": "^0.3.1",
     "express": "^4.16.4",
     "file-type": "^10.1.0",
+    "mocha-logger": "^1.0.6",
     "multer": "^1.4.1",
     "nedb": "^1.8.0",
     "xlsx": "^0.14.0"

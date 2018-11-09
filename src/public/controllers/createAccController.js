@@ -10,6 +10,7 @@ module.exports  = function(app) {
     });
 
     app.post("/create", urlencodedParser, function(req, res) {
+      console.log(req);
        console.log("in create controller");
         db.find({"username": req.body.username}, function(err, docs){
             console.log(docs);
