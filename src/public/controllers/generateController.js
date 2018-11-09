@@ -5,7 +5,7 @@ var db2 = index.db2;
 var optionsDb = index.optionsDb;
 
 
-function generateJson(docs, template, cb) {
+function generateJson(docs, cb) {
     // OBJECT STRUCTURE
     /*
         {
@@ -17,13 +17,13 @@ function generateJson(docs, template, cb) {
             }
         }
     */
-    var data = docs[0][template];
-    var entryCount = data.length;
+    var entries = docs[0]["entries"];
+    var entryCount = entries.length;
     var entryProc = 0;
     var res = {};
 
-    for (i in data) {
-        let entry = data[i];
+    for (i in entries) {
+        let entry = entries[i];
         let headerCount = Object.keys(entry).length;
         let headerProc = 0;
         for (j in entry) {
@@ -65,33 +65,19 @@ function generateJson(docs, template, cb) {
 module.exports  = function(app) {
 
     app.get("/generate", function(req, res) {
-        console.log("this page should be avialble to teq members logged in... watch for that");
         res.render("generate-page");
     })
 
     app.post('/generate', urlencodedParser, function(req, res) {
-        
-        console.log("in the api call");
-        console.log(req.body.template);
-        var template = req.body.template;
-
-        templateObj = {};
-        templateObj[template] = {$exists: true};
-        db2.find(templateObj, function(err, docs){
+        db2.find({template: req.body.template}, function(err, docs){
             if (err) {
-                console.log("err occured");
                 res.send(500);
             } else {
                 if (docs.length != 0) {
-                    console.log("---------");
-                    // console.log(docs[0]);
-                    console.log("---------");
-                    res.status(200);
-                    // res.json(docs[0]);
-                    generateJson(docs, template, function(res2) {
-                        // object containing report data is in res
-                        console.log(res2);
-                        res.json(res2);
+                    generateJson(docs, function(response) {
+                        // response is object containing report data
+                        res.status(200);
+                        res.json(response);
                     });
                 } else {
                     res.status(200);
