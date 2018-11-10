@@ -56,3 +56,14 @@ The main difference here is that when an account is created, the file `db/accoun
 We have provided you a sample iCARE file to test with.
 
 **If you are already logged in, then our application will redirect you to the proper page you are associated with. So if I log in as a TEQ member and close the website and open it again, I will not see the login page, but rather I will be inside my home page. This is simply because we store local storage data to keep the connection connected until the user logs out***
+
+
+## Tests
+To run the Back-End Tests.
+- `git clone https://github.com/CSCC01/Team20.git`
+- `cd Team20`
+- `npm install` # you must make sure that you have node installed
+- `npm start` # This will execute a script to run the application
+- `npm test` # In another terminal, with the application still running, run npm test.
+The tests are idempotent and will have the same result everytime.
+- Once everything is installed, perform `nodemon src/index.js`
