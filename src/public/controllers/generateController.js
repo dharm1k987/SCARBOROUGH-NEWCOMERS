@@ -5,7 +5,7 @@ var db2 = index.db2;
 var optionsDb = index.optionsDb;
 
 
-function generateJson(docs, template, cb) {
+function generateJson(docs, cb) {
     // OBJECT STRUCTURE
     /*
         {
@@ -17,36 +17,37 @@ function generateJson(docs, template, cb) {
             }
         }
     */
-    var data = docs[0][template];
-    var entryCount = data.length;
+    var entries = docs[0]["entries"];
+    var entryCount = entries.length;
     var entryProc = 0;
     var res = {};
 
-    for (i in data) {
-        let entry = data[i];
+    for (i in entries) {
+        let entry = entries[i];
         let headerCount = Object.keys(entry).length;
         let headerProc = 0;
         for (j in entry) {
-            let header = j;
-            let input = entry[header];
+            let input = entry[j].toUpperCase();
+            let header = j.toUpperCase();
             let validOptions = null;
-            optionsDb.find( { header: header }, function (err, docs) {
+            optionsDb.find({ header: header }, function (err, docs) {
                 // get valid options for this header
-                if (docs.length == 0)
+                if (docs.length == 0) {
                     console.log("Header name '" + header + "' does not exist in the options database.");
-                else
-                    validOptions = docs[0]["options"];
-
-                if (validOptions != null && validOptions.includes(input)) {
-                    if (typeof res[header] === "undefined")
-                        res[header] = {"options": {}, "total": 0};
-                    if (typeof res[header]["options"][input] === 'undefined')
-                        res[header]["options"][input] = 1;
-                    else
-                        res[header]["options"][input]++;
-                    res[header]["total"]++;
                 } else {
-                    console.log("'" + input + "' is not an option for header '" + header + "'.");
+                    // update object if input is a valid option
+                    validOptions = docs[0]["options"];
+                    if (validOptions != null && validOptions.includes(input)) {
+                        if (typeof res[header] === "undefined")
+                            res[header] = {"options": {}, "total": 0};
+                        if (typeof res[header]["options"][input] === 'undefined')
+                            res[header]["options"][input] = 1;
+                        else
+                            res[header]["options"][input]++;
+                        res[header]["total"]++;
+                    } else {
+                        console.log("'" + input + "' is not an option for header '" + header + "'.");
+                    }
                 }
 
                 // callback if all entries processed
@@ -64,34 +65,19 @@ function generateJson(docs, template, cb) {
 module.exports  = function(app) {
 
     app.get("/generate", function(req, res) {
-        console.log("this page should be avialble to teq members logged in... watch for that");
         res.render("generate-page");
     })
 
     app.post('/generate', urlencodedParser, function(req, res) {
-        
-        console.log("in the api call");
-        console.log(req.body.template);
-        var template = req.body.template;
-
-        templateObj = {};
-        templateObj[template] = {$exists: true};
-        db2.find(templateObj, function(err, docs){
+        db2.find({template: req.body.template}, function(err, docs){
             if (err) {
-                console.log("err occured");
                 res.send(500);
             } else {
                 if (docs.length != 0) {
-                    console.log("---------");
-                    // console.log(docs[0]);
-                    console.log("---------");
-                    res.status(200);
-                    // res.json(docs[0]);
-                    generateJson(docs, template, function(res2) {
-                        // object containing report data is in res
-                        // console.log(res);
-                        res.json(res2);
-
+                    generateJson(docs, function(response) {
+                        // response is object containing report data
+                        res.status(200);
+                        res.json(response);
                     });
                 } else {
                     res.status(200);

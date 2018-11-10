@@ -8,9 +8,11 @@ var Datastore = require('nedb');
 var db = new Datastore({filename: path.join(__dirname, 'public/db/account.db'), autoload: true});
 var db2 = new Datastore({filename: path.join(__dirname, 'public/db/templates.db'), autoload: true});
 var optionsDb = new Datastore({filename: path.join(__dirname, 'public/db/options.db'), autoload: true});
+var headersDb = new Datastore({filename: path.join(__dirname, 'public/db/headers.db'), autoload: true});
 module.exports.db = db;
 module.exports.db2 = db2;
 module.exports.optionsDb = optionsDb;
+module.exports.headersDb = headersDb;
 
 app.use(express.static(__dirname + "/public"));
 
@@ -30,6 +32,7 @@ var helpController = require(__dirname + "/public/controllers/helpController");
 var eventLogController = require(__dirname + "/public/controllers/eventLogController");
 var homeorgController = require(__dirname + "/public/controllers/homeorgController");
 var generateController = require(__dirname + "/public/controllers/generateController");
+var tableController = require(__dirname + "/public/controllers/tableController");
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
 console.log( path.join(__dirname, '/public/db'));
@@ -45,7 +48,7 @@ helpController(app);
 eventLogController(app);
 homeorgController(app);
 generateController(app);
-
+tableController(app);
 
 
 console.log("listening on port ...")
