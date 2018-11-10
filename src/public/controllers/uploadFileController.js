@@ -1,11 +1,11 @@
 var XLSX = require('xlsx');
 var multer = require('multer');
 var bodyParser = require("body-parser");
-var fs = require('fs');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var index = require(__dirname + '/../../index');
 var db2 = index.db2;
 var optionsDb = index.optionsDb;
+var headersDb = index.headersDb;
 
 // multer setup
 var storage = multer.memoryStorage();
@@ -18,15 +18,19 @@ var upload = multer({
     }
 });
 
-function loadOptions(sheet) {
+function loadOptions(workbook) {
+    // clear options db
+    optionsDb.remove({}, { multi: true }, function (err, numRemoved) {});
+    // find sheet named Options Sheet otherwise use first sheet
+    var sheet;
+    if (typeof workbook.Sheets["Options Sheet"] !== 'undefined')
+        sheet = workbook.Sheets["Options Sheet"];
+    else
+        sheet = workbook.Sheets[workbook.SheetNames[0]]
     var range = XLSX.utils.decode_range(sheet['!ref']);
-
-    // find headers
-    var colNum;
-    var rowNum;
+    var colNum, rowNum;
     for (colNum = range.s.c; colNum <= range.e.c; colNum++) {
-        var header;
-        var col = [];
+        var header, col = [];
         var headerCell = sheet[XLSX.utils.encode_cell({r: 1, c: colNum})];
         if (typeof headerCell === 'undefined')
             continue;
@@ -39,173 +43,113 @@ function loadOptions(sheet) {
             else
                 col.push(nextCell.w.toUpperCase());
         }
+
         optionsDb.insert({"header": header, "options": col});
     }
 }
 
-function checkUnique(id) {
-    console.log("the id is " + id);
-
-    var result = fs.readFileSync("src/public/db/template_ids.txt").toString();
-    var re = new RegExp("\\b"+id+"\\b");
-    if (result.match(re)) {
-        console.log("aready there");
-        return false;
+function parseTemplateHeaders(sheet, rowNum) {
+    var range = XLSX.utils.decode_range(sheet['!ref']);
+    var headers = [];
+    var colNum;
+    for (colNum = range.s.c; colNum <= range.e.c; colNum++) {
+        var nextCell = sheet[XLSX.utils.encode_cell({r: rowNum, c: colNum})];
+        if (typeof nextCell === 'undefined')
+            headers.push(void 0);
+        else
+            headers.push(nextCell.w);
     }
 
-
-    // if I reach here, that means the id is not there, so add it
-    fs.appendFile("src/public/db/template_ids.txt", "\n" + id.toString(), function(err) {
-        if(err) {
-            return console.log(err);
-        }
-    }); 
-
-    return true;
+    return headers;
 }
 
-function getExistingEntry(template) {
-    // template is something like "Client Profile"
+function sampleHeaders(template, workbook) {
+    // find sheet with template name as name, otherwise take the first sheet
+    var sheet = (typeof workbook.Sheets[template] !== 'undefined') ? workbook.Sheets[template] : workbook.Sheets[workbook.SheetNames[0]];
+    var headers = parseTemplateHeaders(sheet, 2).map(a => a.toUpperCase());
+    headersDb.insert({"template": template, "headers": headers});
+    return headers;
+}
 
-    // check to see if it exists in the database
-    // if so, get it
-    console.log(template.valueOf() == 'Client Profile');
-    
-    templateObj = {};
-    templateObj[template] = {$exists: true};
-    var result = [];
-    db2.find(templateObj, function(err, docs){
-        console.log("checking if exists");
-        console.log(docs);
-        result = docs;
+function findAndParseSheet(workbook, validHeaders) {
+    var json = null;
+    for (var i = 0; i < workbook.SheetNames.length; i++) {
+        var sheet = workbook.Sheets[workbook.SheetNames[i]];
+        var headers = parseTemplateHeaders(sheet, 2);
+        // check if headers all valid headers
+        var valid = headers.every(val => validHeaders.includes(typeof val !== 'undefined' ? val.toUpperCase() : ""));
+        if (valid) {
+            json = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
+            break;
+        }
+    }
 
+    return json;
+}
+
+function insertToDb(template, json, cb) {
+    db2.find({ template: template }, function (err, docs) {
+        if (docs.length == 0) {
+            db2.insert({template: template, entries: json});
+        } else {
+            var entries = docs[0]["entries"];
+            var pushed = 0;
+            var skipped = 0;
+            for (i in json) {
+                // TODO: check if some templates don't have unique identifier value field
+                var entry = json[i];
+                var uniqueField = "Unique Identifier Value";
+                var uniqueId = entry[uniqueField];
+                // check if an entry with the ID already exists
+                var matchIds = entries.filter(entry => (entry[uniqueField] === uniqueId));
+                if (matchIds.length == 0) {
+                    db2.update({ template: template }, { $push: { entries: entry } });
+                    pushed++;
+                } else {
+                    console.log("Entry with ID " + uniqueId + " already exists, skipping.");
+                }
+            }
+        }
+
+        cb();
     });
-
-    return result;
-
 }
 
 module.exports  = function(app) {
     app.get("/upload", function(req, res) {
-        console.log("this page should only be avialble to the members of supporting agencies is logged in... watch for that");
+        // console.log("this page should only be avialble to the members of supporting agencies is logged in... watch for that");
         res.render("uploading-page");
     });
 
     app.post('/upload', urlencodedParser, upload.single('csv'), function(req, res) {
-        console.log(req);
-        
         // file is cached in req.file.buffer
-        
         var workbook = XLSX.read(req.file.buffer);
-        var ignoreSheets = ["Data Fields"];
-        var jsons = {};
 
-        for (var i = 0; i < workbook.SheetNames.length; i++) {
-            var sheetName = workbook.SheetNames[i];
-            if (ignoreSheets.includes(sheetName))
-                continue;
-            var sheet = workbook.Sheets[sheetName];
-            if (sheetName == "Options Sheet") {
-                loadOptions(sheet);
-                continue;
-            }
-            var range = XLSX.utils.decode_range(sheet['!ref']);
-            var headers = [];
-
-            // find headers
-            var colNum;
-            for (colNum = range.s.c; colNum <= range.e.c; colNum++) {
-                var nextCell = sheet[XLSX.utils.encode_cell({r: 2, c: colNum})];
-                if (typeof nextCell === 'undefined')
-                    headers.push(void 0);
-                else
-                    headers.push(nextCell.w);
-            }
-            console.log("headers are " + headers)
-
-            jsons = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
-        }
-
-
-
-        console.log("-----start----")
-        //console.log(jsons);
-        console.log("-----end----")
-        console.log(req.body);
-        var template = req.body.template;
-        var body = {};
-        body[template] = jsons;
-        //console.log("the body is " + JSON.stringify(req.body));
-        //console.log("template is " + template);
-        var check = true;
-        if (body[template][0]["Unique Identifier Value"] !== 'undefined') 
-            check = checkUnique(body[template][0]["Unique Identifier Value"]);
-        console.log("check is " + check);
-        if (check == false) {
-            // we do not want to insert since it is already there
-            console.log("got false as result");
-            res.status(400);
-            res.send('A file with this unique id already exists in our database. Please change the unique id.');
+        if (req.body.template == "Options Sheet") {
+            loadOptions(workbook);
+            console.log("Options database updated.")
             return;
         }
 
-        // check to see if it exists
-        templateObj = {};
-        templateObj[template] = {$exists: true};
-        db2.find(templateObj, function(err, docs){
-            console.log("checking if exists");
-            if (err) {
-                res.status(500);
-                res.send({});
+        // get valid headers for the selected template type
+        headersDb.find({ template: req.body.template }, function (err, docs) {
+            // get or initialize valid headers
+            var validHeaders;
+            if (docs.length == 0)
+                validHeaders = sampleHeaders(req.body.template, workbook);
+            else
+                validHeaders = docs[0]["headers"];
+
+            var json = findAndParseSheet(workbook, validHeaders);
+            if (json == null) {
+                res.status(400);
+                res.send("Headers not valid.");
             } else {
-                console.log("docs is " + JSON.stringify(docs) + " and the legnth is " + docs.length);
-                if (docs.length != 0) {
-                    // this means it already exists
-                    // docs will be our variable
-                    body[template].push(docs[0][template][0]);
-                    
-                    db2.remove(docs[0], {}, function(err, numRemoved) {
-                        if (err) {
-                            console.log(err);
-                            console.log("there was a problem removing");
-                            res.status(500);
-                            res.send({}); 
-                        }
-                        console.log("num is " + numRemoved);
-                    });
-    
-                }
-                console.log("body is " + JSON.stringify(body));
-                
-                db2.insert(body , function(err, docs){
-                    if (err) {
-                        console.log(err);
-                        console.log("bad, i am sending 400");
-                        res.status(400);
-                        res.send({});
-                    } else {
-                        console.log("inseted properly");
-                        console.log("i am sending 200");
-                        res.status(200);
-                        res.send({});
-                    }
-
+                insertToDb(req.body.template, json, function() {
+                    res.status(200);
+                    res.send({});
                 });
-
-
-                
-                // inserting will happen here
             }
-
-    
         });
-
-
-
-
-        
-
-        
-        // json objects are in jsons
     });
 };
