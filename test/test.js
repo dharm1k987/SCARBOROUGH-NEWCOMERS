@@ -5,6 +5,39 @@ var axios = require('axios');
 var expect = require('expect.js');
 var mlog = require('mocha-logger');
 
+describe('Pre-Setup Checks', function() {
+  it('#checks existence of TEQ account', function(done) {
+    var data = {
+      "username": "caleb",
+      "password": "caleb",
+      "type": "TEQ"
+    }
+    axios.post('http://localhost:8080/create', data)
+    .then(function (response) {
+      done()
+    })
+    .catch(function (error) {
+      done()
+    });
+  });
+
+  it('#checks existence of org account', function(done) {
+    var data = {
+      "username": "ralph",
+      "password": "qwe",
+      "type": "org"
+    }
+    axios.post('http://localhost:8080/create', data)
+    .then(function (response) {
+      done()
+    })
+    .catch(function (error) {
+      done() // Means Don't Mark test as failed because it should fail.
+    });
+  });
+
+});
+
 describe('Test Create Account', function() {
   it('#create POST endpoint', function(done) {
     var data = {
