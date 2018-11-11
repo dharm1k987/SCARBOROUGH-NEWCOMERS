@@ -7,7 +7,7 @@ One way is directly through the heroku site, and the other way is by checking ou
 
   
 
-If you check out a branch, you will be able to see the database file change when we do database logic.
+The other way is to check out a branch, so you will be able to see the database file change when we do database logic.
 
   
 
@@ -20,7 +20,7 @@ Depending on which option you want, here are the steps:
   
 
 
-## Website
+## Website (TA, please use other option)
 [Click here](https://team20-app.herokuapp.com/)
 
 The following information applies to both the branch method and the website:
@@ -44,8 +44,7 @@ If you want to see how the database changes (as shown in the meeting), perform t
 - `git clone https://github.com/CSCC01/Team20.git`
 - `cd Team20`
 - `npm install` # you must make sure that you have node installed
-- `npm install -g nodemon` # nodemon will run our application
-- Once everything is installed, perform `nodemon src/index.js`
+- Once everything is installed, perform `npm start`
 
 You should see in the terminal window that the app has started
 
@@ -53,7 +52,7 @@ Then navigate to `http://localhost:8080/login` and you can proceed as you did in
 
 The main difference here is that when an account is created, the file `db/account.db` is modified, and when a file is uploaded, the `db/templates.db` file is changed.
 
-We have provided you a sample iCARE file to test with.
+We have provided you a sample iCARE files to test with.
 
 **If you are already logged in, then our application will redirect you to the proper page you are associated with. So if I log in as a TEQ member and close the website and open it again, I will not see the login page, but rather I will be inside my home page. This is simply because we store local storage data to keep the connection connected until the user logs out***
 
@@ -66,4 +65,4 @@ To run the Back-End Tests.
 - `npm start` # This will execute a script to run the application
 - `npm test` # In another terminal, with the application still running, run npm test.
 The tests are idempotent and will have the same result everytime.
-- Once everything is installed, perform `nodemon src/index.js`
+- Once everything is installed, you can stop the tests and app, and just perform `npm start`
