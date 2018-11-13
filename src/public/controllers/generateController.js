@@ -17,6 +17,7 @@ function generateJson(docs, cb) {
             }
         }
     */
+   
     var entries = docs[0]["entries"];
     var entryCount = entries.length;
     var entryProc = 0;
@@ -26,10 +27,12 @@ function generateJson(docs, cb) {
         let entry = entries[i];
         let headerCount = Object.keys(entry).length;
         let headerProc = 0;
+
         for (j in entry) {
             let input = entry[j].toUpperCase();
             let header = j.toUpperCase();
             let validOptions = null;
+            
             optionsDb.find({ header: header }, function (err, docs) {
                 // get valid options for this header
                 if (docs.length == 0) {
@@ -38,12 +41,16 @@ function generateJson(docs, cb) {
                     // update object if input is a valid option
                     validOptions = docs[0]["options"];
                     if (validOptions != null && validOptions.includes(input)) {
-                        if (typeof res[header] === "undefined")
+                        if (typeof res[header] === "undefined") {
                             res[header] = {"options": {}, "total": 0};
-                        if (typeof res[header]["options"][input] === 'undefined')
+                        }
+
+                        if (typeof res[header]["options"][input] === 'undefined') {
                             res[header]["options"][input] = 1;
-                        else
+                        } else {
                             res[header]["options"][input]++;
+                        }
+
                         res[header]["total"]++;
                     } else {
                         console.log("'" + input + "' is not an option for header '" + header + "'.");
@@ -54,8 +61,9 @@ function generateJson(docs, cb) {
                 headerProc++;
                 if (headerProc == headerCount) {
                     entryProc++;
-                    if (entryProc == entryCount)
+                    if (entryProc == entryCount) { 
                         cb(res);
+                    }
                 }
             });
         }
@@ -63,13 +71,15 @@ function generateJson(docs, cb) {
 }
 
 module.exports  = function(app) {
-
     app.get("/generate", function(req, res) {
         res.render("generate-page");
-    })
+    });
 
     app.post('/generate', urlencodedParser, function(req, res) {
-        db2.find({template: req.body.template}, function(err, docs){
+        // TODO: add selector for month
+        var month = "2018-11";
+
+        db2.find({month: month, template: req.body.template}, function(err, docs){
             if (err) {
                 res.send(500);
             } else {

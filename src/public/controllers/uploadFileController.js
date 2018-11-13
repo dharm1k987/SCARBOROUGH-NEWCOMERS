@@ -21,27 +21,34 @@ var upload = multer({
 function loadOptions(workbook) {
     // clear options db
     optionsDb.remove({}, { multi: true }, function (err, numRemoved) {});
+
     // find sheet named Options Sheet otherwise use first sheet
     var sheet;
-    if (typeof workbook.Sheets["Options Sheet"] !== 'undefined')
+    if (typeof workbook.Sheets["Options Sheet"] !== 'undefined') {
         sheet = workbook.Sheets["Options Sheet"];
-    else
+    } else {
         sheet = workbook.Sheets[workbook.SheetNames[0]]
+    }
+
+    var colNum;
+    var rowNum;
     var range = XLSX.utils.decode_range(sheet['!ref']);
-    var colNum, rowNum;
     for (colNum = range.s.c; colNum <= range.e.c; colNum++) {
         var header, col = [];
         var headerCell = sheet[XLSX.utils.encode_cell({r: 1, c: colNum})];
-        if (typeof headerCell === 'undefined')
+        if (typeof headerCell === 'undefined') {
             continue;
-        else
+        } else {
             header = headerCell.w.toUpperCase();
+        }
+
         for (rowNum = range.s.r + 2; rowNum <= range.e.r; rowNum++) {
             var nextCell = sheet[XLSX.utils.encode_cell({r: rowNum, c: colNum})];
-            if (typeof nextCell === 'undefined')
+            if (typeof nextCell === 'undefined') {
                 continue;
-            else
+            } else {
                 col.push(nextCell.w.toUpperCase());
+            }
         }
 
         optionsDb.insert({"header": header, "options": col});
@@ -49,15 +56,16 @@ function loadOptions(workbook) {
 }
 
 function parseTemplateHeaders(sheet, rowNum) {
-    var range = XLSX.utils.decode_range(sheet['!ref']);
     var headers = [];
     var colNum;
+    var range = XLSX.utils.decode_range(sheet['!ref']);
     for (colNum = range.s.c; colNum <= range.e.c; colNum++) {
         var nextCell = sheet[XLSX.utils.encode_cell({r: rowNum, c: colNum})];
-        if (typeof nextCell === 'undefined')
+        if (typeof nextCell === 'undefined') {
             headers.push(void 0);
-        else
+        } else {
             headers.push(nextCell.w);
+        }
     }
 
     return headers;
@@ -65,7 +73,9 @@ function parseTemplateHeaders(sheet, rowNum) {
 
 function sampleHeaders(template, workbook) {
     // find sheet with template name as name, otherwise take the first sheet
-    var sheet = (typeof workbook.Sheets[template] !== 'undefined') ? workbook.Sheets[template] : workbook.Sheets[workbook.SheetNames[0]];
+    var sheet = (typeof workbook.Sheets[template] !== 'undefined') 
+        ? workbook.Sheets[template] 
+        : workbook.Sheets[workbook.SheetNames[0]];
     var headers = parseTemplateHeaders(sheet, 2).map(a => a.toUpperCase());
     headersDb.insert({"template": template, "headers": headers});
     return headers;
@@ -88,9 +98,14 @@ function findAndParseSheet(workbook, validHeaders) {
 }
 
 function insertToDb(template, json, cb) {
-    db2.find({ template: template }, function (err, docs) {
+    let date = new Date();
+    let year = date.getUTCFullYear();
+    let month = date.getUTCMonth() + 1;
+    let monthStr = year + "-" + month;
+
+    db2.find({ month: monthStr, template: template }, function (err, docs) {
         if (docs.length == 0) {
-            db2.insert({template: template, entries: json});
+            db2.insert({month: monthStr, template: template, entries: json});
         } else {
             var entries = docs[0]["entries"];
             var pushed = 0;
@@ -103,10 +118,11 @@ function insertToDb(template, json, cb) {
                 // check if an entry with the ID already exists
                 var matchIds = entries.filter(entry => (entry[uniqueField] === uniqueId));
                 if (matchIds.length == 0) {
-                    db2.update({ template: template }, { $push: { entries: entry } });
+                    db2.update({ month: monthStr, template: template }, { $push: { entries: entry } });
                     pushed++;
                 } else {
                     console.log("Entry with ID " + uniqueId + " already exists, skipping.");
+                    skipped++;
                 }
             }
         }
