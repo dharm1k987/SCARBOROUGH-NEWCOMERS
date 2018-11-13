@@ -5,7 +5,7 @@ var db2 = index.db2;
 var optionsDb = index.optionsDb;
 
 
-function generateJson(docs, cb) {
+function generateJson (docs, cb) {
     // OBJECT STRUCTURE
     /*
         {
@@ -35,7 +35,7 @@ function generateJson(docs, cb) {
             
             optionsDb.find({ header: header }, function (err, docs) {
                 // get valid options for this header
-                if (docs.length == 0) {
+                if (docs.length === 0) {
                     console.log("Header name '" + header + "' does not exist in the options database.");
                 } else {
                     // update object if input is a valid option
@@ -59,9 +59,9 @@ function generateJson(docs, cb) {
 
                 // callback if all entries processed
                 headerProc++;
-                if (headerProc == headerCount) {
+                if (headerProc === headerCount) {
                     entryProc++;
-                    if (entryProc == entryCount) { 
+                    if (entryProc === entryCount) { 
                         cb(res);
                     }
                 }
@@ -70,21 +70,38 @@ function generateJson(docs, cb) {
     }
 }
 
-module.exports  = function(app) {
-    app.get("/generate", function(req, res) {
-        res.render("generate-page");
+module.exports  = function (app) {
+    app.get("/generate", function (req, res) {
+        db2.find({}, function (err, docs) {
+            var availableMonths = {};
+
+            for (i in docs) {
+                let object = docs[i];
+                let month = object["month"];
+                let template = object["template"];
+
+                if (typeof availableMonths[template] === 'undefined') {
+                    availableMonths[template] = [month];
+                } else if (availableMonths.indexOf(month) === -1) {
+                    availableMonths[template].push(month);
+                }
+            }
+
+            // TODO: send available months to front end
+            res.render("generate-page");
+        });
     });
 
-    app.post('/generate', urlencodedParser, function(req, res) {
+    app.post('/generate', urlencodedParser, function (req, res) {
         // TODO: add selector for month
         var month = "2018-11";
 
-        db2.find({month: month, template: req.body.template}, function(err, docs){
+        db2.find({month: month, template: req.body.template}, function (err, docs) {
             if (err) {
                 res.send(500);
             } else {
-                if (docs.length != 0) {
-                    generateJson(docs, function(response) {
+                if (docs.length !== 0) {
+                    generateJson(docs, function (response) {
                         // response is object containing report data
                         res.status(200);
                         res.json(response);

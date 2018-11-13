@@ -11,14 +11,14 @@ var headersDb = index.headersDb;
 var storage = multer.memoryStorage();
 var upload = multer({ 
     storage: storage,
-    fileFilter: function(req, file, cb) {
+    fileFilter: function (req, file, cb) {
         // maybe check for filetype later?
         console.log("File type uploaded: " + file.mimetype);
         cb(null, true);
     }
 });
 
-function loadOptions(workbook) {
+function loadOptions (workbook) {
     // clear options db
     optionsDb.remove({}, { multi: true }, function (err, numRemoved) {});
 
@@ -55,7 +55,7 @@ function loadOptions(workbook) {
     }
 }
 
-function parseTemplateHeaders(sheet, rowNum) {
+function parseTemplateHeaders (sheet, rowNum) {
     var headers = [];
     var colNum;
     var range = XLSX.utils.decode_range(sheet['!ref']);
@@ -71,7 +71,7 @@ function parseTemplateHeaders(sheet, rowNum) {
     return headers;
 }
 
-function sampleHeaders(template, workbook) {
+function sampleHeaders (template, workbook) {
     // find sheet with template name as name, otherwise take the first sheet
     var sheet = (typeof workbook.Sheets[template] !== 'undefined') 
         ? workbook.Sheets[template] 
@@ -81,7 +81,7 @@ function sampleHeaders(template, workbook) {
     return headers;
 }
 
-function findAndParseSheet(workbook, validHeaders) {
+function findAndParseSheet (workbook, validHeaders) {
     var json = null;
     for (var i = 0; i < workbook.SheetNames.length; i++) {
         var sheet = workbook.Sheets[workbook.SheetNames[i]];
@@ -97,14 +97,14 @@ function findAndParseSheet(workbook, validHeaders) {
     return json;
 }
 
-function insertToDb(template, json, cb) {
+function insertToDb (template, json, cb) {
     let date = new Date();
     let year = date.getUTCFullYear();
     let month = date.getUTCMonth() + 1;
     let monthStr = year + "-" + month;
 
     db2.find({ month: monthStr, template: template }, function (err, docs) {
-        if (docs.length == 0) {
+        if (docs.length === 0) {
             db2.insert({month: monthStr, template: template, entries: json});
         } else {
             var entries = docs[0]["entries"];
@@ -117,7 +117,7 @@ function insertToDb(template, json, cb) {
                 var uniqueId = entry[uniqueField];
                 // check if an entry with the ID already exists
                 var matchIds = entries.filter(entry => (entry[uniqueField] === uniqueId));
-                if (matchIds.length == 0) {
+                if (matchIds.length === 0) {
                     db2.update({ month: monthStr, template: template }, { $push: { entries: entry } });
                     pushed++;
                 } else {
@@ -131,17 +131,17 @@ function insertToDb(template, json, cb) {
     });
 }
 
-module.exports  = function(app) {
-    app.get("/upload", function(req, res) {
+module.exports  = function (app) {
+    app.get("/upload", function (req, res) {
         // console.log("this page should only be avialble to the members of supporting agencies is logged in... watch for that");
         res.render("uploading-page");
     });
 
-    app.post('/upload', urlencodedParser, upload.single('csv'), function(req, res) {
+    app.post('/upload', urlencodedParser, upload.single('csv'), function (req, res) {
         // file is cached in req.file.buffer
         var workbook = XLSX.read(req.file.buffer);
 
-        if (req.body.template == "Options Sheet") {
+        if (req.body.template === "Options Sheet") {
             loadOptions(workbook);
             console.log("Options database updated.")
             return;
@@ -151,7 +151,7 @@ module.exports  = function(app) {
         headersDb.find({ template: req.body.template }, function (err, docs) {
             // get or initialize valid headers
             var validHeaders;
-            if (docs.length == 0)
+            if (docs.length === 0)
                 validHeaders = sampleHeaders(req.body.template, workbook);
             else
                 validHeaders = docs[0]["headers"];
@@ -161,7 +161,7 @@ module.exports  = function(app) {
                 res.status(400);
                 res.send("Headers not valid.");
             } else {
-                insertToDb(req.body.template, json, function() {
+                insertToDb(req.body.template, json, function () {
                     res.status(200);
                     res.send({});
                 });
