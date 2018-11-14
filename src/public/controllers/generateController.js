@@ -104,7 +104,8 @@ module.exports  = function (app) {
 
     app.post('/generate', urlencodedParser, function (req, res) {
         // TODO: add selector for month
-        var month = "2018-11";
+        console.log("in generate controller POST, req is" + JSON.stringify(req.body));
+        var month = req.body.date;
 
         db2.find({month: month, template: req.body.template}, function (err, docs) {
             if (err) {

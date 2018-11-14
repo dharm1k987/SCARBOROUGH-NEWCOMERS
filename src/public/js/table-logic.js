@@ -21,14 +21,15 @@ $(document).ready(function() {
     }
 
     var tableJSON = localStorage.getItem('tableJSON');
+    var date = localStorage.getItem('date');
     var tableHeader = localStorage.tableHeader;
     tableJSON = JSON.parse(tableJSON);
 
 
 
 
-
-    $(".main-body").append('<h1 style="color:white;">' + tableHeader + '</h1>');
+    var combinedHeader = tableHeader + " - " + date;
+    $(".main-body").append('<h1 style="color:white;">' + combinedHeader + '</h1>');
    // $(".main-body").append('<pre>' + tableJSON + '</pre>');
 
     var html = `

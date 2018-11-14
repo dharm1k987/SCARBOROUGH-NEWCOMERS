@@ -51,8 +51,10 @@ $(document).ready(function() {
     $("#generate-btn").click(function() {
         var e = document.getElementById("ddlViewBy");
         var option = e.options[e.selectedIndex].value;
+        var f = document.getElementById("monthID");
+        var option2 = f.options[f.selectedIndex].value;
 
-        var data = {template: option};
+        var data = {template: option, date: option2};
         $.ajax({
             type: 'POST',
             url: '/generate',
@@ -64,6 +66,7 @@ $(document).ready(function() {
                 console.log(response);
                 localStorage.setItem("tableJSON", JSON.stringify(response));
                 localStorage.setItem("tableHeader", option);
+                localStorage.setItem("date", option2);
                 window.location.replace("/table-html");
 
                 // reroute them based on the location data provides
