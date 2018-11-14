@@ -33,6 +33,7 @@ var eventLogController = require(__dirname + "/public/controllers/eventLogContro
 var homeorgController = require(__dirname + "/public/controllers/homeorgController");
 var generateController = require(__dirname + "/public/controllers/generateController");
 var tableController = require(__dirname + "/public/controllers/tableController");
+var setupController = require(__dirname + "/public/controllers/setupController");
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
 console.log( path.join(__dirname, '/public/db'));
@@ -49,7 +50,7 @@ eventLogController(app);
 homeorgController(app);
 generateController(app);
 tableController(app);
-
+setupController(app);
 
 console.log("listening on port ...")
 app.listen(port);
