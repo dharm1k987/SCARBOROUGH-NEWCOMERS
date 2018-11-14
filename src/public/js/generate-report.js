@@ -11,6 +11,42 @@ $(document).ready(function() {
 
     console.log("in generate");
 
+    // get the months and add them to the dropdown
+    months = [];
+    $.ajax({
+        type: 'GET',
+        url: '/generate/months',
+        data: {},
+        success: function(response) {
+            // get the type of account they are (teq or org)
+            // setup local storage
+            console.log("success - months:");
+            for (var template in response) {
+                // we might have many months
+                for (var eachMonth in response[template]) {
+                    console.log("inner");
+                    var result = response[template][eachMonth];
+                    // only add if its not already inside
+                    if (months.indexOf(result) < 0) {
+                        console.log(result + " not in mon");
+                        months.push(result);
+                        $("#monthID").append($('<option></option>').val(result).html(result));
+                        console.log(months);
+                    }
+
+                }
+            }
+            //console.log(months);
+
+            // add it to dropdown
+            
+        },
+        error: function(response) {
+            console.log("something not right.");
+        }
+    });
+
+
 
     $("#generate-btn").click(function() {
         var e = document.getElementById("ddlViewBy");
