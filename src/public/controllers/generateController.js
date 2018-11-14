@@ -72,6 +72,12 @@ function generateJson (docs, cb) {
 
 module.exports  = function (app) {
     app.get("/generate", function (req, res) {
+            res.render("generate-page");
+       
+    });
+
+    app.get('/generate/months', function(req, res) {
+
         db2.find({}, function (err, docs) {
             var availableMonths = {};
 
@@ -88,8 +94,12 @@ module.exports  = function (app) {
             }
 
             // TODO: send available months to front end
-            res.render("generate-page");
+            res.json(availableMonths);
+           // res.render("generate-page");
         });
+
+
+
     });
 
     app.post('/generate', urlencodedParser, function (req, res) {
