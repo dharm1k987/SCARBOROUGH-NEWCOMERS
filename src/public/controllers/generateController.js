@@ -108,12 +108,12 @@ function calculateAge (birthDate) {
 
 module.exports  = function (app) {
     app.get("/generate", function (req, res) {
-            res.render("generate-page");
+        res.render("generate-page");
     });
 
     app.get('/generate/months', function(req, res) {
         db2.find({}, function (err, docs) {
-            var availableMonths = {};
+            let availableMonths = {};
 
             for (i in docs) {
                 let object = docs[i];
@@ -122,7 +122,7 @@ module.exports  = function (app) {
 
                 if (typeof availableMonths[template] === 'undefined') {
                     availableMonths[template] = [month];
-                } else if (availableMonths.indexOf(month) === -1) {
+                } else if (availableMonths[template].indexOf(month) === -1) {
                     availableMonths[template].push(month);
                 }
             }
@@ -130,9 +130,6 @@ module.exports  = function (app) {
             res.json(availableMonths);
             // res.render("generate-page");
         });
-
-
-
     });
 
     app.post('/generate', urlencodedParser, function (req, res) {

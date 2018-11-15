@@ -4,12 +4,12 @@ var index = require(__dirname + '/../../index');
 var db2 = index.db2;
 
 function generateJson (docs, cb) {
-    var res = {};
+    var res = [];
 
     for (i in docs) {
         var month = docs[i]['month'];
         var entries = docs[i]['entries'];
-        res[month] = {'clients': entries.length, 'services': 0};
+        res.push({'month': month, 'clients': entries.length, 'services': 0});
 
         for (j in entries) {
             var entry = entries[j];
@@ -22,11 +22,12 @@ function generateJson (docs, cb) {
             }
 
             if (input === 'Yes') {
-                res[month]['services']++;
+                res[i]['services']++;
             }
         }
     }
 
+    res.sort((a, b) => parseInt(a.month.replace('-', '')) - parseInt(b.month.replace('-', '')));
     cb(res);
 }
 
