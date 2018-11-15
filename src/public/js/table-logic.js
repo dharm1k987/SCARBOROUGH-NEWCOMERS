@@ -34,7 +34,7 @@ $(document).ready(function() {
 
     var html = `
     <div style="max-height:700px;overflow-y: auto;background-color: white;">
-    <table class="table table-bordered" style="background-color:white;">
+    <table class="table table-bordered" style="background-color:white;" border="1" cellpadding="3">
     <thead>
     <tr>
     <th style="border-bottom:1px solid black;">Headers</th>
