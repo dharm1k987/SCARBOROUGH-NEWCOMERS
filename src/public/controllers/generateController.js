@@ -22,6 +22,7 @@ function generateJson (docs, cb) {
     var entryCount = entries.length;
     var entryProc = 0;
     var res = {};
+    var dobPatt = new RegExp("DATE OF BIRTH");
 
     for (i in entries) {
         let entry = entries[i];
@@ -53,7 +54,33 @@ function generateJson (docs, cb) {
 
                         res[header]["total"]++;
                     } else {
-                        console.log("'" + input + "' is not an option for header '" + header + "'.");
+                        if (dobPatt.test(header)) {
+                            // input is a date of birth
+                            let age = calculateAge(input);
+
+                            if (typeof res["AGE"] === 'undefined') {
+                                res["AGE"] = {"options": {}, "total": 0};
+                            }
+                            
+                            // find the interval the age is in
+                            for (k = 0; k < 100; k += 4) {
+                                if (age >= k && age < k + 4) {
+                                    let interval = k + "-" + (k + 4);
+
+                                    if (typeof res["AGE"]["options"][interval] === 'undefined') {
+                                        res["AGE"]["options"][interval] = 1;
+                                    } else {
+                                        res["AGE"]["options"][interval]++;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            res["AGE"]["total"]++;
+                        } else {
+                            console.log("'" + input + "' is not an option for header '" + header + "'.");
+                        }
                     }
                 }
 
@@ -70,14 +97,21 @@ function generateJson (docs, cb) {
     }
 }
 
+function calculateAge (birthDate) {
+    let year = parseInt(birthDate.substring(0, 4), 10);
+    let month = parseInt(birthDate.substring(5, 7), 10);
+    let day = parseInt(birthDate.substring(9, 10), 10);
+    let dobObj = new Date(year, month, day);
+    let msDiff = Math.abs(new Date() - dobObj);
+    return Math.floor(msDiff / 31536000000);
+}
+
 module.exports  = function (app) {
     app.get("/generate", function (req, res) {
             res.render("generate-page");
-       
     });
 
     app.get('/generate/months', function(req, res) {
-
         db2.find({}, function (err, docs) {
             var availableMonths = {};
 
@@ -93,9 +127,8 @@ module.exports  = function (app) {
                 }
             }
 
-            // TODO: send available months to front end
             res.json(availableMonths);
-           // res.render("generate-page");
+            // res.render("generate-page");
         });
 
 
@@ -103,8 +136,6 @@ module.exports  = function (app) {
     });
 
     app.post('/generate', urlencodedParser, function (req, res) {
-        // TODO: add selector for month
-        console.log("in generate controller POST, req is" + JSON.stringify(req.body));
         var month = req.body.date;
 
         db2.find({month: month, template: req.body.template}, function (err, docs) {
