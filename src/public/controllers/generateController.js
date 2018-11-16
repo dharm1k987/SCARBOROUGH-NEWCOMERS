@@ -136,6 +136,10 @@ function calculateAge (birthDate) {
     return Math.floor(msDiff / 31536000000);
 }
 
+function compareDates(a, b) {
+
+}
+
 module.exports  = function (app) {
     app.get('/generate', function (req, res) {
         res.render('generate-page');
@@ -157,6 +161,13 @@ module.exports  = function (app) {
                 }
             }
 
+            // sort all arrays
+            for (i in availableMonths) {
+                availableMonths[i].sort(function (a, b) {
+                    return parseInt(a.replace('-', '')) - parseInt(b.replace('-', ''));
+                });
+            }
+            
             res.json(availableMonths);
             // res.render('generate-page');
         });
@@ -172,7 +183,6 @@ module.exports  = function (app) {
                 if (docs.length !== 0) {
                     generateJson(docs, function (response) {
                         // response is object containing report data
-                        console.log(response);
                         res.status(200);
                         res.json(response);
                     });
