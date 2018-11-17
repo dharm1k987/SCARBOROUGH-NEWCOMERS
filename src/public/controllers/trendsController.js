@@ -36,6 +36,10 @@ module.exports = function (app) {
         res.render('trends');
     });
 
+    app.get('/trends-graph', function (req, res) {
+        res.render('trends-graph');
+    });
+
     app.post('/generate-trends', urlencodedParser, function (req, res) {
         db2.find({template: req.body.template}, function (err, docs) {
             if (err) {
