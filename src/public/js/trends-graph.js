@@ -11,40 +11,49 @@ $(document).ready(function() {
 
     console.log("in trend graph");
 
+    var trendsJSON = localStorage.getItem('trendsJSON');
+    var tableHeader = localStorage.tableHeader;
+    trendsJSON = JSON.parse(trendsJSON);
 
     var ctx = document.getElementById("myChart");
 
-    var data = {
-        labels: ["match1", "match2", "match3", "match4", "match5"], // x axis = dates
-        datasets: [
-            {
-                label: "TeamA Score", // clients
-                data: [10, 50, 25, 70, 40], // values
-                backgroundColor: "blue",
-                borderColor: "lightblue",
-                fill: false,
-                lineTension: 0,
-                radius: 5
-            },
-            {
-                label: "TeamB Score", // services
-                data: [20, 35, 40, 60, 50], // values
-                backgroundColor: "green",
-                borderColor: "lightgreen",
-                fill: false,
-                lineTension: 0,
-                radius: 5
-            }
-        ]
-    };
+    function constructData(data) {
+        var labels = [];
+        var dataClients = [];
+        var dataServices = [];
+        for (var key in data) {
+            console.log(key);
+            labels.push(data[key]["month"]); // x axis
+            dataClients.push(data[key]["clients"]); // clients
+            dataServices.push(data[key]["services"]); // services
+        }
+        var data = {
+            labels: labels, // x axis = dates
+            datasets: [
+                {
+                    label: "Clients", // clients
+                    data: dataClients, // values
+                    backgroundColor: "blue", borderColor: "lightblue", fill: false, lineTension: 0, radius: 5
+                },
+                {
+                    label: "Services", // services
+                    data: dataServices, // values
+                    backgroundColor: "red", borderColor: "pink", fill: false, lineTension: 0, radius: 5
+                }
+            ]
+            
+        };
 
-    var options = {
+        return data;
+    }
+
+        var options = {
         responsive: true,
         maintainAspectRatio: false,
         title: {
             display: true,
             position: "top",
-            text: "Line Graph", // title of graph
+            text: tableHeader, // title of graph
             fontSize: 18,
             fontColor: "#111"
         },
@@ -55,15 +64,26 @@ $(document).ready(function() {
                 fontColor: "#333",
                 fontSize: 16
             }
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    callback: function (value) { if (Number.isInteger(value)) { return value; } },
+                    stepSize: 1
+                }
+            }]
         }
     };
 
-
     var pieChart = new Chart(ctx, {
         type: 'line',
-        data: data,
-        options: options
+        data: constructData(trendsJSON),
+        options: options,
     });
+
+
+
 
 
 
