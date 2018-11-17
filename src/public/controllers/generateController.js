@@ -16,7 +16,10 @@ function generateJson (docs, cb) {
                         'services': count
                     }
                 },
-                'total': total
+                'total': {
+                    'clients': count,
+                    'services': count
+                }
             }
         }
     */
@@ -55,7 +58,7 @@ function generateJson (docs, cb) {
                     validOptions = docs[0]['options'];
                     if (validOptions != null && validOptions.includes(input)) {
                         if (typeof res[header] === 'undefined') {
-                            res[header] = {'options': {}, 'total': 0};
+                            res[header] = {'options': {}, 'total': {'clients': 0, 'services': 0}};
                         }
 
                         if (typeof res[header]['options'][input] === 'undefined') {
@@ -73,14 +76,20 @@ function generateJson (docs, cb) {
                             }
                         }
 
-                        res[header]['total']++;
+                        // update totals
+                        if (servicesReceived) {
+                            res[header]['total']['clients']++;
+                            res[header]['total']['services']++;
+                        } else {
+                            res[header]['total']['clients']++;
+                        }
                     } else {
                         if (dobPatt.test(header)) {
                             // input is a date of birth
                             let age = calculateAge(input);
 
                             if (typeof res['AGE'] === 'undefined') {
-                                res['AGE'] = {'options': {}, 'total': 0};
+                                res['AGE'] = {'options': {}, 'total': {'clients': 0, 'services': 0}};
                             }
                             
                             // find the interval the age is in
@@ -107,7 +116,13 @@ function generateJson (docs, cb) {
                                 }
                             }
 
-                            res['AGE']['total']++;
+                            // update totals
+                            if (servicesReceived) {
+                                res['AGE']['total']['clients']++;
+                                res['AGE']['total']['services']++;
+                            } else {
+                                res['AGE']['total']['clients']++;
+                            }
                         } else {
                             console.log("'" + input + "' is not an option for header '" + header + "'.");
                         }
