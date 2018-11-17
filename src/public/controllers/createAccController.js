@@ -4,12 +4,13 @@ var db = index.db;
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 module.exports  = function(app) {
-
+    app.use(bodyParser.json());
     app.get("/create", function(req, res) {
         res.render("create-acc");
     });
 
     app.post("/create", urlencodedParser, function(req, res) {
+      console.log(req);
        console.log("in create controller");
         db.find({"username": req.body.username}, function(err, docs){
             console.log(docs);
@@ -30,23 +31,3 @@ module.exports  = function(app) {
         });
     })
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

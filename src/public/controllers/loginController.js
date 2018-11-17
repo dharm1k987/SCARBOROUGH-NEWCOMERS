@@ -4,7 +4,7 @@ var db = index.db;
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 module.exports  = function(app) {
-
+    app.use(bodyParser.json());
     // app.use(bodyParser.json());
     app.get("/login", function(req, res) {
 		console.log("login page");
@@ -31,7 +31,7 @@ module.exports  = function(app) {
             }
         });
     });
-    
+
 
     app.post("/login", urlencodedParser, function(req, res) {
         // temp for testing
