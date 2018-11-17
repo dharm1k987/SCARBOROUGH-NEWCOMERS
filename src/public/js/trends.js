@@ -9,9 +9,10 @@ $(document).ready(function() {
         return;
     }
 
-    console.log("in generate");
+    console.log("in trends");
 
     // get the months and add them to the dropdown
+    /*
     months = [];
     $.ajax({
         type: 'GET',
@@ -45,16 +46,16 @@ $(document).ready(function() {
             console.log("something not right.");
         }
     });
-
+    */
 
 
     $("#generate-btn").click(function() {
         var e = document.getElementById("ddlViewBy");
         var option = e.options[e.selectedIndex].value;
-        var f = document.getElementById("monthID");
-        var option2 = f.options[f.selectedIndex].value;
+        // var f = document.getElementById("monthID");
+        // var option2 = f.options[f.selectedIndex].value;
 
-        var data = {template: option, date: option2};
+        var data = {template: option};
         $.ajax({
             type: 'POST',
             url: '/generate-trends',
