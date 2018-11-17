@@ -34,6 +34,7 @@ var homeorgController = require(__dirname + "/public/controllers/homeorgControll
 var generateController = require(__dirname + "/public/controllers/generateController");
 var tableController = require(__dirname + "/public/controllers/tableController");
 var setupController = require(__dirname + "/public/controllers/setupController");
+var trendsController = require(__dirname + "/public/controllers/trendsController");
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
 console.log( path.join(__dirname, '/public/db'));
@@ -51,6 +52,7 @@ homeorgController(app);
 generateController(app);
 tableController(app);
 setupController(app);
+trendsController(app);
 
 console.log("listening on port ...")
 app.listen(port);

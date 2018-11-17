@@ -21,19 +21,20 @@ $(document).ready(function() {
     }
 
     var tableJSON = localStorage.getItem('tableJSON');
+    var date = localStorage.getItem('date');
     var tableHeader = localStorage.tableHeader;
     tableJSON = JSON.parse(tableJSON);
 
 
 
 
-
-    $(".main-body").append('<h1 style="color:white;">' + tableHeader + '</h1>');
+    var combinedHeader = tableHeader + " - " + date;
+    $(".main-body").append('<h1 style="color:white;">' + combinedHeader + '</h1>');
    // $(".main-body").append('<pre>' + tableJSON + '</pre>');
 
     var html = `
     <div style="max-height:700px;overflow-y: auto;background-color: white;">
-    <table class="table table-bordered" style="background-color:white;">
+    <table class="table table-bordered" style="background-color:white;" border="1" cellpadding="3">
     <thead>
     <tr>
     <th style="border-bottom:1px solid black;">Headers</th>
@@ -60,28 +61,30 @@ $(document).ready(function() {
 
 
     for (var header in tableJSON) {
-         console.log(header + " -> " + JSON.stringify(tableJSON[header]));
+       //  console.log(header + " -> " + JSON.stringify(tableJSON[header]));
         // loop over the sub items
         for (var subitem in tableJSON[header]) {
-            console.log("The subitem is " + subitem);
+         //   console.log("The subitem is " + subitem);
             if (subitem == "options") {
                 var htmlHeaders = "<thead><tr><th>" + header + "</th><th></th></tr></thead><tbody>";
                 var htmlOptions = "";
                 // loop over the options
                 for (var option in tableJSON[header]["options"]) {
                     // console.log("Header is " + header);
-                    console.log("Option " + option + " with total " + tableJSON[header]["options"][option]);
-                    var htmlOptions = "<tr><td style='background-color:#efefef;'>" + title(option) + "</td>" + "<td style='background-color:#efefef;'>" + tableJSON[header]["options"][option] + "</td>" + "</tr>";
-                    //console.log(htmlOptions);
+           //         console.log("Option " + option + " with total " + tableJSON[header]["options"][option]);
+                    var htmlOptions = "<tr><td style='background-color:#efefef;'>" + title(option) + "</td>" + "<td style='background-color:#efefef;'>" + tableJSON[header]["options"][option]["clients"] + "</td>" + "</tr>";
+                    console.log(tableJSON[header]["options"]);
+                    console.log("--------");
                     htmlHeaders += htmlOptions; 
-                    //console.log(html);
+                    
+                   // console.log(html);
                 }
-                console.log(htmlOptions);
+          //      console.log(htmlOptions);
 
                 html += htmlHeaders;
                 //$(".main-body").append(htmlOptions);
             } else if (subitem == "total") {
-                console.log(JSON.stringify(tableJSON[header]));
+              //  console.log(JSON.stringify(tableJSON[header]));
                 var css = "'background-color:#f5f5f5;border-bottom:1px solid black'";
                //  console.log("<tr><td style=" + css + ">" + "Total" + "</td>");
                 html += "<tr><td style=" + css + ">" + "Total" + "</td>" + "<td style=" + css + ">" + tableJSON[header]["total"] + "</td>" + "</tr>";
