@@ -5,10 +5,10 @@
         <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/generate-report.js"></script>
+        <script src="js/trends.js"></script>
+        <script src="js/Chart.min.js"></script>
         <script src="js/logout.js"></script>
     </head>
- 
     <body>
         <% include partials/nav.ejs %>
         <img src="/img/Team20Logo.png">
@@ -24,7 +24,7 @@
                             <div class="text-center">
                                     <label for="icare-temp">Report Templates </label>
 
-                                    <select id="ddlViewBy" onchange="templateChanged()">
+                                    <select id="ddlViewBy">
                                         <option value="Client Profile" selected="selected">Client Profile</option>
                                         <option value="Needs Assessment&Referrals">Needs Assessment&Referrals</option>
                                         <option value="Community Connections">Community Connections</option>
@@ -60,4 +60,4 @@
    
 
     </body>
-</html>
+    </html>
