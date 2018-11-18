@@ -5,7 +5,7 @@ var db2 = index.db2;
 var optionsDb = index.optionsDb;
 
 
-function generateJson (docs, cb) {
+function generateJson (entries, cb) {
     // OBJECT STRUCTURE
     /*
         {
@@ -24,7 +24,6 @@ function generateJson (docs, cb) {
         }
     */
    
-    var entries = docs[0]['entries'];
     var entryCount = entries.length;
     var entryProc = 0;
     var res = {};
@@ -150,12 +149,9 @@ function calculateAge (birthDate) {
     let msDiff = Math.abs(new Date() - dobObj);
     return Math.floor(msDiff / 31536000000);
 }
-
-function compareDates(a, b) {
-
-}
-
-module.exports  = function (app) {
+ 
+module.exports.reportObj = generateJson;
+module.exports.main = function (app) {
     app.get('/generate', function (req, res) {
         res.render('generate-page');
     });
@@ -196,7 +192,8 @@ module.exports  = function (app) {
                 res.send(500);
             } else {
                 if (docs.length !== 0) {
-                    generateJson(docs, function (response) {
+                    let entries = docs[0]['entries'];
+                    generateJson(entries, function (response) {
                         // response is object containing report data
                         res.status(200);
                         res.json(response);

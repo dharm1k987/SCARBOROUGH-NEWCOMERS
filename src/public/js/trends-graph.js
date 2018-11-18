@@ -19,6 +19,7 @@ $(document).ready(function() {
 
     function constructData(data) {
 
+        console.log(data);
         // data = [{"month":"2018-2","clients":3,"services":1},{"month":"2018-3","clients":4,"services":2},{"month":"2018-5","clients":3,"services":2},{"month":"2018-5","clients":8,"services":8},{"month":"2018-6","clients":5,"services":3},{"month":"2018-7","clients":6,"services":5},{"month":"2018-8","clients":3,"services":3},{"month":"2018-9","clients":5,"services":5},{"month":"2018-10","clients":4,"services":3 },{"month":"2018-11","clients":2,"services":2}]
         var labels = [];
         var dataClients = [];
