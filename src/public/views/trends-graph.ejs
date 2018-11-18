@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/trends-graph.js"></script>
+        <script src="js/logout.js"></script>
+        <script src="js/Chart.min.js"></script>
+        <script src="https://codepen.io/anon/pen/aWapBE.js"></script>
+
+    </head>
+    <body>
+        <% include partials/nav.ejs %>
+        <img src="/img/Team20Logo.png">
+        <div class="outer home-page">
+        <div class="container inner" style="background-color: #f1f1f1;">
+
+                <div class="form-group" id="my-form2" style="margin: 2%;">
+                        <div class="row">                        
+                        <div class="text-left">
+                                <label for="icare-temp-option">Select Option</label>
+
+                                <select id="option-select">
+                                    <option value="Option 1" selected="selected">option1</option>
+                                    <option value="Option 2">option2</option>
+                                </select>                  
+                                
+                        </div>
+
+                        </div>
+                </div>
+
+            <div style="height: 400px">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+   
+
+    </body>
+    </html>
