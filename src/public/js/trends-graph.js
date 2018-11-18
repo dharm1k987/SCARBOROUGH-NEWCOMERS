@@ -90,6 +90,10 @@ $(document).ready(function() {
         options: options,
     });
 
+    $('#option-select').change(function() {
+        console.log('The option with value ' + $(this).val() + ' and text ' + $(this).text() + ' was selected.');
+    });
+
 
 
 
