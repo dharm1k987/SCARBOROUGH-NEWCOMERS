@@ -73,7 +73,7 @@ $(document).ready(function() {
     var html = `
 
     <div style="height:80%;overflow-y: auto;background-color: white;">
-    <table class="table table-bordered" style="background-color:white;">
+    <table class="table table-bordered" style="background-color:white;" id="printTable">
     <thead>
     <tr>
     <th style="border-bottom:1px solid black;">Headers</th>
@@ -110,7 +110,7 @@ $(document).ready(function() {
             if (subitem == "options") {
                 var htmlHeaders = "<thead><tr><th>" + header 
                     + " <a class='chartBtn' data-header='" + header + "' data-toggle='modal' data-target='.bd-example-modal-lg' onclick='updateChart(this)'>(See chart)</a>"
-                    + "</th><th></th></tr></thead><tbody>";
+                    + "</th><th></th><th></th><th></th></tr></thead><tbody>";
                 var htmlOptions = "";
                 // loop over the options
                 for (var option in tableJSON[header]["options"]) {
@@ -187,6 +187,10 @@ $(document).ready(function() {
             padding: 2px;
             line-height: 1.42857143;
             vertical-align: top;
+        }
+
+        a {
+            display: none;
         }
         </style>
     
