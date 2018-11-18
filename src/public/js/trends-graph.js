@@ -33,12 +33,17 @@ $(document).ready(function() {
                 {
                     label: "Clients", // clients
                     data: dataClients, // values
-                    backgroundColor: "blue", borderColor: "lightblue", fill: false, lineTension: 0, radius: 5
+                    "fill": false,
+                    "borderColor": "rgb(75, 192, 192)",
+                    "lineTension": 0
+                    
                 },
                 {
                     label: "Services", // services
                     data: dataServices, // values
-                    backgroundColor: "red", borderColor: "pink", fill: false, lineTension: 0, radius: 5
+                    "fill": false,
+                    "borderColor": "rgb(255, 2, 102)",
+                    "lineTension": 0
                 }
             ]
             
