@@ -71,8 +71,9 @@ $(document).ready(function() {
    // $(".main-body").append('<pre>' + tableJSON + '</pre>');
 
     var html = `
+
     <div style="height:80%;overflow-y: auto;background-color: white;">
-    <table class="table table-bordered" style="background-color:white;">
+    <table class="table table-bordered" style="background-color:white;" id="printTable">
     <thead>
     <tr>
     <th style="border-bottom:1px solid black;">Headers</th>
@@ -80,7 +81,8 @@ $(document).ready(function() {
     <th style="border-bottom:1px solid black; width: 5%">Services</th>
     <th style="border-bottom:1px solid black; width: 5%">Service Received</th>
 
-    </tr>
+
+    </tbody></tr>
     </thead>
     
 
@@ -108,11 +110,12 @@ $(document).ready(function() {
             if (subitem == "options") {
                 var htmlHeaders = "<thead><tr><th>" + header 
                     + " <a class='chartBtn' data-header='" + header + "' data-toggle='modal' data-target='.bd-example-modal-lg' onclick='updateChart(this)'>(See chart)</a>"
-                    + "</th><th></th></tr></thead><tbody>";
+                    + "</th><th></th><th></th><th></th></tr></thead><tbody>";
                 var htmlOptions = "";
                 // loop over the options
                 for (var option in tableJSON[header]["options"]) {
                     // console.log("Header is " + header);
+
                     // console.log("Option " + option + " with total " + tableJSON[header]["options"][option]);
                     let servicePercent = (tableJSON[header]["options"][option]["services"] 
                         / tableJSON[header]["options"][option]["clients"]) * 100;
@@ -122,6 +125,7 @@ $(document).ready(function() {
                         + "<td style='background-color:#efefef;'>" + tableJSON[header]["options"][option]["services"] + "</td>" 
                         + "<td style='background-color:#efefef;'>" + servicePercent + "%</td>" 
                         + "</tr>";
+
                     console.log(tableJSON[header]["options"]);
                     console.log("--------");
                     htmlHeaders += htmlOptions; 
@@ -134,8 +138,10 @@ $(document).ready(function() {
                 //$(".main-body").append(htmlOptions);
             } else if (subitem == "total") {
               //  console.log(JSON.stringify(tableJSON[header]));
+
                 var css = "'background-color:#f5f5f5;border-bottom:1px solid black'";
                 let servicePercent = tableJSON[header]["total"]["services"] / tableJSON[header]["total"]["clients"] * 100;
+
                //  console.log("<tr><td style=" + css + ">" + "Total" + "</td>");
                 html += "<tr><td style=" + css + ">" + "Total" + "</td>" + "<td style=" + css + ">" + tableJSON[header]["total"]["clients"] + "</td>" 
                     + "<td style=" + css + ">" + tableJSON[header]["total"]["services"] + "</td>"
@@ -148,4 +154,59 @@ $(document).ready(function() {
     }
 
     $(".main-body").append(html + "</table></div>");
+
+    
+    // printing button
+    function printData()
+    {
+
+    var headerToPrint = '<h1 style="color:black; font-family: Overpass, sans-serif;">' + combinedHeader + '</h1>'
+    var htmlToPrint = `
+        <style type="text/css">
+        table {
+            background-color:white;
+            border: 1px solid black;
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 20px;
+            border-spacing: 0;
+            border-collapse: collapse;
+            font-family: 'Overpass', sans-serif;
+        }
+        table th {
+            border:1px solid black;
+        }
+        table td {
+
+            -webkit-print-color-adjust:exact;
+            background-color:#efefef;
+            border: 1px solid black;
+        }
+
+        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+            padding: 2px;
+            line-height: 1.42857143;
+            vertical-align: top;
+        }
+
+        a {
+            display: none;
+        }
+        </style>
+    
+    `
+
+
+
+    var divToPrint=document.getElementById("printTable");
+    newWin= window.open("");
+    newWin.document.write(headerToPrint + htmlToPrint + divToPrint.outerHTML);
+    newWin.print();
+    newWin.close();
+    }
+
+    $('#print-btn').on('click',function(){
+    printData();
+    })
+
 });
