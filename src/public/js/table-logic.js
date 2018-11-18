@@ -100,7 +100,7 @@ $(document).ready(function() {
     function printData()
     {
 
-
+    var headerToPrint = '<h1 style="color:black; font-family: Overpass, sans-serif;">' + combinedHeader + '</h1>'
     var htmlToPrint = `
         <style type="text/css">
         table {
@@ -136,7 +136,7 @@ $(document).ready(function() {
 
     var divToPrint=document.getElementById("printTable");
     newWin= window.open("");
-    newWin.document.write(htmlToPrint + divToPrint.outerHTML);
+    newWin.document.write(headerToPrint + htmlToPrint + divToPrint.outerHTML);
     newWin.print();
     newWin.close();
     }
