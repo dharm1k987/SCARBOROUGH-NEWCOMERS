@@ -1,3 +1,25 @@
+var trendsJSON;
+
+function populateOptions () {
+    var ddEl = document.getElementById("option-select");
+    
+    for (header in trendsJSON[0]['data']) {
+        $("#option-select").append($("<optgroup></optgroup>").attr('label', header).data('header', header));
+    }
+
+    for (i in trendsJSON) {
+        var data = trendsJSON[i]['data'];
+        for (header in data) {
+            for (option in data[header]['options']) {
+                var headerEl = $('[label="' + header + '"]');
+                if (!headerEl.find("option[value='" + option + "']").length) {
+                    $("<option>").val(option).text(option).appendTo(headerEl);
+                }
+            }
+        }
+    }
+}
+
 $(document).ready(function() {
     if (localStorage.loginOrg == "false" && localStorage.loginTEQ == "false") {
         window.location.replace("/login");
@@ -11,15 +33,14 @@ $(document).ready(function() {
 
     console.log("in trend graph");
 
-    var trendsJSON = localStorage.getItem('trendsJSON');
+    trendsJSON = localStorage.getItem('trendsJSON');
     var tableHeader = localStorage.tableHeader;
     trendsJSON = JSON.parse(trendsJSON);
 
+    populateOptions();
     var ctx = document.getElementById("myChart");
 
     function constructData(data) {
-
-        console.log(data);
         // data = [{"month":"2018-2","clients":3,"services":1},{"month":"2018-3","clients":4,"services":2},{"month":"2018-5","clients":3,"services":2},{"month":"2018-5","clients":8,"services":8},{"month":"2018-6","clients":5,"services":3},{"month":"2018-7","clients":6,"services":5},{"month":"2018-8","clients":3,"services":3},{"month":"2018-9","clients":5,"services":5},{"month":"2018-10","clients":4,"services":3 },{"month":"2018-11","clients":2,"services":2}]
         var labels = [];
         var dataClients = [];
