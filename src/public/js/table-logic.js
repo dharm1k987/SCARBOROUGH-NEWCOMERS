@@ -117,8 +117,8 @@ $(document).ready(function() {
                     // console.log("Header is " + header);
 
                     // console.log("Option " + option + " with total " + tableJSON[header]["options"][option]);
-                    let servicePercent = (tableJSON[header]["options"][option]["services"] 
-                        / tableJSON[header]["options"][option]["clients"]) * 100;
+                    let servicePercent = ((tableJSON[header]["options"][option]["services"] 
+                        / tableJSON[header]["options"][option]["clients"]) * 100).toFixed(0);
                     var htmlOptions = "<tr><td style='background-color:#efefef;'>" 
                         + title(option) + "</td>" 
                         + "<td style='background-color:#efefef;'>" + tableJSON[header]["options"][option]["clients"] + "</td>" 
