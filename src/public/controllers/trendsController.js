@@ -29,6 +29,7 @@ function generateJson (docs, cb) {
             }
         }
 
+        // get report object for month and stuff it into the trends object
         genController.reportObj(entries, function(response) {
             res[objNum]['data'] = response;
             if (objNum == docs.length - 1) {
