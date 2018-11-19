@@ -1,12 +1,12 @@
 var trendsJSON;
 
 function populateOptions () {
-    var ddEl = document.getElementById("option-select");
-    
+    // add header optgroups
     for (header in trendsJSON[0]['data']) {
-        $("#option-select").append($("<optgroup></optgroup>").attr('label', header).data('header', header));
+        $("#option-select").append($("<optgroup></optgroup>").attr('label', header));
     }
 
+    // add options to optgroups
     for (i in trendsJSON) {
         var data = trendsJSON[i]['data'];
         for (header in data) {
@@ -38,6 +38,7 @@ $(document).ready(function() {
     trendsJSON = JSON.parse(trendsJSON);
 
     populateOptions();
+
     var ctx = document.getElementById("myChart");
 
     function constructData(data) {
@@ -115,11 +116,4 @@ $(document).ready(function() {
     $('#option-select').change(function() {
         console.log('The option with value ' + $(this).val() + ' and text ' + $(this).text() + ' was selected.');
     });
-
-
-
-
-
-
-
 });
