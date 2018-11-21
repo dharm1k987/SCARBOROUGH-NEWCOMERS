@@ -114,6 +114,11 @@ function insertToDb (template, json, cb) {
                 // TODO: check if some templates don't have unique identifier value field
                 var entry = json[i];
                 var uniqueField = 'Unique Identifier Value';
+
+                if (template === 'LT Course Setup') {
+                    uniqueField = 'Course Code';
+                }
+
                 var uniqueId = entry[uniqueField];
                 // check if an entry with the ID already exists
                 var matchIds = entries.filter(entry => (entry[uniqueField] === uniqueId));

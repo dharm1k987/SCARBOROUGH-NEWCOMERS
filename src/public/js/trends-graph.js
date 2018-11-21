@@ -1,3 +1,4 @@
+var chart = null;
 
 $(document).ready(function() {
     if (localStorage.loginOrg == "false" && localStorage.loginTEQ == "false") {
@@ -18,7 +19,6 @@ $(document).ready(function() {
 
     function populateOptions () {
         // add header optgroups
-        console.log(JSON.stringify(trendsJSON));
         for (header in trendsJSON[0]['data']) {
             $("#option-select").append($("<optgroup></optgroup>").attr('label', header).attr('id', header));
         }
@@ -107,7 +107,11 @@ $(document).ready(function() {
     function createGraph(labels, dataClients, dataServices, id, optId) {
         var ctx = document.getElementById("myChart");
 
-        var pieChart = new Chart(ctx, {
+        if (chart != null) {
+            chart.destroy();
+        }
+
+        chart = new Chart(ctx, {
             type: 'line',
             data: constructData(labels, dataClients, dataServices),
             options: constructOptions(id, optId),
@@ -162,7 +166,7 @@ $(document).ready(function() {
                         outerJSON["options"] = innerJSON;
                         tempJSON[trendsJSON[item]["month"]] = outerJSON;
                     }
-                   // tempJSON = {};
+                    // tempJSON = {};
                     //tempJSON[trendsJSON[item]["month"]] = trendsJSON[item]["data"][header];
                     console.log(JSON.stringify(tempJSON));
                     optGroupJSON.push(tempJSON, id);
