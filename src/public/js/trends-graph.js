@@ -211,15 +211,44 @@ $(document).ready(function() {
         handleGraphConversion(optGroupJSON, id, optId);
     }
 
+    function constructDataAll() {
+        // parse in special way
+        var labels = [];
+        var dataClients = [];
+        var dataServices = [];
+        for (var key in trendsJSON) {
+            console.log(key);
+            labels.push(trendsJSON[key]["month"]); // x axis
+            dataClients.push(trendsJSON[key]["clients"]); // clients
+            dataServices.push(trendsJSON[key]["services"]); // services
+        }
+        console.log("all labels " + labels);
+        console.log("all clients " + dataClients);
+        console.log("all services " + dataServices);
+        return [labels, dataClients, dataServices, "All", ""];
+    }
+
+    // by default, we want all data displayed
+    allData = constructDataAll();
+    createGraph(allData[0], allData[1], allData[2], allData[3], allData[4]);
+
     $('#option-select').change(function() {
         $('#option-select').find('option:selected').parent().attr('id')
         var id = $('#option-select').find('option:selected').attr('id');
         var optId = $('#option-select').find('option:selected').parent().attr('id');
         console.log(id + " --> " + optId);
-        if (id != "select-option") {
+        if ($('#option-select').find('option:selected').text() == "All") {
+            // special parse
+            allData = constructDataAll();
+            createGraph(allData[0], allData[1], allData[2], allData[3], allData[4]);
+            console.log("all");
+            return;
+        } else {
             parseOptionSelected(id, optId);
         }
-        $('#option-select option[id="select-option"]').attr('disabled','disabled');
+        
+        
+        //$('#option-select option[id="select-option"]').attr('disabled','disabled');
 
     });
 });
