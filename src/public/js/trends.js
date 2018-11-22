@@ -17,7 +17,6 @@ $(document).ready(function() {
         $("#generate-btn").val("Generating ...");
         $("#generate-btn").prop("disabled", true);
 
-
         var data = {template: option};
         $.ajax({
             type: 'POST',
@@ -41,5 +40,4 @@ $(document).ready(function() {
             }
         });
     });
-
 });

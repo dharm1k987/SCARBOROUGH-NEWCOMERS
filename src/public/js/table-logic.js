@@ -1,6 +1,6 @@
 var tableJSON;
 var pieChart = null;
-// break this up into multiple functions
+
 function updateChart (btn) {
     var ctx = document.getElementById("pieChart");
     var header = btn.getAttribute("data-header");
@@ -140,7 +140,6 @@ $(document).ready(function() {
 
     $(".main-body").append(html + "</table></div>");
 
-
     $('#print-btn').on('click',function(){
 
         var headerToPrint = '<h1 style="color:black; font-family: Overpass, sans-serif;">' + combinedHeader + '</h1>'
@@ -148,7 +147,7 @@ $(document).ready(function() {
 
         htmlToPrint = $.ajax({type: "GET", url: "/views/partials/print-table.ejs", async: false}).responseText;
 
-        var divToPrint=document.getElementById("printTable");
+        var divToPrint = document.getElementById("printTable");
         newWin= window.open("");
         newWin.document.write(headerToPrint + htmlToPrint + divToPrint.outerHTML);
         newWin.print();

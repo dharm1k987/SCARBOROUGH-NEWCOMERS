@@ -24,8 +24,6 @@ module.exports  = function(app) {
         });
     });
 
-
-
     app.post("/account/delete", urlencodedParser, function(req, res) {
       console.log("Delete Req:",req);
         var username = req.body.username;
@@ -42,9 +40,7 @@ module.exports  = function(app) {
                 console.log("didnt find");
                 res.status(400);
                 res.send()
-
             }
         });
     });
-
 };

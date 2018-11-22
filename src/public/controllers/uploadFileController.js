@@ -115,7 +115,6 @@ function insertToDb (monthStr, template, json, cb) {
             let pushed = 0;
             let skipped = 0;
             for (i in json) {
-                // TODO: check if some templates don't have unique identifier value field
                 let entry = json[i];
                 let uniqueField = 'UNIQUE IDENTIFIER VALUE';
 

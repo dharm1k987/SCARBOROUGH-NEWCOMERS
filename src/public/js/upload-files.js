@@ -15,10 +15,8 @@ $(document).ready(function() {
 
     // dropdown select
     $(".dropdown-menu li a").click(function(){
-
        $(".dropdown-upload").text($(this).text()).append(' <span class="caret"></span>');
-  
-     });
+    });
 
     // file select
     $("#my-form").submit(function(e) {

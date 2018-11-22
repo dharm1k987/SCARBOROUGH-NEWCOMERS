@@ -87,6 +87,7 @@ $(document).ready(function() {
                 }]
             }
         };
+
         return options;
     }
 
@@ -112,6 +113,7 @@ $(document).ready(function() {
             ]
             
         };
+
         return data;
     }
 
@@ -133,8 +135,8 @@ $(document).ready(function() {
         var labels = [];
         var dataClients = [];
         var dataServices = [];
+
         for (var key in optGroupJSON) {
-            
             if (typeof(optGroupJSON[key]) == "object") {
                 labels.push(Object.keys(optGroupJSON[key])[0]); // x-axis of dates
                 for (var date in optGroupJSON[key]) {
@@ -144,12 +146,11 @@ $(document).ready(function() {
                             dataClients.push(optGroupJSON[key][date]["options"][id]["clients"]);
                             dataServices.push(optGroupJSON[key][date]["options"][id]["services"]);
                         }
-
                     }
                 }
             }
-            
         }
+
         console.log(labels);
         console.log(dataClients);
         console.log(dataServices);
@@ -157,8 +158,8 @@ $(document).ready(function() {
     }
 
     function parseOptionSelected(id, optId) {
-        console.log("in the func");
         var optGroupJSON = [];
+
         for (item in trendsJSON) {
             // loop over the data
             for (header in trendsJSON[item]["data"]) {
@@ -180,6 +181,7 @@ $(document).ready(function() {
             }
          
         }
+
         console.log(optGroupJSON);
         handleGraphConversion(optGroupJSON, id, optId);
     }
@@ -189,12 +191,14 @@ $(document).ready(function() {
         var labels = [];
         var dataClients = [];
         var dataServices = [];
+        
         for (var key in trendsJSON) {
             console.log(key);
             labels.push(trendsJSON[key]["month"]); // x axis
             dataClients.push(trendsJSON[key]["clients"]); // clients
             dataServices.push(trendsJSON[key]["services"]); // services
         }
+
         console.log("all labels " + labels);
         console.log("all clients " + dataClients);
         console.log("all services " + dataServices);

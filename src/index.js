@@ -3,7 +3,7 @@ var path = require('path');
 var app = express();
 var port = process.env.PORT || 8080;
 
-// singleton database module
+// singleton database modules
 var Datastore = require('nedb');
 var db = new Datastore({filename: path.join(__dirname, 'public/db/account.db'), autoload: true});
 var db2 = new Datastore({filename: path.join(__dirname, 'public/db/templates.db'), autoload: true});
@@ -35,10 +35,10 @@ var generateController = require(__dirname + "/public/controllers/generateContro
 var tableController = require(__dirname + "/public/controllers/tableController");
 var setupController = require(__dirname + "/public/controllers/setupController");
 var trendsController = require(__dirname + "/public/controllers/trendsController");
+
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
 console.log( path.join(__dirname, '/public/db'));
-
 
 // fire controllers
 loginController(app); 

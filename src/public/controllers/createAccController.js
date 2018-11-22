@@ -5,6 +5,7 @@ var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 module.exports  = function(app) {
     app.use(bodyParser.json());
+    
     app.get("/create", function(req, res) {
         res.render("create-acc");
     });

@@ -42,8 +42,6 @@ $(document).ready(function() {
         }
     });
 
-
-
     $("#generate-btn").click(function() {
         var e = document.getElementById("ddlViewBy");
         var option = e.options[e.selectedIndex].value;
