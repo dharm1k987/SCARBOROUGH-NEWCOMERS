@@ -7,7 +7,7 @@ $(document).ready(function() {
     }
 
     $('#login-btn').click(function() {
-        var data = {username: $("#orgTEQlogin").val(), password: $("#orgTEQPwd").val()};
+        let data = {username: $("#orgTEQlogin").val(), password: $("#orgTEQPwd").val()};
         $.ajax({
             type: 'POST',
             url: '/login',

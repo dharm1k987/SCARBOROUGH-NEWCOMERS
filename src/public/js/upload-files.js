@@ -7,12 +7,6 @@ $(document).ready(function() {
         return;
     }
     
-    $('#org-upload-btn').click(function() {
-        console.log("will first check if all valid");
-        console.log("will then call api");
-        console.log("description is " + $("#description").val() + " and dropdown val is " + $(".dropdown-upload").text());
-    });
-
     // dropdown select
     $(".dropdown-menu li a").click(function(){
        $(".dropdown-upload").text($(this).text()).append(' <span class="caret"></span>');
@@ -27,10 +21,9 @@ $(document).ready(function() {
             alert("Please select a file");
             return;
         }
-        var actionurl = e.currentTarget.action;
-
-        console.log(actionurl);
-        var formData = new FormData($("#my-form")[0]);
+        let actionurl = e.currentTarget.action;
+        let formData = new FormData($("#my-form")[0]);
+        // submit the form
         $.ajax({
             url: actionurl,
             type: 'post',

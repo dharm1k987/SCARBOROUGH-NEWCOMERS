@@ -8,11 +8,11 @@ $(document).ready(function() {
     }
 
     // if we are already logged in, we cannot be on the login page
-    radio = "";
     $('#create-btn').click(function() {
+        let radio = "";
         if ($('input[id="orgRadio"]:checked').val() == "on") { radio = "org"; }
         else { radio = "teq"; }
-        var data = {username: $("#CreateUsername").val(), password: $("#CreatePwd").val(), type: radio};
+        let data = {username: $("#CreateUsername").val(), password: $("#CreatePwd").val(), type: radio};
 
         if ($("#CreateUsername").val() == "" || $("#CreatePwd").val() == "") {
             alert("Please make sure all fields are entered and correct.");

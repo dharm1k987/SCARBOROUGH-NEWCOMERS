@@ -7,17 +7,13 @@ $(document).ready(function() {
         return;
     }
 
-    var tableJSON;
-    var pieChart = null;
-
     $("#generate-btn").click(function() {
-        var e = document.getElementById("ddlViewBy");
-        var option = e.options[e.selectedIndex].value;
+        let option = $('#ddlViewBy').find('option:selected').text()
 
         $("#generate-btn").val("Generating ...");
         $("#generate-btn").prop("disabled", true);
+        let data = {template: option};
 
-        var data = {template: option};
         $.ajax({
             type: 'POST',
             url: '/generate-trends',

@@ -9,9 +9,8 @@ $(document).ready(function() {
 
     var chart = null;
 
-    trendsJSON = localStorage.getItem('trendsJSON');
+    var trendsJSON = JSON.parse(localStorage.getItem('trendsJSON'));
     var tableHeader = localStorage.tableHeader;
-    trendsJSON = JSON.parse(trendsJSON);
 
     // populate dropdown options
     function populateOptions () {
@@ -22,10 +21,10 @@ $(document).ready(function() {
     
         // add options to optgroups
         for (i in trendsJSON) {
-            var data = trendsJSON[i]['data'];
+            let data = trendsJSON[i]['data'];
             for (header in data) {
                 for (var option in data[header]["options"]) {
-                    var headerEl = $('[label="' + header + '"]');
+                    let headerEl = $('[label="' + header + '"]');
                     if (!headerEl.find('option[value="' + option + '"]').length) {
                         $("<option id='" + option + "'>").val(option).text(option).appendTo(headerEl);
                     }
@@ -63,8 +62,8 @@ $(document).ready(function() {
 
     // construct the options that will go in the chart
     function constructChartOptions(id, optId) {
-        var text = tableHeader + " - " + optId + " (" + id + ")"; 
-        var options = {
+        let text = tableHeader + " - " + optId + " (" + id + ")"; 
+        let options = {
             responsive: true,
             maintainAspectRatio: false,
             title: {
@@ -98,7 +97,7 @@ $(document).ready(function() {
 
     // construct the data that will go in the chart
     function constructChartData(labels, dataClients, dataServices) {
-        var data = {
+        let data = {
             labels: labels, // x axis = dates
             datasets: [
                 {
@@ -141,20 +140,16 @@ $(document).ready(function() {
     // special function that constructs data for the 'All' option, since it is done differently
     function constructDataAll() {
         // parse in special way
-        var labels = [];
-        var dataClients = [];
-        var dataServices = [];
+        let labels = [];
+        let dataClients = [];
+        let dataServices = [];
         
         for (var key in trendsJSON) {
-            console.log(key);
             labels.push(trendsJSON[key]["month"]); // x axis
             dataClients.push(trendsJSON[key]["clients"]); // clients
             dataServices.push(trendsJSON[key]["services"]); // services
         }
 
-        console.log("all labels " + labels);
-        console.log("all clients " + dataClients);
-        console.log("all services " + dataServices);
         return [labels, dataClients, dataServices, "All", ""];
     }
 
@@ -164,7 +159,7 @@ $(document).ready(function() {
 
     // if a user selects a option other then 'All'
     function parseOptionSelected(id, optId) {
-        var optGroupJSON = [];
+        let optGroupJSON = [];
 
         for (item in trendsJSON) {
             // loop over the data
@@ -176,7 +171,6 @@ $(document).ready(function() {
                     if(trendsJSON[item]["data"][header]["options"].hasOwnProperty(id)) {
                         tempJSON[trendsJSON[item]["month"]] = trendsJSON[item]["data"][header];
                     } else {
-                        console.log("does not have property .. adding it");
                         emptyTotal = {"clients": 0, "services": 0};
                         innerJSON = {}; innerJSON[id] = emptyTotal; 
                         outerJSON = {};  outerJSON["options"] = innerJSON;
@@ -195,9 +189,9 @@ $(document).ready(function() {
 
     // convert the present graph to this new one
     function handleGraphConversion(optGroupJSON, id, optId) {
-        var labels = [];
-        var dataClients = [];
-        var dataServices = [];
+        let labels = [];
+        let dataClients = [];
+        let dataServices = [];
 
         for (var key in optGroupJSON) {
             if (typeof(optGroupJSON[key]) == "object") {
@@ -205,7 +199,6 @@ $(document).ready(function() {
                 for (var date in optGroupJSON[key]) {
                     for (var clientService in optGroupJSON[key][date]["options"]) {
                         if (clientService == id) {
-                            console.log(clientService);
                             dataClients.push(optGroupJSON[key][date]["options"][id]["clients"]);
                             dataServices.push(optGroupJSON[key][date]["options"][id]["services"]);
                         }
@@ -223,18 +216,17 @@ $(document).ready(function() {
 
 
     $('#option-select').change(function() {
-        $('#option-select').find('option:selected').parent().attr('id')
-        var id = $('#option-select').find('option:selected').attr('id');
-        var optId = $('#option-select').find('option:selected').parent().attr('id');
-        console.log(id + " --> " + optId);
+        let id = $('#option-select').find('option:selected').attr('id');
+        let optId = $('#option-select').find('option:selected').parent().attr('id');
+
         if ($('#option-select').find('option:selected').text() == "All") {
             // special parse
-            allData = constructDataAll();
+            let allData = constructDataAll();
             createGraph(allData[0], allData[1], allData[2], allData[3], allData[4]);
             return;
         } else {
-            optGroupJSONret = parseOptionSelected(id, optId);
-            optionData = handleGraphConversion(optGroupJSONret, id, optId);
+            let optGroupJSONret = parseOptionSelected(id, optId);
+            let optionData = handleGraphConversion(optGroupJSONret, id, optId);
             createGraph(optionData[0], optionData[1], optionData[2], id, optId);
         }
     });
