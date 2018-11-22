@@ -1,17 +1,13 @@
-var chart = null;
-
 $(document).ready(function() {
     if (localStorage.loginOrg == "false" && localStorage.loginTEQ == "false") {
         window.location.replace("/login");
-        // alert("Please login first");
         return;
     } else if (localStorage.loginOrg == "true" && localStorage.loginTEQ == "false") {
         window.location.replace("/home-org");
-        // alert("Please login first");
         return;
     }
 
-    console.log("in trend graph");
+    var chart = null;
 
     trendsJSON = localStorage.getItem('trendsJSON');
     var tableHeader = localStorage.tableHeader;
@@ -40,13 +36,6 @@ $(document).ready(function() {
 
     populateOptions();
 
-    /*
-    var pieChart = new Chart(ctx, {
-        type: 'line',
-        data: constructData(trendsJSON),
-        options: options,
-    });*/
-
     function constructOptions(id, optId) {
         var text = tableHeader + " - " + optId + " (" + id + ")"; 
         var options = {
@@ -72,7 +61,7 @@ $(document).ready(function() {
                     ticks: {
                         beginAtZero: true,
                         callback: function (value) { if (Number.isInteger(value)) { return value; } },
-                        stepSize: 1
+                        stepSize: 5
                     }
                 }]
             }
@@ -127,15 +116,11 @@ $(document).ready(function() {
             
             if (typeof(optGroupJSON[key]) == "object") {
                 labels.push(Object.keys(optGroupJSON[key])[0]); // x-axis of dates
-                console.log(optGroupJSON[key]);
                 for (var date in optGroupJSON[key]) {
                     for (var clientService in optGroupJSON[key][date]["options"]) {
                         dataClients.push(optGroupJSON[key][date]["options"][clientService]["clients"]);
                         dataServices.push(optGroupJSON[key][date]["options"][clientService]["services"]);
-                        //console.log();
                     }
-                    //dataClients.push(optGroupJSON[key][date]["options"]["clients"]);
-                    //dataServices.push(optGroupJSON[key][date]["options"]["services"]);
                 }
             }
             
@@ -161,54 +146,15 @@ $(document).ready(function() {
                     } else {
                         console.log("does not have property .. adding it");
                         emptyTotal = {"clients": 0, "services": 0};
-                        innerJSON = {};
-                        innerJSON[id] = emptyTotal;
-                        outerJSON = {};
-                        outerJSON["options"] = innerJSON;
+                        innerJSON = {}; innerJSON[id] = emptyTotal; 
+                        outerJSON = {};  outerJSON["options"] = innerJSON;
                         tempJSON[trendsJSON[item]["month"]] = outerJSON;
                     }
-                    // tempJSON = {};
-                    //tempJSON[trendsJSON[item]["month"]] = trendsJSON[item]["data"][header];
-                    console.log(JSON.stringify(tempJSON));
                     optGroupJSON.push(tempJSON, id);
                 }
             }
-            //$("#option-select").append($("<optgroup></optgroup>").attr('label', header).attr('id', header));
-          
+         
         }
-        /*
-                [
-        {
-        "2018-2": {
-            "options": {
-                "FRENCH": {
-                "clients": 0,
-                "services": 0
-                }
-            }
-            }
-        },
-        {
-        "2018-11": {
-            "options": {
-                "ENGLISH": {
-                "clients": 1,
-                "services": 1
-                },
-                "FRENCH": {
-                "clients": 1,
-                "services": 1
-                }
-            },
-            "total": {
-                "clients": 2,
-                "services": 2
-            }
-            }
-        }
-        ]
-        */
-
         handleGraphConversion(optGroupJSON, id, optId);
     }
 
@@ -242,14 +188,9 @@ $(document).ready(function() {
             // special parse
             allData = constructDataAll();
             createGraph(allData[0], allData[1], allData[2], allData[3], allData[4]);
-            console.log("all");
             return;
         } else {
             parseOptionSelected(id, optId);
         }
-        
-        
-        //$('#option-select option[id="select-option"]').attr('disabled','disabled');
-
     });
 });
