@@ -52,6 +52,7 @@ eventLogController(app);
 homeorgController(app);
 generateController.main(app);
 tableController(app);
+queryController(app);
 setupController(app);
 trendsController(app);
 

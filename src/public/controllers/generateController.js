@@ -23,7 +23,7 @@ function generateJson (entries, cb) {
             }
         }
     */
-   
+
     var entryCount = entries.length;
     var entryProc = 0;
     var res = {};
@@ -38,14 +38,14 @@ function generateJson (entries, cb) {
         // check if service was received for this entry
         if (typeof entry['SUPPORT SERVICES RECEIVED'] !== 'undefined'
             && entry['SUPPORT SERVICES RECEIVED'] === 'YES') {
-            servicesReceived = true; 
+            servicesReceived = true;
         }
 
         for (j in entry) {
             let input = entry[j].toUpperCase();
             let header = j.toUpperCase();
             let validOptions = null;
-            
+
             optionsDb.find({ header: header }, function (err, docs) {
                 // get valid options for this header
                 if (docs.length === 0) {
@@ -88,7 +88,7 @@ function generateJson (entries, cb) {
                             if (typeof res['AGE'] === 'undefined') {
                                 res['AGE'] = {'options': {}, 'total': {'clients': 0, 'services': 0}};
                             }
-                            
+
                             // find the interval the age is in
                             for (k = 0; k < 100; k += 4) {
                                 if (age >= k && age < k + 4) {
@@ -129,7 +129,7 @@ function generateJson (entries, cb) {
                 headerProc++;
                 if (headerProc === headerCount) {
                     entryProc++;
-                    if (entryProc === entryCount) { 
+                    if (entryProc === entryCount) {
                         cb(res);
                     }
                 }
@@ -146,7 +146,7 @@ function calculateAge (birthDate) {
     let msDiff = Math.abs(new Date() - dobObj);
     return Math.floor(msDiff / 31536000000);
 }
- 
+
 module.exports.reportObj = generateJson;
 module.exports.main = function (app) {
     app.get('/generate', function (req, res) {
@@ -175,7 +175,7 @@ module.exports.main = function (app) {
                     return parseInt(a.replace('-', '')) - parseInt(b.replace('-', ''));
                 });
             }
-            
+
             res.json(availableMonths);
             // res.render('generate-page');
         });
