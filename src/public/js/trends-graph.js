@@ -13,6 +13,7 @@ $(document).ready(function() {
     var tableHeader = localStorage.tableHeader;
     trendsJSON = JSON.parse(trendsJSON);
 
+    // populate dropdown options
     function populateOptions () {
         // add header optgroups
         for (header in trendsJSON[0]['data']) {
@@ -31,7 +32,9 @@ $(document).ready(function() {
                 }
             }
         }
-
+    }
+    // sort dropdown options
+    function sortOptions() {
         // sort options
         $('optgroup').each(function () {
             $(this).html($(this).children().sort(function (a, b) {
@@ -56,8 +59,10 @@ $(document).ready(function() {
     }
 
     populateOptions();
+    sortOptions();
 
-    function constructOptions(id, optId) {
+    // construct the options that will go in the chart
+    function constructChartOptions(id, optId) {
         var text = tableHeader + " - " + optId + " (" + id + ")"; 
         var options = {
             responsive: true,
@@ -91,7 +96,8 @@ $(document).ready(function() {
         return options;
     }
 
-    function constructData(labels, dataClients, dataServices) {
+    // construct the data that will go in the chart
+    function constructChartData(labels, dataClients, dataServices) {
         var data = {
             labels: labels, // x axis = dates
             datasets: [
@@ -117,6 +123,7 @@ $(document).ready(function() {
         return data;
     }
 
+    // create the graph itself
     function createGraph(labels, dataClients, dataServices, id, optId) {
         var ctx = document.getElementById("myChart");
 
@@ -126,37 +133,36 @@ $(document).ready(function() {
 
         chart = new Chart(ctx, {
             type: 'line',
-            data: constructData(labels, dataClients, dataServices),
-            options: constructOptions(id, optId),
+            data: constructChartData(labels, dataClients, dataServices),
+            options: constructChartOptions(id, optId),
         });
     }
 
-    function handleGraphConversion(optGroupJSON, id, optId) {
+    // special function that constructs data for the 'All' option, since it is done differently
+    function constructDataAll() {
+        // parse in special way
         var labels = [];
         var dataClients = [];
         var dataServices = [];
-
-        for (var key in optGroupJSON) {
-            if (typeof(optGroupJSON[key]) == "object") {
-                labels.push(Object.keys(optGroupJSON[key])[0]); // x-axis of dates
-                for (var date in optGroupJSON[key]) {
-                    for (var clientService in optGroupJSON[key][date]["options"]) {
-                        if (clientService == id) {
-                            console.log(clientService);
-                            dataClients.push(optGroupJSON[key][date]["options"][id]["clients"]);
-                            dataServices.push(optGroupJSON[key][date]["options"][id]["services"]);
-                        }
-                    }
-                }
-            }
+        
+        for (var key in trendsJSON) {
+            console.log(key);
+            labels.push(trendsJSON[key]["month"]); // x axis
+            dataClients.push(trendsJSON[key]["clients"]); // clients
+            dataServices.push(trendsJSON[key]["services"]); // services
         }
 
-        console.log(labels);
-        console.log(dataClients);
-        console.log(dataServices);
-        createGraph(labels, dataClients, dataServices, id, optId);
+        console.log("all labels " + labels);
+        console.log("all clients " + dataClients);
+        console.log("all services " + dataServices);
+        return [labels, dataClients, dataServices, "All", ""];
     }
 
+    // by default, we want all data displayed
+    allData = constructDataAll();
+    createGraph(allData[0], allData[1], allData[2], allData[3], allData[4]);
+
+    // if a user selects a option other then 'All'
     function parseOptionSelected(id, optId) {
         var optGroupJSON = [];
 
@@ -183,31 +189,38 @@ $(document).ready(function() {
         }
 
         console.log(optGroupJSON);
-        handleGraphConversion(optGroupJSON, id, optId);
+        return optGroupJSON;
+        
     }
 
-    function constructDataAll() {
-        // parse in special way
+    // convert the present graph to this new one
+    function handleGraphConversion(optGroupJSON, id, optId) {
         var labels = [];
         var dataClients = [];
         var dataServices = [];
-        
-        for (var key in trendsJSON) {
-            console.log(key);
-            labels.push(trendsJSON[key]["month"]); // x axis
-            dataClients.push(trendsJSON[key]["clients"]); // clients
-            dataServices.push(trendsJSON[key]["services"]); // services
+
+        for (var key in optGroupJSON) {
+            if (typeof(optGroupJSON[key]) == "object") {
+                labels.push(Object.keys(optGroupJSON[key])[0]); // x-axis of dates
+                for (var date in optGroupJSON[key]) {
+                    for (var clientService in optGroupJSON[key][date]["options"]) {
+                        if (clientService == id) {
+                            console.log(clientService);
+                            dataClients.push(optGroupJSON[key][date]["options"][id]["clients"]);
+                            dataServices.push(optGroupJSON[key][date]["options"][id]["services"]);
+                        }
+                    }
+                }
+            }
         }
 
-        console.log("all labels " + labels);
-        console.log("all clients " + dataClients);
-        console.log("all services " + dataServices);
-        return [labels, dataClients, dataServices, "All", ""];
+        console.log(labels);
+        console.log(dataClients);
+        console.log(dataServices);
+        return [labels, dataClients, dataServices];
     }
 
-    // by default, we want all data displayed
-    allData = constructDataAll();
-    createGraph(allData[0], allData[1], allData[2], allData[3], allData[4]);
+
 
     $('#option-select').change(function() {
         $('#option-select').find('option:selected').parent().attr('id')
@@ -220,7 +233,9 @@ $(document).ready(function() {
             createGraph(allData[0], allData[1], allData[2], allData[3], allData[4]);
             return;
         } else {
-            parseOptionSelected(id, optId);
+            optGroupJSONret = parseOptionSelected(id, optId);
+            optionData = handleGraphConversion(optGroupJSONret, id, optId);
+            createGraph(optionData[0], optionData[1], optionData[2], id, optId);
         }
     });
 });
