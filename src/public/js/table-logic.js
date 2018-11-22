@@ -139,57 +139,22 @@ $(document).ready(function() {
 
     $(".main-body").append(html + "</table></div>");
 
-    // printing button
-    function printData()
-    {
-
-    var headerToPrint = '<h1 style="color:black; font-family: Overpass, sans-serif;">' + combinedHeader + '</h1>'
-    var htmlToPrint = `
-        <style type="text/css">
-        table {
-            background-color:white;
-            border: 1px solid black;
-            width: 100%;
-            max-width: 100%;
-            margin-bottom: 20px;
-            border-spacing: 0;
-            border-collapse: collapse;
-            font-family: 'Overpass', sans-serif;
-        }
-        table th {
-            border:1px solid black;
-        }
-        table td {
-
-            -webkit-print-color-adjust:exact;
-            background-color:#efefef;
-            border: 1px solid black;
-        }
-
-        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-            padding: 2px;
-            line-height: 1.42857143;
-            vertical-align: top;
-        }
-
-        a {
-            display: none;
-        }
-        </style>
-    
-    `
-
-
-
-    var divToPrint=document.getElementById("printTable");
-    newWin= window.open("");
-    newWin.document.write(headerToPrint + htmlToPrint + divToPrint.outerHTML);
-    newWin.print();
-    newWin.close();
-    }
 
     $('#print-btn').on('click',function(){
-        printData();
+        
+        var headerToPrint = '<h1 style="color:black; font-family: Overpass, sans-serif;">' + combinedHeader + '</h1>'
+        var htmlToPrint;
+        $.get('/views/print-table.ejs', function(data) {
+            htmlToPrint = data;
+        }, 'text');
+
+        htmlToPrint = $.ajax({type: "GET", url: "/views/print-table.ejs", async: false}).responseText;
+
+        var divToPrint=document.getElementById("printTable");
+        newWin= window.open("");
+        newWin.document.write(headerToPrint + htmlToPrint + divToPrint.outerHTML);
+        newWin.print();
+        newWin.close();
     })
 
 });
