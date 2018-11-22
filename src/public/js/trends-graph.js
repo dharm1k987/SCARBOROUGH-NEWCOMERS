@@ -43,9 +43,9 @@ $(document).ready(function() {
                 });
                 
                 for (var j in options) {
-                    option = options[j].replace(/'/g, '');
+                    option = options[j];
                     var headerEl = $('[label="' + header + '"]');
-                    if (!headerEl.find("option[value='" + option + "']").length) {
+                    if (!headerEl.find('option[value="' + option + '"]').length) {
                         $("<option id='" + option + "'>").val(option).text(option).appendTo(headerEl);
                     }
                 }
