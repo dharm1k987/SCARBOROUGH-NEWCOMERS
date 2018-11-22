@@ -64,7 +64,7 @@ function parseTemplateHeaders (sheet, rowNum) {
         if (typeof nextCell === 'undefined') {
             headers.push(void 0);
         } else {
-            headers.push(nextCell.w);
+            headers.push(nextCell.w.toUpperCase());
         }
     }
 
@@ -94,31 +94,40 @@ function findAndParseSheet (workbook, validHeaders) {
         }
     }
 
+    // convert everything to uppercase
+    for (i in json) {
+        let entry = json[i];
+        for (j in entry) {
+            if (typeof entry[j] !== 'string') entry[j] = entry[j].toString();
+            entry[j] = entry[j].toUpperCase();
+        }
+    }
+
     return json;
 }
 
-function insertToDb (template, json, cb) {
-    let date = new Date();
-    let year = date.getUTCFullYear();
-    let month = date.getUTCMonth() + 1;
-    let monthStr = year + '-' + month;
-
+function insertToDb (monthStr, template, json, cb) {
     db2.find({ month: monthStr, template: template }, function (err, docs) {
         if (docs.length === 0) {
             db2.insert({month: monthStr, template: template, entries: json});
         } else {
-            var entries = docs[0]['entries'];
-            var pushed = 0;
-            var skipped = 0;
+            let entries = docs[0]['entries'];
+            let pushed = 0;
+            let skipped = 0;
             for (i in json) {
                 // TODO: check if some templates don't have unique identifier value field
-                var entry = json[i];
-                var uniqueField = 'Unique Identifier Value';
-                var uniqueId = entry[uniqueField];
+                let entry = json[i];
+                let uniqueField = 'UNIQUE IDENTIFIER VALUE';
+
+                if (template === 'LT Course Setup') {
+                    uniqueField = 'COURSE CODE';
+                }
+
+                let uniqueId = entry[uniqueField];
                 // check if an entry with the ID already exists
-                var matchIds = entries.filter(entry => (entry[uniqueField] === uniqueId));
+                let matchIds = entries.filter(dbEntry => (dbEntry[uniqueField] === uniqueId));
                 if (matchIds.length === 0) {
-                    db2.update({ month: monthStr, template: template }, { $push: { entries: entry } });
+                    db2.update({ month: monthStr, template: template }, { $push: { entries: entry } }, {});
                     pushed++;
                 } else {
                     console.log('Entry with ID ' + uniqueId + ' already exists, skipping.');
@@ -128,6 +137,67 @@ function insertToDb (template, json, cb) {
         }
 
         cb();
+    });
+}
+
+function insertRandomData (template, json, cb) {
+    let year = 2018;
+    let month = Math.floor((Math.random() * 6) + 4);
+    let monthStr = year + '-' + month;
+
+    randomizeOptions(template, json, function (newJson) {
+        insertToDb(monthStr, template, newJson, cb);
+    });
+}
+
+function randomizeOptions (template, json, cb) {
+    var newJson = json.slice(0);
+
+    headersDb.find({ template: template }, function (err, docs) {
+        const dobPatt = new RegExp('DATE OF BIRTH');
+        let headers = docs[0]['headers'];      
+        let entriesProc = 0;
+
+        for (let entryNum in newJson) {
+            let entry = newJson[entryNum];
+            let headersProc = 0;
+            for (headerNum in headers) {
+                let header = headers[headerNum];
+                if (dobPatt.test(header)) {
+                    let year = Math.floor((Math.random() * 60) + 1940);
+                    let month = ('0' + Math.floor((Math.random() * 12) + 1)).slice(-2);
+                    let day = ('0' + Math.floor((Math.random() * 30) + 1)).slice(-2);
+                    let dateStr = year + '-' + month + '-' + day;
+                    entry[header] = dateStr;
+                }
+
+                optionsDb.find({header: header}, function (err, docs) {
+                    if (docs.length > 0) {
+                        let options = docs[0]['options'];
+                        if (options.length > 0) {
+                            let randomOpt = options[Math.floor(Math.random() * options.length)];
+                            entry[header] = randomOpt;
+                        }
+                    }
+
+                    let uniqueField = 'UNIQUE IDENTIFIER VALUE';
+                    if (template === 'LT Course Setup') {
+                        uniqueField = 'COURSE CODE';
+                        entry[uniqueField] = 'L-CCSMAR' + Math.floor((Math.random() * 10000) + 1);
+                    } else {
+                        entry[uniqueField] = '' + Math.floor((Math.random() * 999999) + 1);
+                    }
+
+                    headersProc++;
+                    if (headersProc == headers.length) {
+                        entriesProc++;
+                        if (entriesProc == newJson.length) {
+                            cb(newJson);
+                        }
+                    }
+                });
+            }
+        }
     });
 }
 
@@ -151,17 +221,24 @@ module.exports  = function (app) {
         headersDb.find({ template: req.body.template }, function (err, docs) {
             // get or initialize valid headers
             var validHeaders;
-            if (docs.length === 0)
+            if (docs.length === 0) {
                 validHeaders = sampleHeaders(req.body.template, workbook);
-            else
+            } else {
                 validHeaders = docs[0]['headers'];
+            }
 
             var json = findAndParseSheet(workbook, validHeaders);
             if (json == null) {
                 res.status(400);
                 res.send('Headers not valid.');
             } else {
-                insertToDb(req.body.template, json, function () {
+                // use current month for month
+                let date = new Date();
+                let year = date.getUTCFullYear();
+                let month = date.getUTCMonth() + 1;
+                let monthStr = year + '-' + month;
+
+                insertToDb(monthStr, req.body.template, json, function () {
                     res.status(200);
                     res.send({});
                 });

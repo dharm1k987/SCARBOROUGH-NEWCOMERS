@@ -49,7 +49,7 @@ homeController(app);
 helpController(app);
 eventLogController(app);
 homeorgController(app);
-generateController(app);
+generateController.main(app);
 tableController(app);
 setupController(app);
 trendsController(app);

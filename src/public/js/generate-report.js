@@ -21,11 +21,9 @@ function populateMonths() {
 $(document).ready(function() {
     if (localStorage.loginOrg == "false" && localStorage.loginTEQ == "false") {
         window.location.replace("/login");
-        // alert("Please login first");
         return;
     } else if (localStorage.loginOrg == "true" && localStorage.loginTEQ == "false") {
         window.location.replace("/home-org");
-        // alert("Please login first");
         return;
     }
 
@@ -53,11 +51,16 @@ $(document).ready(function() {
         var option2 = f.options[f.selectedIndex].value;
 
         var data = {template: option, date: option2};
+
+        $("#generate-btn").val("Generating ... ");
+        $("#generate-btn").prop("disabled", true);
         $.ajax({
             type: 'POST',
             url: '/generate',
             data: data,
             success: function(response) {
+                $("#generate-btn").val("Generate");
+                $("#generate-btn").prop("disabled", false);
                 // get the type of account they are (teq or org)
                 // setup local storage
                 console.log("success");
@@ -70,6 +73,8 @@ $(document).ready(function() {
                 // reroute them based on the location data provides
             },
             error: function(response) {
+                $("#generate-btn").val("Generate");
+                $("#generate-btn").prop("disabled", false);
                 console.log("something not right.");
             }
         });

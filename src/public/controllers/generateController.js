@@ -5,7 +5,7 @@ var db2 = index.db2;
 var optionsDb = index.optionsDb;
 
 
-function generateJson (docs, cb) {
+function generateJson (entries, cb) {
     // OBJECT STRUCTURE
     /*
         {
@@ -16,12 +16,14 @@ function generateJson (docs, cb) {
                         'services': count
                     }
                 },
-                'total': total
+                'total': {
+                    'clients': count,
+                    'services': count
+                }
             }
         }
     */
    
-    var entries = docs[0]['entries'];
     var entryCount = entries.length;
     var entryProc = 0;
     var res = {};
@@ -34,11 +36,9 @@ function generateJson (docs, cb) {
         let servicesReceived = false;
 
         // check if service was received for this entry
-        if ((typeof entry['Support Services Received'] !== 'undefined'
-            && entry['Support Services Received'] === 'Yes')
-            || (typeof entry['Support services received'] !== 'undefined'
-            && entry['Support services received'] === 'Yes')) {
-                servicesReceived = true; 
+        if (typeof entry['SUPPORT SERVICES RECEIVED'] !== 'undefined'
+            && entry['SUPPORT SERVICES RECEIVED'] === 'YES') {
+            servicesReceived = true; 
         }
 
         for (j in entry) {
@@ -55,7 +55,7 @@ function generateJson (docs, cb) {
                     validOptions = docs[0]['options'];
                     if (validOptions != null && validOptions.includes(input)) {
                         if (typeof res[header] === 'undefined') {
-                            res[header] = {'options': {}, 'total': 0};
+                            res[header] = {'options': {}, 'total': {'clients': 0, 'services': 0}};
                         }
 
                         if (typeof res[header]['options'][input] === 'undefined') {
@@ -73,21 +73,26 @@ function generateJson (docs, cb) {
                             }
                         }
 
-                        res[header]['total']++;
+                        // update totals
+                        if (servicesReceived) {
+                            res[header]['total']['clients']++;
+                            res[header]['total']['services']++;
+                        } else {
+                            res[header]['total']['clients']++;
+                        }
                     } else {
                         if (dobPatt.test(header)) {
                             // input is a date of birth
                             let age = calculateAge(input);
 
                             if (typeof res['AGE'] === 'undefined') {
-                                res['AGE'] = {'options': {}, 'total': 0};
+                                res['AGE'] = {'options': {}, 'total': {'clients': 0, 'services': 0}};
                             }
                             
                             // find the interval the age is in
                             for (k = 0; k < 100; k += 4) {
                                 if (age >= k && age < k + 4) {
                                     let interval = k + '-' + (k + 4);
-
                                     if (typeof res['AGE']['options'][interval] === 'undefined') {
                                         if (servicesReceived) {
                                             res['AGE']['options'][interval] = {'clients': 1, 'services': 1};
@@ -107,7 +112,13 @@ function generateJson (docs, cb) {
                                 }
                             }
 
-                            res['AGE']['total']++;
+                            // update totals
+                            if (servicesReceived) {
+                                res['AGE']['total']['clients']++;
+                                res['AGE']['total']['services']++;
+                            } else {
+                                res['AGE']['total']['clients']++;
+                            }
                         } else {
                             console.log("'" + input + "' is not an option for header '" + header + "'.");
                         }
@@ -135,12 +146,9 @@ function calculateAge (birthDate) {
     let msDiff = Math.abs(new Date() - dobObj);
     return Math.floor(msDiff / 31536000000);
 }
-
-function compareDates(a, b) {
-
-}
-
-module.exports  = function (app) {
+ 
+module.exports.reportObj = generateJson;
+module.exports.main = function (app) {
     app.get('/generate', function (req, res) {
         res.render('generate-page');
     });
@@ -181,7 +189,8 @@ module.exports  = function (app) {
                 res.send(500);
             } else {
                 if (docs.length !== 0) {
-                    generateJson(docs, function (response) {
+                    let entries = docs[0]['entries'];
+                    generateJson(entries, function (response) {
                         // response is object containing report data
                         res.status(200);
                         res.json(response);
