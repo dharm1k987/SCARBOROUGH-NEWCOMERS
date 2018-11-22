@@ -1,56 +1,3 @@
-var tableJSON;
-var pieChart = null;
-
-// when the user click the "see chart"
-function updateChart (btn) {
-    var ctx = document.getElementById("pieChart");
-    var header = btn.getAttribute("data-header");
-    var options = [];
-    var counts = [];
-
-    var chartHeader = document.getElementById("chartHeader");
-    chartHeader.innerHTML = header;
-    
-    for (option in tableJSON[header]["options"]) {
-        options.push(option);
-        counts.push(tableJSON[header]["options"][option]["clients"]);
-    }
-
-    if (pieChart != null) {
-        pieChart.destroy();
-    }
-
-    pieChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: options,
-            datasets: [{
-                data: counts,
-                backgroundColor: shuffle(palette('tol-rainbow', options.length).map(function(hex) {
-                    return '#' + hex;
-                }))
-            }]
-        },
-        options: {
-            responsive: true
-        }
-    });
-}
-
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
 $(document).ready(function() {
     // if we are already logged in, we cannot be on the login page
     if (localStorage.loginOrg == "false" && localStorage.loginTEQ == "false") {
@@ -61,6 +8,7 @@ $(document).ready(function() {
         return;
     }
 
+    // convert a text to title case
     function title(str) {
         return str.replace(
             /\w\S*/g,
@@ -70,26 +18,81 @@ $(document).ready(function() {
         );
     }
 
-    tableJSON = localStorage.getItem('tableJSON');
+    var tableJSON =  JSON.parse(localStorage.getItem('tableJSON'));
     var date = localStorage.getItem('date');
-    var tableHeader = localStorage.tableHeader;
-    tableJSON = JSON.parse(tableJSON);
+    var combinedHeader = localStorage.tableHeader + " - " + date;
 
-    var combinedHeader = tableHeader + " - " + date;
     $(".main-body").append('<h1 style="color:white;">' + combinedHeader + '</h1>');
     var html = $.ajax({type: "GET", url: "/views/partials/table-headers.ejs", async: false}).responseText;
 
+    // when the user click the "see chart"
+    $('.bd-example-modal-lg').on('show.bs.modal', function (e) {
+        let header = ($(e.relatedTarget)[0]).getAttribute("data-header");
+        let options = [];
+        let counts = [];
+        let chartHeader = document.getElementById("chartHeader");
+        chartHeader.innerHTML = header;
+        
+        for (option in tableJSON[header]["options"]) {
+            options.push(option);
+            counts.push(tableJSON[header]["options"][option]["clients"]);
+        }
+        createGraph(options, counts);
+
+      });
+
+     var pieChart = null;
+
+      // shuffle array
+      function shuffle(array) {
+          var currentIndex = array.length, temporaryValue, randomIndex;
+      
+          while (0 !== currentIndex) {
+              randomIndex = Math.floor(Math.random() * currentIndex);
+              currentIndex -= 1; temporaryValue = array[currentIndex];
+              array[currentIndex] = array[randomIndex]; array[randomIndex] = temporaryValue;
+          }
+      
+          return array;
+      }
+
+      
+    function createGraph(options, counts) {
+        var ctx = document.getElementById("pieChart");
+            
+        if (pieChart != null) {
+            pieChart.destroy();
+        }
+
+        pieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: options,
+                datasets: [{
+                    data: counts,
+                    backgroundColor: shuffle(palette('tol-rainbow', options.length).map(function(hex) {
+                        return '#' + hex;
+                    }))
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    }
+
+    // creation of the table starts here
     for (var header in tableJSON) {
         // loop over the sub items
         for (var subitem in tableJSON[header]) {
          //   console.log("The subitem is " + subitem);
             if (subitem == "options") {
-                var htmlHeaders = "<thead><tr><th>" + header 
-                    + " <a class='chartBtn' data-header='" + header + "' data-toggle='modal' data-target='.bd-example-modal-lg' onclick='updateChart(this)'>(See chart)</a>"
+                let htmlHeaders = "<thead><tr><th>" + header 
+                    + " <a class='chartBtn' data-header='" + header + "' data-toggle='modal' data-target='.bd-example-modal-lg''>(See chart)</a>"
                     + "</th><th></th><th></th><th></th></tr></thead><tbody>";
-                var htmlOptions = "";
+                let htmlOptions = "";
                 // loop over the options
-                var options = Object.keys(tableJSON[header]["options"]);
+                let options = Object.keys(tableJSON[header]["options"]);
 
                 options.sort(function (a, b) {
                     let aNum = parseInt(a, 10);
@@ -111,7 +114,7 @@ $(document).ready(function() {
                 for (var i in options) {
                     optObj = tableJSON[header]["options"][options[i]];
                     let servicePercent = ((optObj["services"] / optObj["clients"]) * 100).toFixed(0);
-                    var htmlOptions = "<tr><td style='background-color:#efefef;'>" 
+                    let htmlOptions = "<tr><td style='background-color:#efefef;'>" 
                         + title(options[i]) + "</td>" 
                         + "<td style='background-color:#efefef;'>" + optObj["clients"] + "</td>" 
                         + "<td style='background-color:#efefef;'>" + optObj["services"] + "</td>" 
@@ -124,7 +127,7 @@ $(document).ready(function() {
 
                 html += htmlHeaders;
             } else if (subitem == "total") {
-                var css = "'background-color:#f5f5f5;border-bottom:1px solid black'";
+                let css = "'background-color:#f5f5f5;border-bottom:1px solid black'";
                 let servicePercent = (tableJSON[header]["total"]["services"] / tableJSON[header]["total"]["clients"] * 100).toFixed(0);
 
                //  console.log("<tr><td style=" + css + ">" + "Total" + "</td>");
@@ -138,17 +141,16 @@ $(document).ready(function() {
         }
     }
 
+    // add the table to the dom
     $(".main-body").append(html + "</table></div>");
 
     $('#print-btn').on('click',function(){
 
-        var headerToPrint = '<h1 style="color:black; font-family: Overpass, sans-serif;">' + combinedHeader + '</h1>'
-        var htmlToPrint;
+        let headerToPrint = '<h1 style="color:black; font-family: Overpass, sans-serif;">' + combinedHeader + '</h1>'
+        let htmlToPrint = $.ajax({type: "GET", url: "/views/partials/print-table.ejs", async: false}).responseText;
 
-        htmlToPrint = $.ajax({type: "GET", url: "/views/partials/print-table.ejs", async: false}).responseText;
-
-        var divToPrint = document.getElementById("printTable");
-        newWin= window.open("");
+        let divToPrint = document.getElementById("printTable");
+        let newWin = window.open("");
         newWin.document.write(headerToPrint + htmlToPrint + divToPrint.outerHTML);
         newWin.print();
         newWin.close();
