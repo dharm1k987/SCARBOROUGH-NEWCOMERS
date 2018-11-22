@@ -1,6 +1,7 @@
 var tableJSON;
 var pieChart = null;
 
+// when the user click the "see chart"
 function updateChart (btn) {
     var ctx = document.getElementById("pieChart");
     var header = btn.getAttribute("data-header");
@@ -76,8 +77,7 @@ $(document).ready(function() {
 
     var combinedHeader = tableHeader + " - " + date;
     $(".main-body").append('<h1 style="color:white;">' + combinedHeader + '</h1>');
-    var html;
-    html = $.ajax({type: "GET", url: "/views/partials/table-headers.ejs", async: false}).responseText;
+    var html = $.ajax({type: "GET", url: "/views/partials/table-headers.ejs", async: false}).responseText;
 
     for (var header in tableJSON) {
         // loop over the sub items
