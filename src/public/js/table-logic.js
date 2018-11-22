@@ -81,6 +81,25 @@ $(document).ready(function() {
         });
     }
 
+    function sortOptions(options) {
+        options.sort(function (a, b) {
+            let aNum = parseInt(a, 10);
+            let bNum = parseInt(b, 10)
+
+            if (!isNaN(aNum) && !isNaN(bNum)) {
+                return aNum - bNum;
+            } else if (a === 'YES' || b === 'YES') {
+                if (a === 'YES') return -1;
+                else if (b === 'YES') return 1;
+                else return 0;
+            } else {
+                if (a < b) return -1;
+                if (a > b) return 1;
+                else return 0;
+            }
+        });
+    }
+
     // creation of the table starts here
     for (var header in tableJSON) {
         // loop over the sub items
@@ -93,23 +112,7 @@ $(document).ready(function() {
                 let htmlOptions = "";
                 // loop over the options
                 let options = Object.keys(tableJSON[header]["options"]);
-
-                options.sort(function (a, b) {
-                    let aNum = parseInt(a, 10);
-                    let bNum = parseInt(b, 10)
-
-                    if (!isNaN(aNum) && !isNaN(bNum)) {
-                        return aNum - bNum;
-                    } else if (a === 'YES' || b === 'YES') {
-                        if (a === 'YES') return -1;
-                        else if (b === 'YES') return 1;
-                        else return 0;
-                    } else {
-                        if (a < b) return -1;
-                        if (a > b) return 1;
-                        else return 0;
-                    }
-                });
+                sortOptions(options);
 
                 for (var i in options) {
                     optObj = tableJSON[header]["options"][options[i]];
