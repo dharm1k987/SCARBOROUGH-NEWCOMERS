@@ -113,7 +113,7 @@ $(document).ready(function() {
 </table> */}
 
 
-   // $(".main-body").append(html);
+    // $(".main-body").append(html);
 
 
     for (var header in tableJSON) {
@@ -128,7 +128,24 @@ $(document).ready(function() {
                 var htmlOptions = "";
                 // loop over the options
                 var options = Object.keys(tableJSON[header]["options"]);
-                options.sort();
+
+                options.sort(function (a, b) {
+                    let aNum = parseInt(a, 10);
+                    let bNum = parseInt(b, 10)
+
+                    if (!isNaN(aNum) && !isNaN(bNum)) {
+                        return aNum - bNum;
+                    } else if (a === 'YES' || b === 'YES') {
+                        if (a === 'YES') return -1;
+                        else if (b === 'YES') return 1;
+                        else return 0;
+                    } else {
+                        if (a < b) return -1;
+                        if (a > b) return 1;
+                        else return 0;
+                    }
+                });
+
                 for (var i in options) {
                     optObj = tableJSON[header]["options"][options[i]];
                     console.log(optObj);
@@ -155,7 +172,7 @@ $(document).ready(function() {
               //  console.log(JSON.stringify(tableJSON[header]));
 
                 var css = "'background-color:#f5f5f5;border-bottom:1px solid black'";
-                let servicePercent = tableJSON[header]["total"]["services"] / tableJSON[header]["total"]["clients"] * 100;
+                let servicePercent = (tableJSON[header]["total"]["services"] / tableJSON[header]["total"]["clients"] * 100).toFixed(0);
 
                //  console.log("<tr><td style=" + css + ">" + "Total" + "</td>");
                 html += "<tr><td style=" + css + ">" + "Total" + "</td>" + "<td style=" + css + ">" + tableJSON[header]["total"]["clients"] + "</td>" 

@@ -28,6 +28,7 @@ $(document).ready(function() {
             var data = trendsJSON[i]['data'];
             for (header in data) {
                 for (option in data[header]['options']) {
+                    option = option.replace(/'/g, '');
                     var headerEl = $('[label="' + header + '"]');
                     if (!headerEl.find("option[value='" + option + "']").length) {
                         $("<option id='" + option + "'>").val(option).text(option).appendTo(headerEl);

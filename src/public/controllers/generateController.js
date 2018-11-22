@@ -92,10 +92,7 @@ function generateJson (entries, cb) {
                             // find the interval the age is in
                             for (k = 0; k < 100; k += 4) {
                                 if (age >= k && age < k + 4) {
-                                    let lower = ('0' + k).slice(-2);
-                                    let upper = ('0' + (k + 4)).slice(-2);
-                                    let interval = lower + '-' + upper;
-
+                                    let interval = k + '-' + (k + 4);
                                     if (typeof res['AGE']['options'][interval] === 'undefined') {
                                         if (servicesReceived) {
                                             res['AGE']['options'][interval] = {'clients': 1, 'services': 1};

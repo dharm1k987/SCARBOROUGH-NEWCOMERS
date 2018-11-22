@@ -106,12 +106,7 @@ function findAndParseSheet (workbook, validHeaders) {
     return json;
 }
 
-function insertToDb (template, json, cb) {
-    let date = new Date();
-    let year = date.getUTCFullYear();
-    let month = date.getUTCMonth() + 1;
-    let monthStr = year + '-' + month;
-
+function insertToDb (monthStr, template, json, cb) {
     db2.find({ month: monthStr, template: template }, function (err, docs) {
         if (docs.length === 0) {
             db2.insert({month: monthStr, template: template, entries: json});
@@ -145,23 +140,31 @@ function insertToDb (template, json, cb) {
     });
 }
 
+function insertRandomData (template, json, cb) {
+    let year = 2018;
+    let month = Math.floor((Math.random() * 6) + 4);
+    let monthStr = year + '-' + month;
+
+    randomizeOptions(template, json, function (newJson) {
+        insertToDb(monthStr, template, newJson, cb);
+    });
+}
 
 function randomizeOptions (template, json, cb) {
-    let newJson = json;
-    let dobPatt = new RegExp('DATE OF BIRTH');
+    var newJson = json.slice(0);
 
     headersDb.find({ template: template }, function (err, docs) {
+        const dobPatt = new RegExp('DATE OF BIRTH');
         let headers = docs[0]['headers'];      
         let entriesProc = 0;
 
-        for (i in newJson) {
-            let entry = newJson[i];
+        for (let entryNum in newJson) {
+            let entry = newJson[entryNum];
             let headersProc = 0;
             for (headerNum in headers) {
                 let header = headers[headerNum];
-
                 if (dobPatt.test(header)) {
-                    let year = Math.floor((Math.random() * 90) + 1930);
+                    let year = Math.floor((Math.random() * 60) + 1940);
                     let month = ('0' + Math.floor((Math.random() * 12) + 1)).slice(-2);
                     let day = ('0' + Math.floor((Math.random() * 30) + 1)).slice(-2);
                     let dateStr = year + '-' + month + '-' + day;
@@ -169,9 +172,7 @@ function randomizeOptions (template, json, cb) {
                 }
 
                 optionsDb.find({header: header}, function (err, docs) {
-                    if (docs.length === 0) {
-                        // do nothing
-                    } else {
+                    if (docs.length > 0) {
                         let options = docs[0]['options'];
                         if (options.length > 0) {
                             let randomOpt = options[Math.floor(Math.random() * options.length)];
@@ -180,10 +181,11 @@ function randomizeOptions (template, json, cb) {
                     }
 
                     let uniqueField = 'UNIQUE IDENTIFIER VALUE';
-                    entry[uniqueField] = '' + Math.floor((Math.random() * 999999) + 1);
                     if (template === 'LT Course Setup') {
                         uniqueField = 'COURSE CODE';
                         entry[uniqueField] = 'L-CCSMAR' + Math.floor((Math.random() * 10000) + 1);
+                    } else {
+                        entry[uniqueField] = '' + Math.floor((Math.random() * 999999) + 1);
                     }
 
                     headersProc++;
@@ -219,17 +221,24 @@ module.exports  = function (app) {
         headersDb.find({ template: req.body.template }, function (err, docs) {
             // get or initialize valid headers
             var validHeaders;
-            if (docs.length === 0)
+            if (docs.length === 0) {
                 validHeaders = sampleHeaders(req.body.template, workbook);
-            else
+            } else {
                 validHeaders = docs[0]['headers'];
+            }
 
             var json = findAndParseSheet(workbook, validHeaders);
             if (json == null) {
                 res.status(400);
                 res.send('Headers not valid.');
             } else {
-                insertToDb(req.body.template, json, function () {
+                // use current month for month
+                let date = new Date();
+                let year = date.getUTCFullYear();
+                let month = date.getUTCMonth() + 1;
+                let monthStr = year + '-' + month;
+
+                insertToDb(monthStr, req.body.template, json, function () {
                     res.status(200);
                     res.send({});
                 });
