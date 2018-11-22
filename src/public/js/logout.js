@@ -1,7 +1,6 @@
 $(document).ready(function() {
     if (localStorage.loginOrg == "false" && localStorage.loginTEQ == "false") {
         window.location.replace("/login");
-        // alert("Please login first");
         return;
     }
     

@@ -1,21 +1,18 @@
 $(document).ready(function() {
     if (localStorage.loginOrg == "false" && localStorage.loginTEQ == "false") {
         window.location.replace("/login");
-        // alert("Please login first");
         return;
     } else if (localStorage.loginOrg == "true" && localStorage.loginTEQ == "false") {
         window.location.replace("/home-org");
-        // alert("Please login first");
         return;
     }
-    console.log("in create");
+
     // if we are already logged in, we cannot be on the login page
     radio = "";
     $('#create-btn').click(function() {
         if ($('input[id="orgRadio"]:checked').val() == "on") { radio = "org"; }
         else { radio = "teq"; }
         var data = {username: $("#CreateUsername").val(), password: $("#CreatePwd").val(), type: radio};
-        console.log("data is " + JSON.stringify(data));
 
         if ($("#CreateUsername").val() == "" || $("#CreatePwd").val() == "") {
             alert("Please make sure all fields are entered and correct.");
@@ -31,7 +28,6 @@ $(document).ready(function() {
             success: function(response) {
                 alert("Account inserted");
                 location.reload();
-
                 console.log("success");
                 // reroute them based on the location data provides
             },
