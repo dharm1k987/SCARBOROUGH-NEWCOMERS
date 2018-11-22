@@ -137,8 +137,12 @@ $(document).ready(function() {
                 labels.push(Object.keys(optGroupJSON[key])[0]); // x-axis of dates
                 for (var date in optGroupJSON[key]) {
                     for (var clientService in optGroupJSON[key][date]["options"]) {
-                        dataClients.push(optGroupJSON[key][date]["options"][clientService]["clients"]);
-                        dataServices.push(optGroupJSON[key][date]["options"][clientService]["services"]);
+                        if (clientService == id) {
+                            console.log(clientService);
+                            dataClients.push(optGroupJSON[key][date]["options"][id]["clients"]);
+                            dataServices.push(optGroupJSON[key][date]["options"][id]["services"]);
+                        }
+
                     }
                 }
             }
@@ -169,11 +173,12 @@ $(document).ready(function() {
                         outerJSON = {};  outerJSON["options"] = innerJSON;
                         tempJSON[trendsJSON[item]["month"]] = outerJSON;
                     }
-                    optGroupJSON.push(tempJSON, id);
+                    optGroupJSON.push(tempJSON);
                 }
             }
          
         }
+        console.log(optGroupJSON);
         handleGraphConversion(optGroupJSON, id, optId);
     }
 
