@@ -55,6 +55,9 @@ var pieChart = null;
     $("#generate-btn").click(function() {
         var e = document.getElementById("ddlViewBy");
         var option = e.options[e.selectedIndex].value;
+
+        $("#generate-btn").val("Generating ...");
+        $("#generate-btn").prop("disabled", true);
         // var f = document.getElementById("monthID");
         // var option2 = f.options[f.selectedIndex].value;
 
@@ -66,6 +69,8 @@ var pieChart = null;
             success: function(response) {
                 // get the type of account they are (teq or org)
                 // setup local storage
+                $("#generate-btn").val("Generate");
+                $("#generate-btn").prop("disabled", false);
                 console.log("success");
                 console.log(response);
                 localStorage.setItem("trendsJSON", JSON.stringify(response));
@@ -76,6 +81,8 @@ var pieChart = null;
                 // reroute them based on the location data provides
             },
             error: function(response) {
+                $("#generate-btn").val("Generate");
+                $("#generate-btn").prop("disabled", false);
                 console.log("something not right.");
             }
         });
