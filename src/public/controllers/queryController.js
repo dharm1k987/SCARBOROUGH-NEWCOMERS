@@ -27,10 +27,22 @@ module.exports  = function(app) {
         var template = "Needs Assessment&Referrals";
         console.log("inside query", service, "measure: ", measure, "templates: ", template);
         // Get Entries Header from Specified Template Above
-        // Call the Generate Json function in generateController
-        // Using JS enter the object to extract the specified Service & it's measure
-        const result = -1;
-        return result;
+        db2.find({template: template}, function (err, docs) {
+          if (err) {
+            res.status(500);
+            res.send()
+          } else {
+            var entries = docs.entries;
+            // Call the Generate Json function in generateController
+            generateJson(entries, function (response) {
+                // response is object containing report data
+                // Using JS enter the object to extract the specified Service & it's measure
+                var result = response.service.options.measure;
+                res.status(200);
+                res.json(result);
+            });
+          }
+        });
     });
     // app.post("/query/custom", urlencodedParser, function(req, res) {
     //
