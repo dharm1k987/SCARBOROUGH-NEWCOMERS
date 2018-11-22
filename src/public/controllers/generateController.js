@@ -36,11 +36,9 @@ function generateJson (entries, cb) {
         let servicesReceived = false;
 
         // check if service was received for this entry
-        if ((typeof entry['Support Services Received'] !== 'undefined'
-            && entry['Support Services Received'] === 'Yes')
-            || (typeof entry['Support services received'] !== 'undefined'
-            && entry['Support services received'] === 'Yes')) {
-                servicesReceived = true; 
+        if (typeof entry['SUPPORT SERVICES RECEIVED'] !== 'undefined'
+            && entry['SUPPORT SERVICES RECEIVED'] === 'YES') {
+            servicesReceived = true; 
         }
 
         for (j in entry) {
@@ -94,7 +92,9 @@ function generateJson (entries, cb) {
                             // find the interval the age is in
                             for (k = 0; k < 100; k += 4) {
                                 if (age >= k && age < k + 4) {
-                                    let interval = k + '-' + (k + 4);
+                                    let lower = ('0' + k).slice(-2);
+                                    let upper = ('0' + (k + 4)).slice(-2);
+                                    let interval = lower + '-' + upper;
 
                                     if (typeof res['AGE']['options'][interval] === 'undefined') {
                                         if (servicesReceived) {

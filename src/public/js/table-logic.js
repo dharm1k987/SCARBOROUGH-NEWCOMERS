@@ -25,15 +25,29 @@ function updateChart (btn) {
             labels: options,
             datasets: [{
                 data: counts,
-                backgroundColor: palette('cb-RdYlBu', options.length).map(function(hex) {
+                backgroundColor: shuffle(palette('tol-rainbow', options.length).map(function(hex) {
                     return '#' + hex;
-                })
+                }))
             }]
         },
         options: {
             responsive: true
         }
     });
+}
+
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
 }
 
 $(document).ready(function() {
@@ -113,21 +127,22 @@ $(document).ready(function() {
                     + "</th><th></th><th></th><th></th></tr></thead><tbody>";
                 var htmlOptions = "";
                 // loop over the options
-                for (var option in tableJSON[header]["options"]) {
+                var options = Object.keys(tableJSON[header]["options"]);
+                options.sort();
+                for (var i in options) {
+                    optObj = tableJSON[header]["options"][options[i]];
+                    console.log(optObj);
                     // console.log("Header is " + header);
 
                     // console.log("Option " + option + " with total " + tableJSON[header]["options"][option]);
-                    let servicePercent = ((tableJSON[header]["options"][option]["services"] 
-                        / tableJSON[header]["options"][option]["clients"]) * 100).toFixed(0);
+                    let servicePercent = ((optObj["services"] / optObj["clients"]) * 100).toFixed(0);
                     var htmlOptions = "<tr><td style='background-color:#efefef;'>" 
-                        + title(option) + "</td>" 
-                        + "<td style='background-color:#efefef;'>" + tableJSON[header]["options"][option]["clients"] + "</td>" 
-                        + "<td style='background-color:#efefef;'>" + tableJSON[header]["options"][option]["services"] + "</td>" 
+                        + title(options[i]) + "</td>" 
+                        + "<td style='background-color:#efefef;'>" + optObj["clients"] + "</td>" 
+                        + "<td style='background-color:#efefef;'>" + optObj["services"] + "</td>" 
                         + "<td style='background-color:#efefef;'>" + servicePercent + "%</td>" 
                         + "</tr>";
 
-                    console.log(tableJSON[header]["options"]);
-                    console.log("--------");
                     htmlHeaders += htmlOptions; 
                     
                    // console.log(html);

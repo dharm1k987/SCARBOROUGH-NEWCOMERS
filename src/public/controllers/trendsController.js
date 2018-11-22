@@ -16,15 +16,9 @@ function generateJson (docs, cb) {
 
         for (j in entries) {
             var entry = entries[j];
-            var serviceReceived;
 
-            if (typeof entry['Support Services Received'] !== 'undefined') {
-                serviceReceived = entry['Support Services Received'];
-            } else if (typeof entry['Support services received'] !== 'undefined') {
-                serviceReceived = entry['Support services received'];
-            }
-
-            if (serviceReceived === 'Yes') {
+            if (typeof entry['SUPPORT SERVICES RECEIVED'] !== 'undefined'
+                && entry['SUPPORT SERVICES RECEIVED'] === 'YES') {
                 res[objNum]['services']++;
             }
         }

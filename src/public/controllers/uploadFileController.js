@@ -64,7 +64,7 @@ function parseTemplateHeaders (sheet, rowNum) {
         if (typeof nextCell === 'undefined') {
             headers.push(void 0);
         } else {
-            headers.push(nextCell.w);
+            headers.push(nextCell.w.toUpperCase());
         }
     }
 
@@ -94,6 +94,15 @@ function findAndParseSheet (workbook, validHeaders) {
         }
     }
 
+    // convert everything to uppercase
+    for (i in json) {
+        let entry = json[i];
+        for (j in entry) {
+            if (typeof entry[j] !== 'string') entry[j] = entry[j].toString();
+            entry[j] = entry[j].toUpperCase();
+        }
+    }
+
     return json;
 }
 
@@ -107,23 +116,23 @@ function insertToDb (template, json, cb) {
         if (docs.length === 0) {
             db2.insert({month: monthStr, template: template, entries: json});
         } else {
-            var entries = docs[0]['entries'];
-            var pushed = 0;
-            var skipped = 0;
+            let entries = docs[0]['entries'];
+            let pushed = 0;
+            let skipped = 0;
             for (i in json) {
                 // TODO: check if some templates don't have unique identifier value field
-                var entry = json[i];
-                var uniqueField = 'Unique Identifier Value';
+                let entry = json[i];
+                let uniqueField = 'UNIQUE IDENTIFIER VALUE';
 
                 if (template === 'LT Course Setup') {
-                    uniqueField = 'Course Code';
+                    uniqueField = 'COURSE CODE';
                 }
 
-                var uniqueId = entry[uniqueField];
+                let uniqueId = entry[uniqueField];
                 // check if an entry with the ID already exists
-                var matchIds = entries.filter(entry => (entry[uniqueField] === uniqueId));
+                let matchIds = entries.filter(dbEntry => (dbEntry[uniqueField] === uniqueId));
                 if (matchIds.length === 0) {
-                    db2.update({ month: monthStr, template: template }, { $push: { entries: entry } });
+                    db2.update({ month: monthStr, template: template }, { $push: { entries: entry } }, {});
                     pushed++;
                 } else {
                     console.log('Entry with ID ' + uniqueId + ' already exists, skipping.');
@@ -133,6 +142,60 @@ function insertToDb (template, json, cb) {
         }
 
         cb();
+    });
+}
+
+
+function randomizeOptions (template, json, cb) {
+    let newJson = json;
+    let dobPatt = new RegExp('DATE OF BIRTH');
+
+    headersDb.find({ template: template }, function (err, docs) {
+        let headers = docs[0]['headers'];      
+        let entriesProc = 0;
+
+        for (i in newJson) {
+            let entry = newJson[i];
+            let headersProc = 0;
+            for (headerNum in headers) {
+                let header = headers[headerNum];
+
+                if (dobPatt.test(header)) {
+                    let year = Math.floor((Math.random() * 90) + 1930);
+                    let month = ('0' + Math.floor((Math.random() * 12) + 1)).slice(-2);
+                    let day = ('0' + Math.floor((Math.random() * 30) + 1)).slice(-2);
+                    let dateStr = year + '-' + month + '-' + day;
+                    entry[header] = dateStr;
+                }
+
+                optionsDb.find({header: header}, function (err, docs) {
+                    if (docs.length === 0) {
+                        // do nothing
+                    } else {
+                        let options = docs[0]['options'];
+                        if (options.length > 0) {
+                            let randomOpt = options[Math.floor(Math.random() * options.length)];
+                            entry[header] = randomOpt;
+                        }
+                    }
+
+                    let uniqueField = 'UNIQUE IDENTIFIER VALUE';
+                    entry[uniqueField] = '' + Math.floor((Math.random() * 999999) + 1);
+                    if (template === 'LT Course Setup') {
+                        uniqueField = 'COURSE CODE';
+                        entry[uniqueField] = 'L-CCSMAR' + Math.floor((Math.random() * 10000) + 1);
+                    }
+
+                    headersProc++;
+                    if (headersProc == headers.length) {
+                        entriesProc++;
+                        if (entriesProc == newJson.length) {
+                            cb(newJson);
+                        }
+                    }
+                });
+            }
+        }
     });
 }
 
