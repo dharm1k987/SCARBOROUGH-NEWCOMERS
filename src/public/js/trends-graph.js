@@ -23,8 +23,27 @@ $(document).ready(function() {
         for (i in trendsJSON) {
             var data = trendsJSON[i]['data'];
             for (header in data) {
-                for (option in data[header]['options']) {
-                    option = option.replace(/'/g, '');
+                var options = Object.keys(data[header]["options"]);
+
+                options.sort(function (a, b) {
+                    let aNum = parseInt(a, 10);
+                    let bNum = parseInt(b, 10)
+
+                    if (!isNaN(aNum) && !isNaN(bNum)) {
+                        return aNum - bNum;
+                    } else if (a === 'YES' || b === 'YES') {
+                        if (a === 'YES') return -1;
+                        else if (b === 'YES') return 1;
+                        else return 0;
+                    } else {
+                        if (a < b) return -1;
+                        if (a > b) return 1;
+                        else return 0;
+                    }
+                });
+                
+                for (var j in options) {
+                    option = options[j].replace(/'/g, '');
                     var headerEl = $('[label="' + header + '"]');
                     if (!headerEl.find("option[value='" + option + "']").length) {
                         $("<option id='" + option + "'>").val(option).text(option).appendTo(headerEl);

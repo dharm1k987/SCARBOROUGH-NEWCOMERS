@@ -1,3 +1,23 @@
+var availableMonths;
+
+function templateChanged() {
+    populateMonths();
+}
+
+function populateMonths() {
+    let dropdown = document.getElementById("ddlViewBy");
+    let template = dropdown.options[dropdown.selectedIndex].value;
+
+    // update dropdown
+    $("#monthID").empty();
+    for (i in availableMonths[template]) {
+        let month = availableMonths[template][i];
+        if (months.indexOf(month) < 0) {
+            $("#monthID").append($('<option></option>').val(month).html(month));
+        }
+    }
+}
+
 $(document).ready(function() {
     if (localStorage.loginOrg == "false" && localStorage.loginTEQ == "false") {
         window.location.replace("/login");
@@ -5,26 +25,6 @@ $(document).ready(function() {
     } else if (localStorage.loginOrg == "true" && localStorage.loginTEQ == "false") {
         window.location.replace("/home-org");
         return;
-    }
-
-    var availableMonths;
-
-    function templateChanged() {
-        populateMonths();
-    }
-
-    function populateMonths() {
-        let dropdown = document.getElementById("ddlViewBy");
-        let template = dropdown.options[dropdown.selectedIndex].value;
-
-        // update dropdown
-        $("#monthID").empty();
-        for (i in availableMonths[template]) {
-            let month = availableMonths[template][i];
-            if (months.indexOf(month) < 0) {
-                $("#monthID").append($('<option></option>').val(month).html(month));
-            }
-        }
     }
 
     // get the months and add them to the dropdown
