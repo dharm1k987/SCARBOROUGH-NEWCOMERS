@@ -33,6 +33,7 @@ var eventLogController = require(__dirname + "/public/controllers/eventLogContro
 var homeorgController = require(__dirname + "/public/controllers/homeorgController");
 var generateController = require(__dirname + "/public/controllers/generateController");
 var tableController = require(__dirname + "/public/controllers/tableController");
+var queryController = require(__dirname + "/public/controllers/queryController");
 var setupController = require(__dirname + "/public/controllers/setupController");
 var trendsController = require(__dirname + "/public/controllers/trendsController");
 
@@ -41,7 +42,7 @@ app.set("view engine", "ejs")
 console.log( path.join(__dirname, '/public/db'));
 
 // fire controllers
-loginController(app); 
+loginController(app);
 accountController(app);
 uploadFileController(app);
 createAccController(app);
