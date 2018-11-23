@@ -23,19 +23,17 @@ function loadOptions (workbook) {
     optionsDb.remove({}, { multi: true }, function (err, numRemoved) {});
 
     // find sheet named Options Sheet otherwise use first sheet
-    var sheet;
+    let sheet = ""; let colNum = ""; let rowNum = "";
     if (typeof workbook.Sheets['Options Sheet'] !== 'undefined') {
         sheet = workbook.Sheets['Options Sheet'];
     } else {
         sheet = workbook.Sheets[workbook.SheetNames[0]]
     }
 
-    var colNum;
-    var rowNum;
-    var range = XLSX.utils.decode_range(sheet['!ref']);
+    let range = XLSX.utils.decode_range(sheet['!ref']);
     for (colNum = range.s.c; colNum <= range.e.c; colNum++) {
-        var header, col = [];
-        var headerCell = sheet[XLSX.utils.encode_cell({r: 1, c: colNum})];
+        let header, col = [];
+        let headerCell = sheet[XLSX.utils.encode_cell({r: 1, c: colNum})];
         if (typeof headerCell === 'undefined') {
             continue;
         } else {
@@ -56,11 +54,11 @@ function loadOptions (workbook) {
 }
 
 function parseTemplateHeaders (sheet, rowNum) {
-    var headers = [];
-    var colNum;
-    var range = XLSX.utils.decode_range(sheet['!ref']);
+    let headers = [];
+    let colNum;
+    let range = XLSX.utils.decode_range(sheet['!ref']);
     for (colNum = range.s.c; colNum <= range.e.c; colNum++) {
-        var nextCell = sheet[XLSX.utils.encode_cell({r: rowNum, c: colNum})];
+        let nextCell = sheet[XLSX.utils.encode_cell({r: rowNum, c: colNum})];
         if (typeof nextCell === 'undefined') {
             headers.push(void 0);
         } else {
@@ -73,21 +71,21 @@ function parseTemplateHeaders (sheet, rowNum) {
 
 function sampleHeaders (template, workbook) {
     // find sheet with template name as name, otherwise take the first sheet
-    var sheet = (typeof workbook.Sheets[template] !== 'undefined') 
+    let sheet = (typeof workbook.Sheets[template] !== 'undefined') 
         ? workbook.Sheets[template] 
         : workbook.Sheets[workbook.SheetNames[0]];
-    var headers = parseTemplateHeaders(sheet, 2).map(a => a.toUpperCase());
+    let headers = parseTemplateHeaders(sheet, 2).map(a => a.toUpperCase());
     headersDb.insert({'template': template, 'headers': headers});
     return headers;
 }
 
 function findAndParseSheet (workbook, validHeaders) {
-    var json = null;
+    let json = null;
     for (var i = 0; i < workbook.SheetNames.length; i++) {
-        var sheet = workbook.Sheets[workbook.SheetNames[i]];
-        var headers = parseTemplateHeaders(sheet, 2);
+        let sheet = workbook.Sheets[workbook.SheetNames[i]];
+        let headers = parseTemplateHeaders(sheet, 2);
         // check if headers all valid headers
-        var valid = headers.every(val => validHeaders.includes(typeof val !== 'undefined' ? val.toUpperCase() : ''));
+        let valid = headers.every(val => validHeaders.includes(typeof val !== 'undefined' ? val.toUpperCase() : ''));
         if (valid) {
             json = XLSX.utils.sheet_to_json(sheet, {header: headers, range: 3});
             break;

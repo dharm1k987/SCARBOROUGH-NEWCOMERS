@@ -30,8 +30,8 @@ h1 {
 /* style for team logo */
 img {
     position: absolute;
-    width: 180px;
-    height: 180px;
+    width: 150px;
+    height: 150px;
     z-index: 1;
 }
 

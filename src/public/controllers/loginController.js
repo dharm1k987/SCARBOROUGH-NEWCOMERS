@@ -5,9 +5,8 @@ var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 module.exports  = function(app) {
     app.use(bodyParser.json());
-    // app.use(bodyParser.json());
+
     app.get("/login", function(req, res) {
-		console.log("login page");
         res.render("login");
     });
 
@@ -25,8 +24,7 @@ module.exports  = function(app) {
                 res.send();
             } else {
                 res.status(200);
-                console.log(docs);
-                var result = docs[0].type;
+                let result = docs[0].type;
                 res.send({type: result});
             }
         });
@@ -43,22 +41,9 @@ module.exports  = function(app) {
                 res.send();
             } else {
                 res.status(200);
-                var result = docs[0].type;
+                let result = docs[0].type;
                 res.send({type: result});
             }
         });
-        /*
-        var username = "username";
-        var password = "password";
-
-        // in real we match from database
-        if (username == req.body.username && password == req.body.password) {
-            res.status(200);
-            res.send();
-        } else {
-            console.log("sending 400");
-            res.status(400);
-            res.send();
-        }*/
     });
 };

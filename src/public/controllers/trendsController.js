@@ -5,7 +5,6 @@ var genController = require(__dirname + '/generateController');
 var db2 = index.db2;
 
 function generateJson (docs, cb) {
-    console.log(__dirname + './generateController');
     var res = [];
 
     for (i in docs) {
@@ -15,7 +14,7 @@ function generateJson (docs, cb) {
         res.push({'month': month, 'clients': entries.length, 'services': 0});
 
         for (j in entries) {
-            var entry = entries[j];
+            let entry = entries[j];
 
             if (typeof entry['SUPPORT SERVICES RECEIVED'] !== 'undefined'
                 && entry['SUPPORT SERVICES RECEIVED'] === 'YES') {

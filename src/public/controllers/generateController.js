@@ -6,24 +6,7 @@ var optionsDb = index.optionsDb;
 
 
 function generateJson (entries, cb) {
-    // OBJECT STRUCTURE
-    /*
-        {
-            'header': {
-                'options': {
-                    'option': {
-                        'clients': count,
-                        'services': count
-                    }
-                },
-                'total': {
-                    'clients': count,
-                    'services': count
-                }
-            }
-        }
-    */
-   
+  
     var entryCount = entries.length;
     var entryProc = 0;
     var res = {};
@@ -49,7 +32,7 @@ function generateJson (entries, cb) {
             optionsDb.find({ header: header }, function (err, docs) {
                 // get valid options for this header
                 if (docs.length === 0) {
-                    console.log("Header name '" + header + "' does not exist in the options database.");
+
                 } else {
                     // update object if input is a valid option
                     validOptions = docs[0]['options'];
@@ -120,7 +103,7 @@ function generateJson (entries, cb) {
                                 res['AGE']['total']['clients']++;
                             }
                         } else {
-                            console.log("'" + input + "' is not an option for header '" + header + "'.");
+                            
                         }
                     }
                 }
@@ -148,6 +131,7 @@ function calculateAge (birthDate) {
 }
  
 module.exports.reportObj = generateJson;
+
 module.exports.main = function (app) {
     app.get('/generate', function (req, res) {
         res.render('generate-page');
@@ -177,12 +161,11 @@ module.exports.main = function (app) {
             }
             
             res.json(availableMonths);
-            // res.render('generate-page');
         });
     });
 
     app.post('/generate', urlencodedParser, function (req, res) {
-        var month = req.body.date;
+        let month = req.body.date;
 
         db2.find({month: month, template: req.body.template}, function (err, docs) {
             if (err) {

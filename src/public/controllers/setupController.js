@@ -1,7 +1,8 @@
 var axios = require('axios');
+
 module.exports  = function(app) {
     // add in the inital accounts
-    var data = {
+    let data = {
         "username": "caleb",
         "password": "caleb",
         "type": "TEQ"
@@ -15,7 +16,7 @@ module.exports  = function(app) {
       });
 
 
-      var data = {
+      data = {
         "username": "ralph",
         "password": "qwe",
         "type": "org"
