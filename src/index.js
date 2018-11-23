@@ -29,7 +29,6 @@ var uploadFileController = require(__dirname + "/public/controllers/uploadFileCo
 var createAccController = require(__dirname + "/public/controllers/createAccController");
 var homeController = require(__dirname + "/public/controllers/homeController");
 var helpController = require(__dirname + "/public/controllers/helpController");
-var eventLogController = require(__dirname + "/public/controllers/eventLogController");
 var homeorgController = require(__dirname + "/public/controllers/homeorgController");
 var generateController = require(__dirname + "/public/controllers/generateController");
 var tableController = require(__dirname + "/public/controllers/tableController");
@@ -38,21 +37,11 @@ var trendsController = require(__dirname + "/public/controllers/trendsController
 
 // we will use ejs template for the navbar
 app.set("view engine", "ejs")
-console.log( path.join(__dirname, '/public/db'));
 
 // fire controllers
-loginController(app); 
-accountController(app);
-uploadFileController(app);
-createAccController(app);
-homeController(app);
-helpController(app);
-eventLogController(app);
-homeorgController(app);
-generateController.main(app);
-tableController(app);
-setupController(app);
-trendsController(app);
+loginController(app); accountController(app); uploadFileController(app); createAccController(app);
+homeController(app); helpController(app); homeorgController(app); tableController(app);
+setupController(app); trendsController(app); generateController.main(app); // because we export function from here
 
 console.log("listening on port ...")
 app.listen(port);
