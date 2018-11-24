@@ -1,0 +1,17 @@
+body {
+  margin: auto;
+  padding: 0;
+  font-family:'Overpass', sans-serif;;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  background-image: linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url(./img/bg1.jpg);
+  background-size: cover;
+  height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
