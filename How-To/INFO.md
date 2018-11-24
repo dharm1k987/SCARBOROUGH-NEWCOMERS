@@ -37,6 +37,16 @@ If you want to be a `Org` member, the username is `ralph` and password is  `qwe`
 
 The main role of an organization member is to upload iCARE templates, which you can do under the `Upload Files` header. Here you will choose a file, select the type of iCARE template it corresponds to, and hit upload. This will also be reflected in the database.
 
+## Business Intelligence Query Tool
+**This tool requires the main application to be running.
+- `git clone https://github.com/CSCC01/Team20.git`
+- `cd Team20`
+- `npm install` # you must make sure that you have node modules installed
+- `npm start` # This will execute a script to run the application
+- `cd QueryBITool/` 
+- `npm install` # you must make sure that you have node modules installed
+- `npm start` # This will execute a script to run the application
+- `npm test` # In another terminal, with the application still running, run npm test.
 
 ## Database
 If you want to see how the database changes (as shown in the meeting), perform the following:
