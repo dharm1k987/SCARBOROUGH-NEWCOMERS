@@ -164,9 +164,9 @@ module.exports  = function(app) {
     */
     app.post("/query/test", urlencodedParser, function(req, res) {
 
-        console.log("Custom Query Req", req);
-        var service = req.query.service.toUpperCase();
-        var measure = req.query.measure.toLowerCase();
+        console.log("Custom Query Req", req.body.service, req.body.measure);
+        var service = req.body.service.toUpperCase();
+        var measure = req.body.measure.toLowerCase();
         var template = "Needs Assessment&Referrals";
         var month = "2018-9";
         console.log("inside query", service, "measure: ", measure, "template: ", template);

@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var app = express();
+var cors = require('cors');
 var port = process.env.PORT || 8080;
 
 // singleton database modules
@@ -13,7 +14,7 @@ module.exports.db = db;
 module.exports.db2 = db2;
 module.exports.optionsDb = optionsDb;
 module.exports.headersDb = headersDb;
-
+app.use(cors());
 app.use(express.static(__dirname + "/public"));
 
 // ejs templates go to view folder

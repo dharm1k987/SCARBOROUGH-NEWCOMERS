@@ -191,6 +191,7 @@ export default class App extends Component {
                   console.log("Result of Query:",response);
                 })
                 .catch(function (error) {
+                  console.log("Error:", error);
                 });
               }}>Run Code</Button>
               <Button>Save</Button>
