@@ -116,17 +116,31 @@ const Result = styled.div`
 export default class App extends Component {
   constructor(props) {
     super(props);
-
   }
 
   // Resizable Grid
-  state = { size: 150, isResizing: false, editorTextValue: ""};
+  state = { size: 150, isResizing: false, editorTextValue: "", result: ""};
   onResizeStart = () => this.setState({ isResizing: true })
   onResizeEnd = () => this.setState({ isResizing: false })
   onChange = size => this.setState({ size })
 
   onEditorChange = (value) => {
     this.setState({editorTextValue: value});
+  }
+
+  executeQuery = () => {
+    var data = {
+      "service": "english",
+      "measure": "clients",
+    }
+    axios.post('http://localhost:8080/query/test', data)
+    .then((response) => {
+      console.log("Result of Query:",response);
+      this.setState({result: response["data"]});
+    })
+    .catch(function (error) {
+      console.log("Error:", error);
+    });
   }
 
   render() {
@@ -181,19 +195,7 @@ export default class App extends Component {
           <RightSide>
             <Name placeholder=" Untitiled"/>
             <ButtonsGroup2>
-              <Button onClick={() => {
-                var data = {
-                  "service": "english",
-                  "measure": "clients",
-                }
-                axios.post('http://localhost:8080/query/test', data)
-                .then(function (response) {
-                  console.log("Result of Query:",response);
-                })
-                .catch(function (error) {
-                  console.log("Error:", error);
-                });
-              }}>Run Code</Button>
+              <Button onClick={this.executeQuery}>Run Code</Button>
               <Button>Save</Button>
             </ButtonsGroup2>
           <div style={{display:"flex" }}>
@@ -216,19 +218,7 @@ export default class App extends Component {
               style={{display:"flex", width: "100%" }}
             />
               <Result style={{ height: 300, overflow: "scroll"}}>
-                Results! (Grid of Results Here)
-                <Grid>
-                  <Row alignItems="flex-start">
-                  <Col>Column 1</Col>
-                  <Col>Column 2</Col>
-                  <Col>Column 3</Col>
-                  <Col.Split />
-                  <Col> Results Here </Col>
-                  <Col> Results Here </Col>
-                  <Col> Results Here </Col>
-                  <Col.Split />
-                </Row>
-                </Grid>
+                {this.state.result}
               </Result>
             </SplitPane>
             </div>
