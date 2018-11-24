@@ -3,17 +3,8 @@ There are two ways you can test our program.
 
   
 
-One way is directly through the heroku site, and the other way is by checking out the master branch.
+One way is directly through the heroku site (no database visible), and the other way is by checking out the master branch (database, files visble).
 
-  
-
-The other way is to check out a branch, so you will be able to see the database file change when we do database logic.
-
-  
-
-In the website, you will only be able to see it reflected, you will not actually be able to see the file.
-
-  
 
 Depending on which option you want, here are the steps:
 
@@ -37,7 +28,7 @@ If you want to be a `Org` member, the username is `ralph` and password is  `qwe`
 
 The main role of an organization member is to upload iCARE templates, which you can do under the `Upload Files` header. Here you will choose a file, select the type of iCARE template it corresponds to, and hit upload. This will also be reflected in the database.
 
-## Business Intelligence Query Tool
+## Business Intelligence Query Tool - to run queries
 **This tool requires the main application to be running.
 - `git clone https://github.com/CSCC01/Team20.git`
 - `cd Team20`
@@ -48,7 +39,7 @@ The main role of an organization member is to upload iCARE templates, which you 
 - `npm start` # This will execute a script to run the application
 - `npm test` # In another terminal, with the application still running, run npm test.
 
-## Database
+## Database - master branch
 If you want to see how the database changes (as shown in the meeting), perform the following:
 
 - `git clone https://github.com/CSCC01/Team20.git`
