@@ -32,6 +32,7 @@ var helpController = require(__dirname + "/public/controllers/helpController");
 var homeorgController = require(__dirname + "/public/controllers/homeorgController");
 var generateController = require(__dirname + "/public/controllers/generateController");
 var tableController = require(__dirname + "/public/controllers/tableController");
+var queryController = require(__dirname + "/public/controllers/queryController");
 var setupController = require(__dirname + "/public/controllers/setupController");
 var trendsController = require(__dirname + "/public/controllers/trendsController");
 
@@ -39,9 +40,11 @@ var trendsController = require(__dirname + "/public/controllers/trendsController
 app.set("view engine", "ejs")
 
 // fire controllers
-loginController(app); accountController(app); uploadFileController(app); createAccController(app);
-homeController(app); helpController(app); homeorgController(app); tableController(app);
-setupController(app); trendsController(app); generateController.main(app); // because we export function from here
+loginController(app); queryController(app); accountController(app);
+uploadFileController(app); createAccController(app); homeController(app);
+helpController(app); homeorgController(app); tableController(app);
+setupController(app); trendsController(app);
+generateController.main(app); // because we export function from here
 
 console.log("listening on port ...")
 app.listen(port);
