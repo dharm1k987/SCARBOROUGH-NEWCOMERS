@@ -8,7 +8,7 @@ $(document).ready(function() {
     }
 
     $("#generate-btn").click(function() {
-        let option = $('#ddlViewBy').find('option:selected').text()
+        let option = $('#ddlViewBy').find('option:selected').val()
 
         $("#generate-btn").val("Generating ...");
         $("#generate-btn").prop("disabled", true);

@@ -10,7 +10,7 @@ $(document).ready(function() {
     var availableMonths;
 
     function populateMonths() {
-        let template = $('#ddlViewBy').find('option:selected').text();
+        let template = $('#ddlViewBy').find('option:selected').val();
 
         // update dropdown
         $("#monthID").empty();
@@ -42,8 +42,8 @@ $(document).ready(function() {
     });
 
     $("#generate-btn").click(function() {
-        let option = $('#ddlViewBy').find('option:selected').text();
-        let monthID = $('#monthID').find('option:selected').text(); 
+        let option = $('#ddlViewBy').find('option:selected').val();
+        let monthID = $('#monthID').find('option:selected').val(); 
 
         var data = {template: option, date: monthID};
 
