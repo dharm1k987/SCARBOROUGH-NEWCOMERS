@@ -6,13 +6,12 @@ var optionsDb = index.optionsDb;
 
 
 function generateJson (entries, cb) {
-  
+    var res = {};
     var entryCount = entries.length;
     var entryProc = 0;
-    var res = {};
-    var dobPatt = new RegExp('DATE OF BIRTH');
+    const dobPatt = new RegExp('DATE OF BIRTH');
 
-    for (i in entries) {
+    for (let i in entries) {
         let entry = entries[i];
         let headerCount = Object.keys(entry).length;
         let headerProc = 0;
@@ -24,86 +23,29 @@ function generateJson (entries, cb) {
             servicesReceived = true; 
         }
 
-        for (j in entry) {
-            let input = entry[j].toUpperCase();
-            let header = j.toUpperCase();
+        for (let header in entry) {
+            let input = entry[header];
             let validOptions = null;
-            
+
             optionsDb.find({ header: header }, function (err, docs) {
                 // get valid options for this header
-                if (docs.length === 0) {
-
-                } else {
+                if (docs.length > 0) {
                     // update object if input is a valid option
                     validOptions = docs[0]['options'];
+
                     if (validOptions != null && validOptions.includes(input)) {
-                        if (typeof res[header] === 'undefined') {
-                            res[header] = {'options': {}, 'total': {'clients': 0, 'services': 0}};
-                        }
+                        updateOption(res, header, input, servicesReceived);
+                    } else if (dobPatt.test(header)) {
+                        // input is a date of birth
+                        let age = calculateAge(input);
 
-                        if (typeof res[header]['options'][input] === 'undefined') {
-                            if (servicesReceived) {
-                                res[header]['options'][input] = {'clients': 1, 'services': 1};
-                            } else {
-                                res[header]['options'][input] = {'clients': 1, 'services': 0};
+                        // find the interval the age is in
+                        for (k = 0; k < 100; k += 4) {
+                            if (age >= k && age < k + 4) {
+                                let interval = k + '-' + (k + 4);
+                                updateOption(res, 'AGE', interval, servicesReceived);
+                                break;
                             }
-                        } else {
-                            if (servicesReceived) {
-                                res[header]['options'][input]['clients']++;
-                                res[header]['options'][input]['services']++;
-                            } else {
-                                res[header]['options'][input]['clients']++;
-                            }
-                        }
-
-                        // update totals
-                        if (servicesReceived) {
-                            res[header]['total']['clients']++;
-                            res[header]['total']['services']++;
-                        } else {
-                            res[header]['total']['clients']++;
-                        }
-                    } else {
-                        if (dobPatt.test(header)) {
-                            // input is a date of birth
-                            let age = calculateAge(input);
-
-                            if (typeof res['AGE'] === 'undefined') {
-                                res['AGE'] = {'options': {}, 'total': {'clients': 0, 'services': 0}};
-                            }
-                            
-                            // find the interval the age is in
-                            for (k = 0; k < 100; k += 4) {
-                                if (age >= k && age < k + 4) {
-                                    let interval = k + '-' + (k + 4);
-                                    if (typeof res['AGE']['options'][interval] === 'undefined') {
-                                        if (servicesReceived) {
-                                            res['AGE']['options'][interval] = {'clients': 1, 'services': 1};
-                                        } else {
-                                            res['AGE']['options'][interval] = {'clients': 1, 'services': 0};
-                                        }
-                                    } else {
-                                        if (servicesReceived) {
-                                            res['AGE']['options'][interval]['clients']++;
-                                            res['AGE']['options'][interval]['services']++;
-                                        } else {
-                                            res['AGE']['options'][interval]['clients']++;
-                                        }
-                                    }
-
-                                    break;
-                                }
-                            }
-
-                            // update totals
-                            if (servicesReceived) {
-                                res['AGE']['total']['clients']++;
-                                res['AGE']['total']['services']++;
-                            } else {
-                                res['AGE']['total']['clients']++;
-                            }
-                        } else {
-                            
                         }
                     }
                 }
@@ -118,6 +60,35 @@ function generateJson (entries, cb) {
                 }
             });
         }
+    }
+}
+
+function updateOption (obj, header, input, servicesReceived) {
+    if (typeof obj[header] === 'undefined') {
+        obj[header] = {'options': {}, 'total': {'clients': 0, 'services': 0}};
+    }
+
+    if (typeof obj[header]['options'][input] === 'undefined') {
+        if (servicesReceived) {
+            obj[header]['options'][input] = {'clients': 1, 'services': 1};
+        } else {
+            obj[header]['options'][input] = {'clients': 1, 'services': 0};
+        }
+    } else {
+        if (servicesReceived) {
+            obj[header]['options'][input]['clients']++;
+            obj[header]['options'][input]['services']++;
+        } else {
+            obj[header]['options'][input]['clients']++;
+        }
+    }
+
+    // update totals for header
+    if (servicesReceived) {
+        obj[header]['total']['clients']++;
+        obj[header]['total']['services']++;
+    } else {
+        obj[header]['total']['clients']++;
     }
 }
 
@@ -141,7 +112,7 @@ module.exports.main = function (app) {
         db2.find({}, function (err, docs) {
             let availableMonths = {};
 
-            for (i in docs) {
+            for (let i in docs) {
                 let object = docs[i];
                 let month = object['month'];
                 let template = object['template'];

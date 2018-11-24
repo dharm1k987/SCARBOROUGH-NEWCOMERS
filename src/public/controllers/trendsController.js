@@ -7,25 +7,24 @@ var db2 = index.db2;
 function generateJson (docs, cb) {
     var res = [];
 
-    for (i in docs) {
-        let objNum = i;
+    for (let i in docs) {
         let month = docs[i]['month'];
         let entries = docs[i]['entries'];
         res.push({'month': month, 'clients': entries.length, 'services': 0});
 
-        for (j in entries) {
+        for (let j in entries) {
             let entry = entries[j];
 
             if (typeof entry['SUPPORT SERVICES RECEIVED'] !== 'undefined'
                 && entry['SUPPORT SERVICES RECEIVED'] === 'YES') {
-                res[objNum]['services']++;
+                res[i]['services']++;
             }
         }
 
         // get report object for month and stuff it into the trends object
         genController.reportObj(entries, function(response) {
-            res[objNum]['data'] = response;
-            if (objNum == docs.length - 1) {
+            res[i]['data'] = response;
+            if (i == docs.length - 1) {
                 res.sort((a, b) => parseInt(a.month.replace('-', '')) - parseInt(b.month.replace('-', '')));
                 cb(res);
             }

@@ -93,9 +93,9 @@ function findAndParseSheet (workbook, validHeaders) {
     }
 
     // convert everything to uppercase
-    for (i in json) {
+    for (let i in json) {
         let entry = json[i];
-        for (j in entry) {
+        for (let j in entry) {
             if (typeof entry[j] !== 'string') entry[j] = entry[j].toString();
             entry[j] = entry[j].toUpperCase();
         }
@@ -112,7 +112,7 @@ function insertToDb (monthStr, template, json, cb) {
             let entries = docs[0]['entries'];
             let pushed = 0;
             let skipped = 0;
-            for (i in json) {
+            for (let i in json) {
                 let entry = json[i];
                 let uniqueField = 'UNIQUE IDENTIFIER VALUE';
 
@@ -158,7 +158,7 @@ function randomizeOptions (template, json, cb) {
         for (let entryNum in newJson) {
             let entry = newJson[entryNum];
             let headersProc = 0;
-            for (headerNum in headers) {
+            for (let headerNum in headers) {
                 let header = headers[headerNum];
                 if (dobPatt.test(header)) {
                     let year = Math.floor((Math.random() * 60) + 1940);
