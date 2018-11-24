@@ -27,6 +27,7 @@ const TeamLogo = styled.img`
 `;
 
 const Button = styled.button`
+  margin: 0rem 0.2rem 0rem 0rem;
   border-radius: 3px;
   border: 1px solid green;
   font-size: 1rem;
@@ -48,18 +49,21 @@ const LeftSide = styled.div`
 `;
 
 const ButtonsGroup = styled.div`
+  margin: 0rem 0rem 0rem 1rem;
   float: left;
 `;
 
 const ButtonsGroup2 = styled.div`
+  margin: 0rem 0.2rem 0rem 0rem;
   float: right;
 `;
 
 const SummaryGroup = styled.div`
+  margin: 0rem 0rem 0rem 1rem;
 `;
 
 const Template = styled.div`
-  font-family: 'quicksand-bold';
+  font-family:'Overpass', sans-serif;
   margin-top: 15px;
 `;
 
@@ -175,20 +179,20 @@ export default class App extends Component {
            <br/>
            <br/>
             <Template onClick={() => this.setState({editorTextValue: 'How many times was {X} used on day {Y}'})}>
-            <hr/>
+            <hr style={{margin:"0rem 0rem 0rem -1rem"}}/>
                 <Title>Service Summary</Title>
-                <Description>Finds how many times a service was used on a specific day.</Description>
+                <Description style={{fontWeight:"normal"}}>Finds how many times a service was used on a specific day.</Description>
                 <TemplateCode>How many times was <Variables>X (Service)</Variables> used on day <Variables>Y (Date)</Variables></TemplateCode>
-              <hr />
+             <hr style={{margin:"0rem 0rem 0rem -1rem"}}/>
             </Template>
             </SummaryGroup>
             <SummaryGroup>
             <Template onClick={() => this.setState({editorTextValue: "db.find({'Service': 'Language'}).limit(5);"})}>
-              <hr />
+
                 <Title>Service Summary</Title>
-                <Description>Finds how many times a service was used on a specific day.</Description>
+                <Description style={{fontWeight:"normal"}}>Finds how many times a service was used on a specific day.</Description>
                 <TemplateCode>db.find({"{'Service': 'Language'}"}).limit(5);</TemplateCode>
-              <hr />
+              <hr style={{margin:"0rem 0rem 0rem -1rem"}}/>
             </Template>
             </SummaryGroup>
           </LeftSide>
