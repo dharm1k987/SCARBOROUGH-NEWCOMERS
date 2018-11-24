@@ -1,5 +1,6 @@
 .DS_STORE
 package-lock.json
+QueryBITool/build/
 
 # Logs
 logs
