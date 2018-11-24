@@ -5,7 +5,6 @@ var urlencodedParser = bodyParser.urlencoded({extended: false});
 var index = require(__dirname + '/../../index');
 var db2 = index.db2;
 var optionsDb = index.optionsDb;
-var headersDb = index.headersDb;
 
 function generateJson (entries, cb) {
     // OBJECT STRUCTURE
