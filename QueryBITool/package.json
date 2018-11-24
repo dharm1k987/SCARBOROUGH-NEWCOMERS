@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "@smooth-ui/core-sc": "^7.0.5",
+    "axios": "^0.18.0",
     "react": "^16.6.3",
     "react-ace": "^6.2.0",
+    "react-awesome-button": "^5.0.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.6.3",
     "react-flex-split-pane": "github:instea/react-flex-split-pane",
