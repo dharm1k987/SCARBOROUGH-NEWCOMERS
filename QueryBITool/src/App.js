@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import SplitPane from 'react-flex-split-pane';
 import SearchInput, {createFilter} from 'react-search-input'
 import 'react-awesome-button/dist/styles.css';
-
+import axios from 'axios';
 import brace from 'brace';
 import AceEditor from 'react-ace';
 
@@ -181,7 +181,18 @@ export default class App extends Component {
           <RightSide>
             <Name placeholder=" Untitiled"/>
             <ButtonsGroup2>
-              <Button>Run Code</Button>
+              <Button onClick={() => {
+                var data = {
+                  "service": "english",
+                  "measure": "clients",
+                }
+                axios.post('http://localhost:8080/query/test', data)
+                .then(function (response) {
+                  console.log("Result of Query:",response);
+                })
+                .catch(function (error) {
+                });
+              }}>Run Code</Button>
               <Button>Save</Button>
             </ButtonsGroup2>
           <div style={{display:"flex" }}>
@@ -202,7 +213,7 @@ export default class App extends Component {
               name="query-editor"
               onChange={this.onEditorChange}
               style={{display:"flex", width: "100%" }}
-            />  
+            />
               <Result style={{ height: 300, overflow: "scroll"}}>
                 Results! (Grid of Results Here)
                 <Grid>
