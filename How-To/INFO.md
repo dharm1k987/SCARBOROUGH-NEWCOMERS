@@ -13,7 +13,6 @@ Please note that you will **not** be able to use the query feature on the websit
 
 ## Checking Locally
 
-Our application is divided into two: the base application and the query application. The following steps are required for both:
 
 - `git clone https://github.com/CSCC01/Team20.git`
 
@@ -21,9 +20,9 @@ Our application is divided into two: the base application and the query applicat
 
 - `npm install` # this will install the packages for both the basic app and the query app
 
-- `npm start` # this will start both applications
+- `npm start`
 
-  ​
+ 
 
 #### Base Application
 
