@@ -4,14 +4,15 @@ var index = require(__dirname + '/../../index');
 var genController = require(__dirname + '/generateController');
 var templatesDb = index.templatesDb;
 
+// generate json based on the trends data that we get back
 function generateJson (docs, cb) {
     var res = [];
-
+    // organise the months, with the options, clients and services
     for (let i in docs) {
         let month = docs[i]['month'];
         let entries = docs[i]['entries'];
         res.push({'month': month, 'clients': entries.length, 'services': 0});
-
+        // count how many services were performed
         for (let j in entries) {
             let entry = entries[j];
 

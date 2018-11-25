@@ -9,7 +9,7 @@ module.exports  = function(app) {
     app.get("/create", function(req, res) {
         res.render("create-acc");
     });
-
+    // create an account
     app.post("/create", urlencodedParser, function(req, res) {
         db.find({"username": req.body.username}, function(err, docs){
             if (docs.length == 0) {

@@ -9,7 +9,7 @@ module.exports  = function(app) {
     app.get("/login", function(req, res) {
         res.render("login");
     });
-
+    // these are used for testing
     app.post("/fill", urlencodedParser, function(req, res) {
         db.insert( {"username": "test1", "password": "testpass", "type": "org"});
         res.status(200);
@@ -32,8 +32,7 @@ module.exports  = function(app) {
 
 
     app.post("/login", urlencodedParser, function(req, res) {
-        // temp for testing
-
+        // check to see if username and password are found
         db.find({"username": req.body.username, "password": req.body.password}, function(err, docs){
 
             if (docs.length == 0 || err) {

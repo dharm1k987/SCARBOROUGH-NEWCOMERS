@@ -6,6 +6,7 @@ var index = require(__dirname + '/../../index');
 var templatesDb = index.templatesDb;
 var optionsDb = index.optionsDb;
 
+// this controller is used for the query option
 function generateJson (entries, cb) {
     // OBJECT STRUCTURE
     /*
@@ -191,25 +192,5 @@ module.exports  = function(app) {
           }
         });
     });
-    // app.post("/query/custom", urlencodedParser, function(req, res) {
-    //
-    //     console.log("Custom Query Req", req);
-    //     var service = req.body.service;
-    //     var measure = req.body.measure;
-    //     console.log("inside query", service, "measure: ", measure);
-    //     db.find({ username: username }, function (err, docs) {
-    //         if (docs.length != 0 && docs[0]["password"] == password) {
-    //             console.log("found something");
-    //             db.remove({ username: username }, function (err, numRemoved) {
-    //                 res.status(200);
-    //                 res.send()
-    //             });
-    //         } else {
-    //             console.log("didnt find");
-    //             res.status(400);
-    //             res.send()
-    //         }
-    //     });
-    //
-    // });
+
 };
