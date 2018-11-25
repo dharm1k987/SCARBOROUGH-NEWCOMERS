@@ -24,26 +24,13 @@ Please note that you will **not** be able to use the query feature on the websit
 
  
 
-#### Base Application
+#### Application Info
 
 ----
 
 After you ran the checking locally steps, if base application started, you should see  `listening on port ...` in your terminal.
 
 Navigate to `http://localhost:8080/` and you should be presented with the login page. Note, if you are already logged in, then you would be navigated to `/home` or `/home-org` automatically.
-
-**Tests**
-
-While keeping the originally terminal already running, in another terminal, navigate again to `Team20` and run `npm test`.
-
-
-#### Business Intelligence Query Tool
-
-------
-
-If it works, you will see `Starting the development server...` in your terminal. Wait a few more seconds for it to still boot up. 
-
-Then you can either navigate to `http://localhost:3000` or you can click the `Query` link on the navbar if you are logged in as a TEQ member.
 
 **Tests**
 
