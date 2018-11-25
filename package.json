@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "start": "node src/",
+    "start": "parallelshell \"node src/\" \"npm start --prefix QueryBITool\"",
     "preinstall": "cd QueryBITool && npm install && cd .."
   },
   "author": "Team20",

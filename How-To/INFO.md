@@ -21,37 +21,26 @@ Our application is divided into two: the base application and the query applicat
 
 - `npm install` # this will install the packages for both the basic app and the query app
 
+- `npm start` # this will start both applications
+
   ​
 
 #### Base Application
 
 ----
 
-Following these steps will allow you to do everything except for running queries on the database:
-
-Assuming you have already done the steps highlighted in *Testing Locally*, you should be in the directory **Team20**,  then simply run:
-
-`npm start`
-
-It it works, you will see `listening on port ...` in your terminal.
+After you ran the checking locally steps, if base application started, you should see  `listening on port ...` in your terminal.
 
 Navigate to `http://localhost:8080/` and you should be presented with the login page. Note, if you are already logged in, then you would be navigated to `/home` or `/home-org` automatically.
 
 **Tests**
 
-While keeping the base application running, in another terminal, navigate again to `Team20` and run `npm test`. Close both terminals, and restart the base application.
+While keeping the originally terminal already running, in another terminal, navigate again to `Team20` and run `npm test`.
 
 
 #### Business Intelligence Query Tool
 
 ------
-
-**This feature requires the base application to already be running.**
-
-Assuming you are already in **Team20**, and the base application is already running, you can run:
-
-- `cd QueryBITool`
-- `npm start` 
 
 If it works, you will see `Starting the development server...` in your terminal. Wait a few more seconds for it to still boot up. 
 
@@ -59,7 +48,7 @@ Then you can either navigate to `http://localhost:3000` or you can click the `Qu
 
 **Tests**
 
-While keeping the query application running, in another terminal, navigate again to `QueryBITool` and run `npm test`.  If it asks, press `a` to run all tests.
+While keeping the originally terminal already running, in another terminal, navigate again to `Team20` and run `npm test`.
 
 
 #### Login Info
