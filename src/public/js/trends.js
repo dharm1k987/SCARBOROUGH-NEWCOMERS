@@ -7,13 +7,14 @@ $(document).ready(function() {
         return;
     }
 
+    // generate the trends
     $("#generate-btn").click(function() {
         let option = $('#ddlViewBy').find('option:selected').val()
 
         $("#generate-btn").val("Generating ...");
         $("#generate-btn").prop("disabled", true);
         let data = {template: option};
-
+        // send data to generate trends for this month/option
         $.ajax({
             type: 'POST',
             url: '/generate-trends',

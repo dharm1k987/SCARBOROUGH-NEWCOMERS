@@ -8,7 +8,6 @@ $(document).ready(function() {
     }
 
     var chart = null;
-
     var trendsJSON = JSON.parse(localStorage.getItem('trendsJSON'));
     var tableHeader = localStorage.tableHeader;
 
@@ -32,6 +31,7 @@ $(document).ready(function() {
             }
         }
     }
+
     // sort dropdown options
     function sortOptions() {
         // sort options
@@ -193,6 +193,7 @@ $(document).ready(function() {
         let dataClients = [];
         let dataServices = [];
 
+        // construct the optGroupJSON to a format we can understand
         for (var key in optGroupJSON) {
             if (typeof(optGroupJSON[key]) == "object") {
                 labels.push(Object.keys(optGroupJSON[key])[0]); // x-axis of dates
