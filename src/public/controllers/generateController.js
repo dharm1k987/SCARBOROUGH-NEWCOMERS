@@ -1,7 +1,7 @@
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var index = require(__dirname + '/../../index');
-var db2 = index.db2;
+var templatesDb = index.templatesDb;
 var optionsDb = index.optionsDb;
 
 
@@ -109,7 +109,7 @@ module.exports.main = function (app) {
     });
 
     app.get('/generate/months', function(req, res) {
-        db2.find({}, function (err, docs) {
+        templatesDb.find({}, function (err, docs) {
             let availableMonths = {};
 
             for (let i in docs) {
@@ -138,7 +138,7 @@ module.exports.main = function (app) {
     app.post('/generate', urlencodedParser, function (req, res) {
         let month = req.body.date;
 
-        db2.find({month: month, template: req.body.template}, function (err, docs) {
+        templatesDb.find({month: month, template: req.body.template}, function (err, docs) {
             if (err) {
                 res.send(500);
             } else {

@@ -3,7 +3,7 @@ var multer = require('multer');
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var index = require(__dirname + '/../../index');
-var db2 = index.db2;
+var templatesDb = index.templatesDb;
 var optionsDb = index.optionsDb;
 var headersDb = index.headersDb;
 
@@ -105,9 +105,9 @@ function findAndParseSheet (workbook, validHeaders) {
 }
 
 function insertToDb (monthStr, template, json, cb) {
-    db2.find({ month: monthStr, template: template }, function (err, docs) {
+    templatesDb.find({ month: monthStr, template: template }, function (err, docs) {
         if (docs.length === 0) {
-            db2.insert({month: monthStr, template: template, entries: json});
+            templatesDb.insert({month: monthStr, template: template, entries: json});
         } else {
             let entries = docs[0]['entries'];
             let pushed = 0;
@@ -124,7 +124,7 @@ function insertToDb (monthStr, template, json, cb) {
                 // check if an entry with the ID already exists
                 let matchIds = entries.filter(dbEntry => (dbEntry[uniqueField] === uniqueId));
                 if (matchIds.length === 0) {
-                    db2.update({ month: monthStr, template: template }, { $push: { entries: entry } }, {});
+                    templatesDb.update({ month: monthStr, template: template }, { $push: { entries: entry } }, {});
                     pushed++;
                 } else {
                     console.log('Entry with ID ' + uniqueId + ' already exists, skipping.');

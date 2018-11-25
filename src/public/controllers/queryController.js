@@ -3,7 +3,7 @@ var multer = require('multer');
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var index = require(__dirname + '/../../index');
-var db2 = index.db2;
+var templatesDb = index.templatesDb;
 var optionsDb = index.optionsDb;
 
 function generateJson (entries, cb) {
@@ -171,7 +171,7 @@ module.exports  = function(app) {
         var month = "2018-9";
         console.log("inside query", service, "measure: ", measure, "template: ", template);
         // Get Entries Header from Specified Template Above
-        db2.find({month: month, template: template}, function (err, docs) {
+        templatesDb.find({month: month, template: template}, function (err, docs) {
           if (err) {
             res.status(500);
             res.send()

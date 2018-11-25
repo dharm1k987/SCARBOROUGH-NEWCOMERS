@@ -2,7 +2,7 @@ var bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var index = require(__dirname + '/../../index');
 var genController = require(__dirname + '/generateController');
-var db2 = index.db2;
+var templatesDb = index.templatesDb;
 
 function generateJson (docs, cb) {
     var res = [];
@@ -42,7 +42,7 @@ module.exports = function (app) {
     });
 
     app.post('/generate-trends', urlencodedParser, function (req, res) {
-        db2.find({template: req.body.template}, function (err, docs) {
+        templatesDb.find({template: req.body.template}, function (err, docs) {
             if (err) {
                 res.send(500);
             } else {
