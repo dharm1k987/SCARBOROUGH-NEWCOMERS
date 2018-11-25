@@ -5,6 +5,7 @@ import SplitPane from 'react-flex-split-pane';
 import SearchInput from 'react-search-input'
 import 'react-awesome-button/dist/styles.css';
 import axios from 'axios';
+import  './nav.css';
 import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/theme/monokai';
@@ -18,6 +19,17 @@ const TeamLogo = styled.img`
   weight: 150px;
 `;
 
+const Nav = () => (
+  <div class="icon-bar">
+        <a style={{width: "12.95%"}} href="http://localhost:8080/home"><i class="fa fa-fw fa-home"></i>Home</a>
+        <a style={{width: "12.95%"}} href="http://localhost:8080/create"><i class="fa fa-plus-square"></i>Create</a>
+        <a style={{width: "12.95%"}} href="http://localhost:8080/generate"><i class="fa fa-cloud-download"></i>Generate Reports</a>
+        <a style={{width: "12.95%"}} href="http://localhost:8080/trends"><i class="fa fa-line-chart"></i>Trends</a>
+        <a style={{width: "12.95%"}} href="http://localhost:8080/help"><i class="fa fa-info-circle"></i>Help</a>
+        <a style={{width: "12.95%"}} href="/" onclick="javascript:event.target.port=3000"><i class="fa fa-terminal" aria-hidden="true"></i> Query</a>
+        <a style={{width: "12.95%"}} href="http://localhost:8080/login" id="logout-btn"><i class="fa fa-sign-out"></i>Logout</a>
+  </div>
+);
 
 const Button = styled.button`
   margin: 0rem 0.2rem 0rem 0rem;
@@ -56,7 +68,7 @@ const SummaryGroup = styled.div`
 `;
 
 const Template = styled.div`
-  font-family:'Overpass', sans-serif;
+  fontFamily:'Overpass', sans-serif;
   margin-top: 15px;
 `;
 
@@ -133,6 +145,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
+      <Nav/>
       <TeamLogo src={Logo} />
         <header className="App-header">
         </header>
