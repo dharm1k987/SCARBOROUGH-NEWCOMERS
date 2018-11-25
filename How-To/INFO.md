@@ -1,69 +1,70 @@
 
 There are two ways you can test our program.
 
-  
-
 One way is directly through the heroku site (no database visible), and the other way is by checking out the master branch (database, files visble).
-
-
-Depending on which option you want, here are the steps:
-
-  
 
 
 ## Website (TA, please use other option)
 [Click here](https://team20-app.herokuapp.com/)
 
-The following information applies to both the branch method and the website:
+Please note that you will **not** be able to use the query feature on the website.
 
-- You must first login to see more information
-- The personas that can login will either be an organization member or a TEQ member
-- Depeneding on what they are, they will see different pages when they login
 
-If you want to be a `TEQ` member, the username is `caleb` and password is also `caleb`.
 
-This main page of interest here is the `Create` page, which will allow this `TEQ` staff to create additional accounts, whether that be another `TEQ` or another `Org` account. This will then insert it into the database, which was demonstrated in the meeting.
+## Checking Locally
 
-If you want to be a `Org` member, the username is `ralph` and password is  `qwe`.
-
-The main role of an organization member is to upload iCARE templates, which you can do under the `Upload Files` header. Here you will choose a file, select the type of iCARE template it corresponds to, and hit upload. This will also be reflected in the database.
-
-## Business Intelligence Query Tool - to run queries
-**This tool requires the main application to be running.
-- `git clone https://github.com/CSCC01/Team20.git`
-- `cd Team20`
-- `npm install` # you must make sure that you have node modules installed
-- `npm start` # This will execute a script to run the application
-- `cd QueryBITool/` 
-- `npm install` # you must make sure that you have node modules installed
-- `npm start` # This will execute a script to run the application
-- `npm test` # In another terminal, with the application still running, run npm test.
-
-## Database - master branch
-If you want to see how the database changes (as shown in the meeting), perform the following:
+Our application is divided into two: the base application and the query application. The following steps are required for both:
 
 - `git clone https://github.com/CSCC01/Team20.git`
+
 - `cd Team20`
-- `npm install` # you must make sure that you have node installed
-- Once everything is installed, perform `npm start`
 
-You should see in the terminal window that the app has started
+- `npm install` # this will install the packages for both the basic app and the query app
 
-Then navigate to `http://localhost:8080/login` and you can proceed as you did in the website.
+  ​
 
-The main difference here is that when an account is created, the file `db/account.db` is modified, and when a file is uploaded, the `db/templates.db` file is changed.
+#### Base Application
 
-We have provided you a sample iCARE files to test with.
+----
 
-**If you are already logged in, then our application will redirect you to the proper page you are associated with. So if I log in as a TEQ member and close the website and open it again, I will not see the login page, but rather I will be inside my home page. This is simply because we store local storage data to keep the connection connected until the user logs out***
+Following these steps will allow you to do everything except for running queries on the database:
+
+Assuming you have already done the steps highlighted in *Testing Locally*, you should be in the directory **Team20**,  then simply run:
+
+`npm start`
+
+It it works, you will see `listening on port ...` in your terminal.
+
+Navigate to `http://localhost:8080/` and you should be presented with the login page. Note, if you are already logged in, then you would be navigated to `/home` or `/home-org` automatically.
+
+**Tests**
+
+While keeping the base application running, in another terminal, navigate again to `Team20` and run `npm test`. Close both terminals, and restart the base application.
 
 
-## Tests
-To run the Back-End Tests.
-- `git clone https://github.com/CSCC01/Team20.git`
-- `cd Team20`
-- `npm install` # you must make sure that you have node installed
-- `npm start` # This will execute a script to run the application
-- `npm test` # In another terminal, with the application still running, run npm test.
-The tests are idempotent and will have the same result everytime.
-- Once everything is installed, you can stop the tests and app, and just perform `npm start`
+#### Business Intelligence Query Tool
+
+------
+
+**This feature requires the base application to already be running (see next section)**
+
+Assuming you are already in **Team20**, run:
+
+- `cd QueryBITool`
+- `npm start`
+
+**Tests**
+
+While keeping the query application running, in another terminal, navigate again to `QueryBITool` and run `npm test`. 
+
+
+#### Login Info
+
+-----
+
+To login as a org, use the credentials `ralph` as username, `qwe` as password.
+
+To login as a TEQ employee, use the credentials `caleb` as both username and password.
+
+See the acceptance tests on how to use the application.
+
