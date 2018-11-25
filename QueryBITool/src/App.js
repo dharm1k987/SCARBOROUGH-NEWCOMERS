@@ -179,11 +179,11 @@ export default class App extends Component {
            <br/>
            <br/>
            <br/>
-            <Template onClick={() => this.setState({editorTextValue: 'How many times was {X} used on day {Y}'})}>
+            <Template onClick={() => this.setState({editorTextValue: "How many {Measure: 'X'} have accessed {Language: 'Y'} on {Month: 'Z'}"})}>
             <hr style={{margin:"0rem 0rem 0rem -1rem"}}/>
                 <Title>Service Summary</Title>
                 <Description style={{fontWeight:"normal"}}>Finds how many times a service was used on a specific day.</Description>
-                <TemplateCode>How many times was <Variables>X (Service)</Variables> used on day <Variables>Y (Date)</Variables></TemplateCode>
+                <TemplateCode>How many {"{Measure: 'X'}"} have accessed {"{Language: 'Y'}"} on {"{Month: 'Z'}"}</TemplateCode>
              <hr style={{margin:"0rem 0rem 0rem -1rem"}}/>
             </Template>
             </SummaryGroup>
@@ -198,7 +198,7 @@ export default class App extends Component {
             </SummaryGroup>
           </LeftSide>
           <RightSide>
-            <Name placeholder=" Untitiled"/>
+            <Name placeholder=" Untitled"/>
             <ButtonsGroup2>
               <Button onClick={this.executeQuery}>Run Code</Button>
               <Button>Save</Button>
@@ -213,6 +213,7 @@ export default class App extends Component {
               onChange={this.onChange}
               paneStyle={{ border: '1px solid silver' }}
               pane1Style={{ borderRight: '1px solid silver' }}
+              renderer={{showGutter: false}}
             >
             <AceEditor
               mode="javascript"
