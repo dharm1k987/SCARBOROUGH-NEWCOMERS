@@ -46,12 +46,16 @@ While keeping the base application running, in another terminal, navigate again 
 
 ------
 
-**This feature requires the base application to already be running (see next section)**
+**This feature requires the base application to already be running.**
 
-Assuming you are already in **Team20**, run:
+Assuming you are already in **Team20**, and the base application is already running, you can run:
 
 - `cd QueryBITool`
-- `npm start` # this should open a webpage localhost:3000
+- `npm start` 
+
+If it works, you will see `Starting the development server...` in your terminal. Wait a few more seconds for it to still boot up. 
+
+Then you can either navigate to `http://localhost:3000` or you can click the `Query` link on the navbar if you are logged in as a TEQ member.
 
 **Tests**
 
