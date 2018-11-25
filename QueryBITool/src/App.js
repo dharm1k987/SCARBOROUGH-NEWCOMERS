@@ -1,30 +1,23 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import Logo from './img/Team20Logo.png';
 import styled from 'styled-components';
 import SplitPane from 'react-flex-split-pane';
-import SearchInput, {createFilter} from 'react-search-input'
+import SearchInput from 'react-search-input'
 import 'react-awesome-button/dist/styles.css';
 import axios from 'axios';
-import brace from 'brace';
 import AceEditor from 'react-ace';
-
 import 'brace/mode/javascript';
 import 'brace/theme/monokai';
-import { globalStyle, createGlobalStyle } from '@smooth-ui/core-sc';
 import {
-  Row,
-  Col,
-  Grid,
   Toggler
 } from "@smooth-ui/core-sc";
 
-const GlobalStyle = createGlobalStyle`${globalStyle()}`;
 
 const TeamLogo = styled.img`
-  height: 180px;
-  weight: 180px;
+  height: 150px;
+  weight: 150px;
 `;
+
 
 const Button = styled.button`
   margin: 0rem 0.2rem 0rem 0rem;
@@ -80,16 +73,6 @@ const Variables = styled.span`
 const RightSide = styled.div`
   flex: 0.7;
   background-color: grey;
-`;
-
-const VerticalSplit = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const GridArea = styled.div`
-  flex: 0.3;
-  background-color: rgb(50, 112, 80);
 `;
 
 const Name = styled.input.attrs({
