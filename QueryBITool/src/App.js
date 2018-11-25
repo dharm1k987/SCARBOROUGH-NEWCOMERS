@@ -179,7 +179,7 @@ export default class App extends Component {
            <br/>
            <br/>
            <br/>
-            <Template onClick={() => this.setState({editorTextValue: "How many {Measure: 'X'} have accessed {Language: 'Y'} on {Month: 'Z'}"})}>
+            <Template onClick={() => this.setState({editorTextValue: "How many {Measure: 'X'} have accessed {Language: 'Y'} on {Month: 'YYYY-MM'}"})}>
             <hr style={{margin:"0rem 0rem 0rem -1rem"}}/>
                 <Title>Service Summary</Title>
                 <Description style={{fontWeight:"normal"}}>Finds how many times a service was used on a specific day.</Description>
