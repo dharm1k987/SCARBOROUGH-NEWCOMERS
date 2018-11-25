@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Logo from './img/Team20Logo.png';
 import styled from 'styled-components';
 import SplitPane from 'react-flex-split-pane';
-import SearchInput from 'react-search-input'
+import SearchInput from 'react-search-input';
 import 'react-awesome-button/dist/styles.css';
 import axios from 'axios';
 import  './nav.css';
@@ -73,7 +73,12 @@ const Template = styled.div`
 `;
 
 const Title = styled.h3``;
-const Description = styled.h4``;
+const Description = styled.h4`
+:hover{
+  color:rgb(0, 131, 0);
+}
+`;
+
 const TemplateCode = styled.h6`
   display: inline;
 `;
