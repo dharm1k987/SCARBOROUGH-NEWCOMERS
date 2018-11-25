@@ -5,7 +5,7 @@ var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 module.exports  = function(app) {
     app.use(bodyParser.json());
-
+    // returns the type of account, teq or org
     app.get("/account/type", urlencodedParser, function(req, res) {
         db.find({"username": req.query.username, "password": req.query.password}, function(err, docs){
             if (docs.length == 0) {
@@ -22,7 +22,7 @@ module.exports  = function(app) {
             }
         });
     });
-
+    // deletes an account
     app.post("/account/delete", urlencodedParser, function(req, res) {
         let username = req.body.username;
         let password = req.body.password;

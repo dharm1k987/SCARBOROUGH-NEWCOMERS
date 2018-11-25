@@ -15,7 +15,6 @@ module.exports  = function(app) {
         
       });
 
-
       data = {
         "username": "ralph",
         "password": "qwe",

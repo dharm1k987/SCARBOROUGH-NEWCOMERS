@@ -4,7 +4,7 @@ var index = require(__dirname + '/../../index');
 var templatesDb = index.templatesDb;
 var optionsDb = index.optionsDb;
 
-
+// generate json based on the data got back from the generate call
 function generateJson (entries, cb) {
     var res = {};
     var entryCount = entries.length;
@@ -62,7 +62,7 @@ function generateJson (entries, cb) {
         }
     }
 }
-
+// format the header with the clients and services
 function updateOption (obj, header, input, servicesReceived) {
     if (typeof obj[header] === 'undefined') {
         obj[header] = {'options': {}, 'total': {'clients': 0, 'services': 0}};
@@ -107,7 +107,7 @@ module.exports.main = function (app) {
     app.get('/generate', function (req, res) {
         res.render('generate-page');
     });
-
+    // get the generate data for a specific month
     app.get('/generate/months', function(req, res) {
         templatesDb.find({}, function (err, docs) {
             let availableMonths = {};

@@ -18,6 +18,8 @@ var upload = multer({
     }
 });
 
+// loads the options for a specific type of template, so we can check if it is valid or not
+// the user can't upload a "Client Profile", but use the template for "Info&Orien"
 function loadOptions (workbook) {
     // clear options db
     optionsDb.remove({}, { multi: true }, function (err, numRemoved) {});
@@ -53,6 +55,7 @@ function loadOptions (workbook) {
     }
 }
 
+// makes an array of all headers in the sheet for a specific row
 function parseTemplateHeaders (sheet, rowNum) {
     let headers = [];
     let colNum;
@@ -69,6 +72,7 @@ function parseTemplateHeaders (sheet, rowNum) {
     return headers;
 }
 
+// first time we upload template, we sample the important sheets
 function sampleHeaders (template, workbook) {
     // find sheet with template name as name, otherwise take the first sheet
     let sheet = (typeof workbook.Sheets[template] !== 'undefined') 
@@ -79,6 +83,7 @@ function sampleHeaders (template, workbook) {
     return headers;
 }
 
+// finds the sheet with the valid header, then parses it
 function findAndParseSheet (workbook, validHeaders) {
     let json = null;
     for (var i = 0; i < workbook.SheetNames.length; i++) {
@@ -104,6 +109,7 @@ function findAndParseSheet (workbook, validHeaders) {
     return json;
 }
 
+// inserts data after parsing into the database
 function insertToDb (monthStr, template, json, cb) {
     templatesDb.find({ month: monthStr, template: template }, function (err, docs) {
         if (docs.length === 0) {
@@ -137,6 +143,7 @@ function insertToDb (monthStr, template, json, cb) {
     });
 }
 
+// this is used to populate the data for sample purposes
 function insertRandomData (template, json, cb) {
     let year = 2018;
     let month = Math.floor((Math.random() * 6) + 4);
@@ -146,7 +153,7 @@ function insertRandomData (template, json, cb) {
         insertToDb(monthStr, template, newJson, cb);
     });
 }
-
+// this is again used for testing
 function randomizeOptions (template, json, cb) {
     var newJson = json.slice(0);
 
