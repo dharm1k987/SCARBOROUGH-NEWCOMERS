@@ -24,7 +24,6 @@ module.exports  = function(app) {
     });
 
     app.post("/account/delete", urlencodedParser, function(req, res) {
-      console.log("Delete Req:",req);
         let username = req.body.username;
         let password = req.body.password;
         db.find({ username: username }, function (err, docs) {

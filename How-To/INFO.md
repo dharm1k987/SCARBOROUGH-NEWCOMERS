@@ -51,11 +51,11 @@ While keeping the base application running, in another terminal, navigate again 
 Assuming you are already in **Team20**, run:
 
 - `cd QueryBITool`
-- `npm start`
+- `npm start` # this should open a webpage localhost:3000
 
 **Tests**
 
-While keeping the query application running, in another terminal, navigate again to `QueryBITool` and run `npm test`. 
+While keeping the query application running, in another terminal, navigate again to `QueryBITool` and run `npm test`.  If it asks, press `a` to run all tests.
 
 
 #### Login Info
