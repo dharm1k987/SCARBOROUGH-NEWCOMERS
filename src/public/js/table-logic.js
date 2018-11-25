@@ -22,10 +22,11 @@ $(document).ready(function() {
     var date = localStorage.getItem('date');
     var combinedHeader = localStorage.tableHeader + " - " + date;
 
+    // add the header to the main body
     $(".main-body").append('<h1 style="color:white;">' + combinedHeader + '</h1>');
     var html = $.ajax({type: "GET", url: "/views/partials/table-headers.ejs", async: false}).responseText;
 
-    // when the user click the "see chart"
+    // when the user click the "see chart", this is what we will show them
     $('.bd-example-modal-lg').on('show.bs.modal', function (e) {
         let header = ($(e.relatedTarget)[0]).getAttribute("data-header");
         let options = [];
@@ -81,6 +82,7 @@ $(document).ready(function() {
         });
     }
 
+    // sort options on the dropdown so they follow chronological order
     function sortOptions(options) {
         options.sort(function (a, b) {
             let aNum = parseInt(a, 10);

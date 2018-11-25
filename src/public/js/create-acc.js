@@ -14,13 +14,13 @@ $(document).ready(function() {
         else { radio = "teq"; }
         let data = {username: $("#CreateUsername").val(), password: $("#CreatePwd").val(), type: radio};
 
+        // check if they filled out their information first
         if ($("#CreateUsername").val() == "" || $("#CreatePwd").val() == "") {
             alert("Please make sure all fields are entered and correct.");
             return;
         }
 
-        // check if all input fields filled out
-        
+        // create their account
         $.ajax({
             type: 'POST',
             url: '/create',

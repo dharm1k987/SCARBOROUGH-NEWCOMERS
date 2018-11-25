@@ -6,8 +6,10 @@ $(document).ready(function() {
         window.location.replace("/home");
     }
 
+    // login button
     $('#login-btn').click(function() {
         let data = {username: $("#orgTEQlogin").val(), password: $("#orgTEQPwd").val()};
+        // check if valid username/password
         $.ajax({
             type: 'POST',
             url: '/login',
@@ -18,6 +20,7 @@ $(document).ready(function() {
                 $.ajax({
                     type: 'GET', url: '/account/type', data: data,
                     success: function(response2) {
+                        // navigate them properly based on their type of account
                         if (response2.type == "org") {
                             localStorage.setItem("loginOrg", "true"); localStorage.setItem("loginTEQ", "false");
                             window.location.replace("/home-org");

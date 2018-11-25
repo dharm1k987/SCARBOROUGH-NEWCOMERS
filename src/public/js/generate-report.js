@@ -9,6 +9,7 @@ $(document).ready(function() {
 
     var availableMonths;
 
+    // popualte the dropdown of months for a particular template
     function populateMonths() {
         let template = $('#ddlViewBy').find('option:selected').val();
 
@@ -26,13 +27,14 @@ $(document).ready(function() {
         populateMonths();
     });
 
-    // get the months and add them to the dropdown
-    months = [];
+    // get the month data
+    var months = [];
     $.ajax({
         type: 'GET',
         url: '/generate/months',
         data: {},
         success: function(response) {
+            // 
             availableMonths = response;
             populateMonths();
         },
@@ -41,6 +43,7 @@ $(document).ready(function() {
         }
     });
 
+    // generate the report based on their template and month
     $("#generate-btn").click(function() {
         let option = $('#ddlViewBy').find('option:selected').val();
         let monthID = $('#monthID').find('option:selected').val(); 
