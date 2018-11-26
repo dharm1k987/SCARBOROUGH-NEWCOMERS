@@ -169,7 +169,7 @@ module.exports  = function(app) {
         var service = req.body.service.toUpperCase();
         var measure = req.body.measure.toLowerCase();
         var template = "Needs Assessment&Referrals";
-        var month = "2018-9";
+        var month = req.body.month;
         console.log("inside query", service, "measure: ", measure, "template: ", template);
         // Get Entries Header from Specified Template Above
         templatesDb.find({month: month, template: template}, function (err, docs) {

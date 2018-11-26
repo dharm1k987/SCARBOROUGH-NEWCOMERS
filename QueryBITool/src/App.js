@@ -123,7 +123,12 @@ export default class App extends Component {
   }
 
   // Resizable Grid
-  state = { size: 150, isResizing: false, editorTextValue: "", result: ""};
+  state = {
+    size: 150,
+    isResizing: false,
+    editorTextValue: "",
+    result: ""
+  };
   onResizeStart = () => this.setState({ isResizing: true })
   onResizeEnd = () => this.setState({ isResizing: false })
   onChange = size => this.setState({ size })
@@ -133,9 +138,15 @@ export default class App extends Component {
   }
 
   executeQuery = () => {
+    var brokenString = this.state.editorTextValue.split(": '");
+    var measure = brokenString[1].split("'")[0];
+    var service = brokenString[2].split("'")[0];
+    var date = brokenString[3].split("'")[0];
+
     var data = {
-      "service": "english",
-      "measure": "clients",
+      "service": service,
+      "measure": measure,
+      "month": date
     }
     axios.post('http://localhost:8080/query/test', data)
     .then((response) => {
