@@ -36,8 +36,8 @@ Deliverable V
 - Implemented ability to generate report via month
 - Implemented trends for each option, scanning a template over all months
 - Implemented querying feature of the database
-- Updated unit tests
+- Updated acceptance and unit tests
 - Had a productive code review: refactored more code
-- Video: [Click me](https://www.dropbox.com/s/r89ykm3ox1fud36/Code%20Review%20.mov?dl=0)
+- Video: [Click me](https://youtu.be/jcklmfVGbl0)
 
 
