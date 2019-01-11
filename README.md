@@ -1,6 +1,8 @@
 # Team20
 
-Team Member: Dharmik Shan, Caleb Chen, Aliza Lau, Byron Leung, Ralph Maamari
+Video: [Click me](https://youtu.be/jcklmfVGbl0)
+
+Team Member: Dharmik Shan, Caleb Chen, Byron Leung, Ralph Maamari
 
 Deliverable I (official proposal)
 - Team Information
