@@ -1,6 +1,7 @@
 # Team20
 
 Video: [Click me](https://youtu.be/jcklmfVGbl0)
+
 Video: [Click me if above doesn't work](https://www.youtube.com/watch?v=FSUeOV8-mJA&feature=youtu.be)
 
 Team Member: Dharmik Shan, Caleb Chen, Byron Leung, Ralph Maamari
